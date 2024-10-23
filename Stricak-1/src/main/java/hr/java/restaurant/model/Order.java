@@ -69,26 +69,32 @@ public class Order {
         }
     }
 
+    public BigDecimal totalMealPrice() {
+        BigDecimal total = BigDecimal.valueOf(0);
+
+        for (int j = 0; j < this.meals.length; j++) {
+            total = total.add(this.meals[j].getPrice());
+        }
+
+        return total;
+    }
+
     public static Order[] findMostExpensiveOrders(Order[] orders) {
         Order[] mostExpensiveOrders = new Order[orders.length];
         Integer numberOfMostExpensiveOrders = 0;
 
         BigDecimal mostExpensive = BigDecimal.valueOf(0);
-        BigDecimal totalMealPrice;
+        BigDecimal totalPrice;
         for (int i = 0; i < orders.length; i++) {
-            totalMealPrice = BigDecimal.valueOf(0);
+            totalPrice = orders[i].totalMealPrice();
 
-            for (int j = 0; j < orders[i].getMeals().length; j++) {
-                totalMealPrice.add(orders[i].getMeals()[j].getPrice());
-            }
-
-            if(totalMealPrice.compareTo(mostExpensive) == 0) { // -1 <, 0 =, 1 >
+            if(totalPrice.compareTo(mostExpensive) == 0) { // -1 <, 0 =, 1 >
                 mostExpensiveOrders[numberOfMostExpensiveOrders] = orders[i];
                 numberOfMostExpensiveOrders++;
-            } else if (totalMealPrice.compareTo(mostExpensive) > 0) {
-                numberOfMostExpensiveOrders=0;
-                mostExpensiveOrders[numberOfMostExpensiveOrders] = orders[i];
-                mostExpensive = totalMealPrice;
+            } else if (totalPrice.compareTo(mostExpensive) > 0) {
+                mostExpensiveOrders[0] = orders[i];
+                numberOfMostExpensiveOrders=1;
+                mostExpensive = totalPrice;
             }
         }
 

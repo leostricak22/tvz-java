@@ -36,9 +36,9 @@ public class Main {
         for (int i = 0; i < mostExpensiveOrders.length; i++) {
             System.out.print("Najskuplja narudžba");
             if(mostExpensiveOrders.length > 1)
-                System.out.println(" " + (i+1));
-            else
-                System.out.println(":");
+                System.out.print(" " + (i+1));
+
+            System.out.println(" (cijena je: "+(mostExpensiveOrders[i].totalMealPrice())+"):");
 
             mostExpensiveOrders[i].print();
             System.out.println();
@@ -190,8 +190,8 @@ Matija Puklek
 2023-11-11T11:32:35
 McDonalds
 2
-Juha od mrkve
 Salata od krastavca
+Juha od mrkve
 Natali Kovačić
 2023-11-17T23:32:31
 */

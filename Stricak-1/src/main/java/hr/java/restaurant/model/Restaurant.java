@@ -78,19 +78,6 @@ public class Restaurant {
         return -1;
     }
 
-    public static boolean isMealInRestaurant(Restaurant restaurant, String mealName) {
-        if (restaurant == null)
-            return true;
-        
-        for (int i = 0; i < restaurant.getMeals().length; i++) {
-            if(restaurant.getMeals()[i].equals(mealName)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     public static void inputRestaurant(Restaurant[] restaurants, Meal[] meals, Chef[] chefs, Waiter[] waiters, Deliverer[] deliverers, Scanner scanner) {
         for(int i = 0; i < restaurants.length; i++) {
             String restaurantName = Input.string(scanner, "Unesite naziv  "+ (i+1) +". restorana: ");

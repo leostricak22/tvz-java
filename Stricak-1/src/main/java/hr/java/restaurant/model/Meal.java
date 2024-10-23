@@ -102,5 +102,8 @@ public class Meal {
             System.out.println("Sastojak "+(i+1)+":");
             ingredients[i].print(tabulators+2);
         }
+
+        Input.tabulatorPrint(tabulators);
+        System.out.println("Cijena: " + this.price);
     }
 }
