@@ -69,6 +69,19 @@ public class Deliverer {
         return delivererNames;
     }
 
+    public Integer findNumberOfDeliveries(Order[] orders) {
+        Integer deliveryCounter=0;
+        Deliverer orderDeliverer = this;
+
+        for(int i=0;i<orders.length;i++) {
+            if(orderDeliverer.equals(orders[i].getDeliverer())) {
+                deliveryCounter++;
+            }
+        }
+
+        return deliveryCounter;
+    }
+
     public void print(Integer tabulators) {
         Input.tabulatorPrint(tabulators);
         System.out.println("Ime: " + this.firstName + ", Prezime: " + this.lastName + ", Plaća: " + this.salary);

@@ -33,6 +33,7 @@ public class Main {
 
         Order[] mostExpensiveOrders = Order.findMostExpensiveOrders(orders);
 
+        System.out.println("NAJSKUPLJE NARUDŽBE");
         for (int i = 0; i < mostExpensiveOrders.length; i++) {
             System.out.print("Najskuplja narudžba");
             if(mostExpensiveOrders.length > 1)
@@ -44,12 +45,26 @@ public class Main {
             System.out.println();
         }
 
+        System.out.println("DOSTAVLJAČI S NAJVIŠE DOSTAVA");
+        Deliverer[] deliverersWithMostDeliveries = Order.findDeliverersWithMostDeliveries(orders);
+        for (int i = 0; i < deliverersWithMostDeliveries.length; i++) {
+            System.out.print("Dostavljač s najviše dostava");
+            if(deliverersWithMostDeliveries.length > 1)
+                System.out.print(" " + (i+1));
+
+            System.out.println(" (broj dostava: "+(deliverersWithMostDeliveries[i].findNumberOfDeliveries(orders))+"):");
+
+            deliverersWithMostDeliveries[i].print(1);
+            System.out.println();
+        }
+
         scanner.close();
     }
 }
 
 
 /*
+TEST CASE:
 Juha
 Topla i kremasta jela od povrća ili mesa.
 Salata

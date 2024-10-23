@@ -4,7 +4,6 @@ import hr.java.service.Input;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Objects;
 import java.util.Scanner;
 
 public class Order {
@@ -81,7 +80,7 @@ public class Order {
 
     public static Order[] findMostExpensiveOrders(Order[] orders) {
         Order[] mostExpensiveOrders = new Order[orders.length];
-        Integer numberOfMostExpensiveOrders = 0;
+        Integer counterOfMostExpensiveOrders = 0;
 
         BigDecimal mostExpensive = BigDecimal.valueOf(0);
         BigDecimal totalPrice;
@@ -89,21 +88,57 @@ public class Order {
             totalPrice = orders[i].totalMealPrice();
 
             if(totalPrice.compareTo(mostExpensive) == 0) { // -1 <, 0 =, 1 >
-                mostExpensiveOrders[numberOfMostExpensiveOrders] = orders[i];
-                numberOfMostExpensiveOrders++;
+                mostExpensiveOrders[counterOfMostExpensiveOrders] = orders[i];
+                counterOfMostExpensiveOrders++;
             } else if (totalPrice.compareTo(mostExpensive) > 0) {
                 mostExpensiveOrders[0] = orders[i];
-                numberOfMostExpensiveOrders=1;
+                counterOfMostExpensiveOrders =1;
                 mostExpensive = totalPrice;
             }
         }
 
-        Order[] mostExpensiveOrdersReturn = new Order[numberOfMostExpensiveOrders];
-        for (int i = 0; i < numberOfMostExpensiveOrders; i++) {
+        Order[] mostExpensiveOrdersReturn = new Order[counterOfMostExpensiveOrders];
+        for (int i = 0; i < counterOfMostExpensiveOrders; i++) {
             mostExpensiveOrdersReturn[i] = mostExpensiveOrders[i];
         }
 
         return mostExpensiveOrdersReturn;
+    }
+
+    public static Deliverer[] findDeliverersWithMostDeliveries(Order[] orders) {
+        Deliverer[] deliverersWithMostDeliveries = new Deliverer[orders.length];
+        Integer counterOfDeliverersWithMostDeliveries = 0;
+        Integer mostDeliveries = 0;
+
+        for(int i=0;i<orders.length;i++) {
+            Deliverer orderDeliverer = orders[i].deliverer;
+
+            boolean found = false;
+            for(int j=0;j<counterOfDeliverersWithMostDeliveries;j++) {
+                if(deliverersWithMostDeliveries[j].equals(orderDeliverer))
+                    found = true;
+            }
+
+            if(!found) {
+                Integer numberOfDeliveries = orderDeliverer.findNumberOfDeliveries(orders);
+
+                if(numberOfDeliveries == mostDeliveries) {
+                    deliverersWithMostDeliveries[counterOfDeliverersWithMostDeliveries] = orderDeliverer;
+                    counterOfDeliverersWithMostDeliveries++;
+                } else if (numberOfDeliveries > mostDeliveries) {
+                    deliverersWithMostDeliveries[counterOfDeliverersWithMostDeliveries] = orderDeliverer;
+                    counterOfDeliverersWithMostDeliveries = 1;
+                    mostDeliveries = numberOfDeliveries;
+                }
+            }
+        }
+
+        Deliverer[] deliverersWithMostDeliveriesReturn = new Deliverer[counterOfDeliverersWithMostDeliveries];
+        for (int i = 0; i < counterOfDeliverersWithMostDeliveries; i++) {
+            deliverersWithMostDeliveriesReturn[i] = deliverersWithMostDeliveries[i];
+        }
+
+        return deliverersWithMostDeliveriesReturn;
     }
 
     public void print() {
