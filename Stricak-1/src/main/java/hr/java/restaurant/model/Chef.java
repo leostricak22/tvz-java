@@ -68,4 +68,9 @@ public class Chef {
 
         return chefNames;
     }
+
+    public void print(Integer tabulators) {
+        Input.tabulatorPrint(tabulators);
+        System.out.println("Ime: " + this.firstName + ", Prezime: " + this.lastName + ", Plaća: " + this.salary);
+    }
 }

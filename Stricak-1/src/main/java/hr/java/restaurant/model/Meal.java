@@ -2,17 +2,20 @@ package hr.java.restaurant.model;
 
 import hr.java.service.Input;
 
+import java.math.BigDecimal;
 import java.util.Scanner;
 
 public class Meal {
     private String name;
     private Category category;
     private Ingredient[] ingredients;
+    private BigDecimal price;
 
-    public Meal(String name, Category category, Ingredient[] ingredient) {
+    public Meal(String name, Category category, Ingredient[] ingredient, BigDecimal price) {
         this.name = name;
         this.category = category;
         this.ingredients = ingredient;
+        this.price = price;
     }
 
     public String getName() {
@@ -39,6 +42,14 @@ public class Meal {
         this.ingredients = ingredients;
     }
 
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
+    }
+
     public static Integer existsByName(Meal[] meals, String mealName) {
         for (int j=0;j<meals.length;j++) {
             if (mealName.equals(meals[j].getName())) {
@@ -60,7 +71,9 @@ public class Meal {
                 ingredientsEntered[j] = Input.ingredientName(scanner,"Unesite naziv "+(j+1)+". sastojka kojeg želite dodati u jelo: ", ingredients);
             }
 
-            meals[i] = new Meal(mealName, mealCategory, ingredientsEntered);
+            BigDecimal mealPrice = Input.bigDecimal(scanner, "Unesite cijenu "+(i+1)+". jela.");
+
+            meals[i] = new Meal(mealName, mealCategory, ingredientsEntered, mealPrice);
         }
     }
 
@@ -72,5 +85,22 @@ public class Meal {
         }
 
         return mealNames;
+    }
+
+    public void print(Integer tabulators) {
+        Input.tabulatorPrint(tabulators);
+        System.out.println("Naziv: " + this.name);
+
+        Input.tabulatorPrint(tabulators);
+        System.out.println("Kategorija:" );
+        category.print(tabulators+1);
+
+        Input.tabulatorPrint(tabulators);
+        System.out.println("Sastojci: ");
+        for(int i=0;i<ingredients.length;i++) {
+            Input.tabulatorPrint(tabulators+1);
+            System.out.println("Sastojak "+(i+1)+":");
+            ingredients[i].print(tabulators+2);
+        }
     }
 }

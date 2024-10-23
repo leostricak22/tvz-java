@@ -2,7 +2,9 @@ package hr.java.restaurant.model;
 
 import hr.java.service.Input;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Order {
@@ -65,5 +67,57 @@ public class Order {
 
             orders[i] = new Order(orderRestaurant, mealsEntered, orderDeliverer, orderDeliveryDateAndTime);
         }
+    }
+
+    public static Order[] findMostExpensiveOrders(Order[] orders) {
+        Order[] mostExpensiveOrders = new Order[orders.length];
+        Integer numberOfMostExpensiveOrders = 0;
+
+        BigDecimal mostExpensive = BigDecimal.valueOf(0);
+        BigDecimal totalMealPrice;
+        for (int i = 0; i < orders.length; i++) {
+            totalMealPrice = BigDecimal.valueOf(0);
+
+            for (int j = 0; j < orders[i].getMeals().length; j++) {
+                totalMealPrice.add(orders[i].getMeals()[j].getPrice());
+            }
+
+            if(totalMealPrice.compareTo(mostExpensive) == 0) { // -1 <, 0 =, 1 >
+                mostExpensiveOrders[numberOfMostExpensiveOrders] = orders[i];
+                numberOfMostExpensiveOrders++;
+            } else if (totalMealPrice.compareTo(mostExpensive) > 0) {
+                numberOfMostExpensiveOrders=0;
+                mostExpensiveOrders[numberOfMostExpensiveOrders] = orders[i];
+                mostExpensive = totalMealPrice;
+            }
+        }
+
+        Order[] mostExpensiveOrdersReturn = new Order[numberOfMostExpensiveOrders];
+        for (int i = 0; i < numberOfMostExpensiveOrders; i++) {
+            mostExpensiveOrdersReturn[i] = mostExpensiveOrders[i];
+        }
+
+        return mostExpensiveOrdersReturn;
+    }
+
+    public void print() {
+        Input.tabulatorPrint(1);
+        System.out.println("Restoran:");
+        this.restaurant.print(2);
+
+        Input.tabulatorPrint(1);
+        System.out.println("Naručena jela:");
+        for(int i=0;i<this.meals.length;i++) {
+            Input.tabulatorPrint(2);
+            System.out.println("Jelo "+(i+1)+":");
+            this.meals[i].print(3);
+        }
+
+        Input.tabulatorPrint(1);
+        System.out.print("Dostavljač narudžbe: ");
+        this.deliverer.print(0);
+        Input.tabulatorPrint(1);
+        System.out.print("Datum dostave: ");
+        System.out.println(this.deliveryDateAndTime);
     }
 }

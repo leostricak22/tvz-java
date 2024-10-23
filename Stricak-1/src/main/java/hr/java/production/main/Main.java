@@ -31,6 +31,19 @@ public class Main {
         Order[] orders = new Order[3];
         Order.inputOrder(orders, restaurants, meals, scanner);
 
+        Order[] mostExpensiveOrders = Order.findMostExpensiveOrders(orders);
+
+        for (int i = 0; i < mostExpensiveOrders.length; i++) {
+            System.out.print("Najskuplja narudžba");
+            if(mostExpensiveOrders.length > 1)
+                System.out.println(" " + (i+1));
+            else
+                System.out.println(":");
+
+            mostExpensiveOrders[i].print();
+            System.out.println();
+        }
+
         scanner.close();
     }
 }
@@ -72,14 +85,17 @@ Juha
 2
 Mrkva
 Krumpir
+15
 Špagete bolonjez
 Tjestenina
 1
 Špageti
+20
 Salata od krastavca
 Salata
 1
 Krastavac
+18
 
 Nikola
 Jambrešić

@@ -59,4 +59,9 @@ public class Address {
 
         return new Address(addressStreet, addressHouseNumber, addressCity, addressPostalCode);
     }
+
+    public void print(Integer tabulators) {
+        Input.tabulatorPrint(tabulators);
+        System.out.println("Ulica: " + this.street + ", Kućni broj: " + this.houseNumber + ", Grad: " + this.city + ", Poštanski broj: " + this.postalCode);
+    }
 }

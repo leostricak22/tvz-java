@@ -195,4 +195,10 @@ public class Input {
         System.out.println("Uneseni restoran ne postoji.");
         return restaurantName(scanner, message, restaurants);
     }
+
+    public static void tabulatorPrint(Integer tabulators) {
+        for (int i = 0; i < tabulators; i++) {
+            System.out.print("|\t");
+        }
+    }
 }

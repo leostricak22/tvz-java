@@ -56,4 +56,9 @@ public class Category {
 
         return categoryNames;
     }
+
+    public void print(Integer tabulators) {
+        Input.tabulatorPrint(tabulators);
+        System.out.println("Naziv kategorije: " + this.name + ", Opis kategorije: "+ this.description);
+    }
 }

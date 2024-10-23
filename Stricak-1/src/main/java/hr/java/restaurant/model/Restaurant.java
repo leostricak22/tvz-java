@@ -134,4 +134,46 @@ public class Restaurant {
 
         return restaurantNames;
     }
+
+    public void print(Integer tabulators) {
+        Input.tabulatorPrint(tabulators);
+        System.out.println("Naziv restorana: " + this.name);
+        Input.tabulatorPrint(tabulators);
+        System.out.println("Adresa restorana: ");
+        address.print(tabulators+1);
+
+        Input.tabulatorPrint(tabulators);
+        System.out.println("Sva jela u restoranu:");
+        for(int i=0;i<this.meals.length;i++) {
+            Input.tabulatorPrint(tabulators+1);
+            System.out.println("Jelo "+(i+1)+":");
+            this.meals[i].print(tabulators+2);
+        }
+
+        Input.tabulatorPrint(tabulators);
+        System.out.println("Svi kuhari u restoranu:");
+        for(int i=0;i<this.chefs.length;i++) {
+            Input.tabulatorPrint(tabulators+1);
+            System.out.println("Kuhar "+(i+1)+":");
+            this.chefs[i].print(tabulators+2);
+        }
+
+        Input.tabulatorPrint(tabulators);
+        System.out.println("Svi konobari u restoranu:");
+        for(int i=0;i<this.waiters.length;i++) {
+            Input.tabulatorPrint(tabulators+1);
+            System.out.println("Konobar "+(i+1)+":");
+            this.waiters[i].print(tabulators+2);
+        }
+
+        Input.tabulatorPrint(tabulators);
+        System.out.println("Svi dostavljači u restoranu:");
+        for(int i=0;i<this.deliverers.length;i++) {
+            Input.tabulatorPrint(tabulators+1);
+            System.out.println("Dostavljač "+(i+1)+":");
+            this.deliverers[i].print(tabulators+2);
+        }
+
+
+    }
 }

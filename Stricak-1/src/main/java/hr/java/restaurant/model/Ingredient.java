@@ -79,4 +79,13 @@ public class Ingredient  {
 
         return ingredientsNames;
     }
+
+    public void print(Integer tabulators) {
+        Input.tabulatorPrint(tabulators);
+        System.out.println("Naziv: " + this.name + ", Kalorije: " + this.kcal + ", Metoda pripreme: " + this.preparationMethod);
+
+        Input.tabulatorPrint(tabulators);
+        System.out.println("Kategorija:");
+        category.print(tabulators+1);
+    }
 }
