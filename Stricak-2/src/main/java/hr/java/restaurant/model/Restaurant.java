@@ -1,10 +1,13 @@
 package hr.java.restaurant.model;
 
 import hr.java.service.Input;
+import hr.java.service.Output;
 
 import java.util.Scanner;
 
-public class Restaurant {
+public class Restaurant extends Entity {
+    private static Long counter = 0L;
+
     private String name;
     private Address address;
     private Meal[] meals;
@@ -13,6 +16,7 @@ public class Restaurant {
     private Deliverer[] deliverers;
 
     public Restaurant(String name, Address address, Meal[] meals, Chef[] chefs, Waiter[] waiters, Deliverer[] deliverers) {
+        super(++counter);
         this.name = name;
         this.address = address;
         this.meals = meals;
@@ -24,47 +28,36 @@ public class Restaurant {
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
     public Address getAddress() {
         return address;
     }
-
     public void setAddress(Address address) {
         this.address = address;
     }
-
     public Meal[] getMeals() {
         return meals;
     }
-
     public void setMeals(Meal[] meals) {
         this.meals = meals;
     }
-
     public Chef[] getChefs() {
         return chefs;
     }
-
     public void setChefs(Chef[] chefs) {
         this.chefs = chefs;
     }
-
     public Waiter[] getWaiters() {
         return waiters;
     }
-
     public void setWaiters(Waiter[] waiters) {
         this.waiters = waiters;
     }
-
     public Deliverer[] getDeliverers() {
         return deliverers;
     }
-
     public void setDeliverers(Deliverer[] deliverers) {
         this.deliverers = deliverers;
     }
@@ -134,96 +127,46 @@ public class Restaurant {
         return counter;
     }
 
-    public int findNumberOfCanceledOrders(Order[] orders) {
-        int counter=0;
-
-        for (int j = 0; j < orders.length; j++) {
-            if(orders[j].getRestaurant() == this && orders[j].getCanceledDateAndTime() != null) {
-                counter++;
-            }
-        }
-
-        return counter;
-    }
-
-    public static void outputStatisticsByCanceledOrders(Restaurant[] restaurants, Order[] orders) {
-        int[] numberOfOrdersRestaurants = new int[restaurants.length];
-        int[] numberOfCanceledOrdersRestaurants = new int[restaurants.length];
-
-        for (int i = 0; i < restaurants.length; i++) {
-            if(i == 0) {
-                numberOfOrdersRestaurants[i] = 0;
-                numberOfCanceledOrdersRestaurants[i] = 0;
-            }
-            numberOfOrdersRestaurants[i] += restaurants[i].findNumberOfOrders(orders);
-            numberOfCanceledOrdersRestaurants[i] += restaurants[i].findNumberOfCanceledOrders(orders);
-        }
-
-        for (int i=0;i<restaurants.length;i++) {
-            for(int j=0;j<restaurants.length-1;j++) {
-                if(numberOfCanceledOrdersRestaurants[j] < numberOfCanceledOrdersRestaurants[j+1]) {
-                    int temp = numberOfOrdersRestaurants[j];
-                    numberOfOrdersRestaurants[j] = numberOfOrdersRestaurants[j+1];
-                    numberOfOrdersRestaurants[j+1] = temp;
-
-                    temp = numberOfCanceledOrdersRestaurants[j];
-                    numberOfCanceledOrdersRestaurants[j] = numberOfCanceledOrdersRestaurants[j+1];
-                    numberOfCanceledOrdersRestaurants[j+1] = temp;
-
-                    Restaurant tempRestaurant = restaurants[j];
-                    restaurants[j] = restaurants[j+1];
-                    restaurants[j+1] = tempRestaurant;
-                }
-            }
-        }
-
-        for (int i = 0; i < restaurants.length; i++) {
-            System.out.println("Restoran " + restaurants[i].getName());
-            System.out.println("\tukupno narudžba: " + numberOfOrdersRestaurants[i]);
-            System.out.println("\tdostavljeno narudžba: " + (numberOfOrdersRestaurants[i] - numberOfCanceledOrdersRestaurants[i]));
-            System.out.println("\tprekinuta narudžba: " + numberOfCanceledOrdersRestaurants[i]);
-        }
-    }
-
     public void print(Integer tabulators) {
-        Input.tabulatorPrint(tabulators);
+        Output.tabulatorPrint(tabulators);
+        System.out.println("Id: " + this.getId());
+
+        Output.tabulatorPrint(tabulators);
         System.out.println("Naziv restorana: " + this.name);
-        Input.tabulatorPrint(tabulators);
+        Output.tabulatorPrint(tabulators);
         System.out.println("Adresa restorana: ");
         address.print(tabulators+1);
 
-        Input.tabulatorPrint(tabulators);
+        Output.tabulatorPrint(tabulators);
         System.out.println("Sva jela u restoranu:");
         for(int i=0;i<this.meals.length;i++) {
-            Input.tabulatorPrint(tabulators+1);
+            Output.tabulatorPrint(tabulators+1);
             System.out.println("Jelo "+(i+1)+":");
             this.meals[i].print(tabulators+2);
         }
 
-        Input.tabulatorPrint(tabulators);
+        Output.tabulatorPrint(tabulators);
         System.out.println("Svi kuhari u restoranu:");
         for(int i=0;i<this.chefs.length;i++) {
-            Input.tabulatorPrint(tabulators+1);
+            Output.tabulatorPrint(tabulators+1);
             System.out.println("Kuhar "+(i+1)+":");
             this.chefs[i].print(tabulators+2);
         }
 
-        Input.tabulatorPrint(tabulators);
+        Output.tabulatorPrint(tabulators);
         System.out.println("Svi konobari u restoranu:");
         for(int i=0;i<this.waiters.length;i++) {
-            Input.tabulatorPrint(tabulators+1);
+            Output.tabulatorPrint(tabulators+1);
             System.out.println("Konobar "+(i+1)+":");
             this.waiters[i].print(tabulators+2);
         }
 
-        Input.tabulatorPrint(tabulators);
+        Output.tabulatorPrint(tabulators);
         System.out.println("Svi dostavljači u restoranu:");
         for(int i=0;i<this.deliverers.length;i++) {
-            Input.tabulatorPrint(tabulators+1);
+            Output.tabulatorPrint(tabulators+1);
             System.out.println("Dostavljač "+(i+1)+":");
             this.deliverers[i].print(tabulators+2);
         }
-
-
     }
 }

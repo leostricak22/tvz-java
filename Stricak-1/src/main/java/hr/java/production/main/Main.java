@@ -1,6 +1,8 @@
 package hr.java.production.main;
 
 import hr.java.restaurant.model.*;
+import hr.java.service.Input;
+
 import java.util.Scanner;
 
 public class Main {
@@ -33,6 +35,7 @@ public class Main {
 
         Order[] mostExpensiveOrders = Order.findMostExpensiveOrders(orders);
 
+        /*
         System.out.println("NAJSKUPLJE NARUDŽBE");
         for (int i = 0; i < mostExpensiveOrders.length; i++) {
             System.out.print("Najskuplja narudžba");
@@ -57,6 +60,31 @@ public class Main {
             deliverersWithMostDeliveries[i].print(1);
             System.out.println();
         }
+        */
+
+        for (int i = 0; i < orders.length; i++) {
+            System.out.println("Narudžba " + (i+1) + ": ");
+            orders[i].print();
+            System.out.println();
+        }
+
+        Integer cancelOrderIndex = Input.integer(scanner, "Unesite narudžbu koju želite prekinuti (index počinje od 1): ");
+        while(cancelOrderIndex-1 < 0 || cancelOrderIndex-1 >= orders.length) {
+            System.out.println("Pogrešan unos.");
+            cancelOrderIndex = Input.integer(scanner, "Unesite narudžbu koju želite prekinuti (index počinje od 1): ");
+        }
+
+        String cancelMessage = Input.string(scanner, "Unesite razlog prekidanja narudžbe: ");
+        orders[cancelOrderIndex-1].cancelOrder(cancelMessage);
+
+
+        /*for (int i = 0; i < orders.length; i++) {
+            System.out.print("Narudžba " + (i+1) + ": ");
+            orders[i].print();
+            System.out.println();
+        }*/
+
+        Restaurant.outputStatisticsByCanceledOrders(restaurants, orders);
 
         scanner.close();
     }

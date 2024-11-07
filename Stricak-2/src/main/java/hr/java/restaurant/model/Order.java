@@ -1,26 +1,24 @@
 package hr.java.restaurant.model;
 
 import hr.java.service.Input;
+import hr.java.service.Output;
 
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.Scanner;
 
-public class Order {
-
-    private final static Duration DEFAULT_ALLOWED_CANCEL_PERIOD = Duration.ofSeconds(15);
+public class Order extends Entity {
+    private static Long counter = 0L;
 
     private Restaurant restaurant;
     private Meal[] meals;
     private Deliverer deliverer;
     private LocalDateTime deliveryDateAndTime;
 
-    private LocalDateTime createdDateAndTime = LocalDateTime.now();
-    private LocalDateTime canceledDateAndTime;
-    private String canceledMessage;
-
     public Order(Restaurant restaurant, Meal[] meals, Deliverer deliverer, LocalDateTime deliveryDateAndTime) {
+        super(++counter);
         this.restaurant = restaurant;
         this.meals = meals;
         this.deliverer = deliverer;
@@ -58,44 +56,6 @@ public class Order {
     public void setDeliveryDateAndTime(LocalDateTime deliveryDateAndTime) {
         this.deliveryDateAndTime = deliveryDateAndTime;
     }
-
-    public LocalDateTime getCreatedDateAndTime() {
-        return createdDateAndTime;
-    }
-
-    public void setCreatedDateAndTime(LocalDateTime createdDateAndTime) {
-        this.createdDateAndTime = createdDateAndTime;
-    }
-
-    public LocalDateTime getCanceledDateAndTime() {
-        return canceledDateAndTime;
-    }
-
-    public void setCanceledDateAndTime(LocalDateTime canceledDateAndTime) {
-        this.canceledDateAndTime = canceledDateAndTime;
-    }
-
-    public String getCanceledMessage() {
-        return canceledMessage;
-    }
-
-    public void setCanceledMessage(String canceledMessage) {
-        this.canceledMessage = canceledMessage;
-    }
-
-    public Boolean wasAllowedCancel() {
-        return Duration.between(this.createdDateAndTime, LocalDateTime.now()).compareTo(DEFAULT_ALLOWED_CANCEL_PERIOD) < 0;
-    }
-
-    public void cancelOrder(String canceledMessage) {
-        if(!wasAllowedCancel()) {
-            System.out.println("Prošlo je dopušteno vrijeme za otkazivanje narudžbe.");
-        } else {
-            this.canceledDateAndTime = LocalDateTime.now();
-            this.canceledMessage = canceledMessage;
-        }
-    }
-
     public static void inputOrder(Order[] orders, Restaurant[] restaurants, Meal[] meals, Scanner scanner) {
         for (int i = 0; i < orders.length; i++) {
             Restaurant orderRestaurant = Input.restaurantName(scanner, "Unesite naziv restorana " + (i + 1) + ". narudžbe", restaurants);
@@ -167,7 +127,7 @@ public class Order {
             if(!found) {
                 Integer numberOfDeliveries = orderDeliverer.findNumberOfDeliveries(orders);
 
-                if(numberOfDeliveries == mostDeliveries) {
+                if(Objects.equals(numberOfDeliveries, mostDeliveries)) {
                     deliverersWithMostDeliveries[counterOfDeliverersWithMostDeliveries] = orderDeliverer;
                     counterOfDeliverersWithMostDeliveries++;
                 } else if (numberOfDeliveries > mostDeliveries) {
@@ -187,37 +147,26 @@ public class Order {
     }
 
     public void print() {
-        Input.tabulatorPrint(1);
+        Output.tabulatorPrint(1);
+        System.out.println("Id: " + this.getId());
+
+        Output.tabulatorPrint(1);
         System.out.println("Restoran:");
         this.restaurant.print(2);
 
-        Input.tabulatorPrint(1);
+        Output.tabulatorPrint(1);
         System.out.println("Naručena jela:");
         for(int i=0;i<this.meals.length;i++) {
-            Input.tabulatorPrint(2);
+            Output.tabulatorPrint(2);
             System.out.println("Jelo "+(i+1)+":");
             this.meals[i].print(3);
         }
 
-        Input.tabulatorPrint(1);
+        Output.tabulatorPrint(1);
         System.out.print("Dostavljač narudžbe: ");
         this.deliverer.print(0);
-        Input.tabulatorPrint(1);
+        Output.tabulatorPrint(1);
         System.out.print("Datum dostave: ");
         System.out.println(this.deliveryDateAndTime);
-
-        Input.tabulatorPrint(1);
-        System.out.print("Datum kreiranja narudžbe: ");
-        System.out.println(this.createdDateAndTime);
-
-        if(this.canceledDateAndTime != null) {
-            Input.tabulatorPrint(1);
-            System.out.print("Datum otkazivanja narudžbe: ");
-            System.out.println(this.canceledDateAndTime);
-
-            Input.tabulatorPrint(1);
-            System.out.print("Razlog otkazivanja narudžbe: ");
-            System.out.println(this.canceledMessage);
-        }
     }
 }
