@@ -1,6 +1,8 @@
 package hr.java.restaurant.model;
 
+import hr.java.restaurant.exception.DuplicateEntryException;
 import hr.java.service.Input;
+import hr.java.service.Validation;
 
 import java.math.BigDecimal;
 import java.util.Scanner;
@@ -29,10 +31,23 @@ public class Chef extends Person {
         return -1;
     }
 
-    public static void inputChef(Chef[] chefs, Scanner scanner) {
+    public static void inputChef(Chef[] chefs, Person[] people, Scanner scanner) {
         for (int i = 0; i < chefs.length; i++) {
-            String chefFirstName = Input.string(scanner, "Unesite ime "+(i+1)+". kuhara.");
-            String chefLastName = Input.string(scanner, "Unesite prezime "+(i+1)+". kuhara.");
+            String chefFirstName, chefLastName;
+
+            while (true) {
+                chefFirstName = Input.string(scanner, "Unesite ime "+(i+1)+". kuhara.");
+                chefLastName = Input.string(scanner, "Unesite prezime "+(i+1)+". kuhara.");
+
+                try {
+                    Validation.checkDuplicatePerson(people, chefFirstName + " " + chefLastName);
+                    Validation.checkDuplicatePerson(chefs, chefFirstName + " " + chefLastName);
+                    break;
+                } catch (DuplicateEntryException e) {
+                    System.out.println("Kuhar s tim imenom i prezimenom već postoji. Molimo unesite drugo ime i prezime.");
+                }
+            }
+
             Contract contract = Input.contract(scanner, "Unesite ugovor "+(i+1)+". kuhara.");
             BigDecimal bonus = Input.bigDecimal(scanner, "Unesite bonus "+(i+1)+". kuhara.");
 

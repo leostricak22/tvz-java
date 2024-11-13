@@ -1,7 +1,9 @@
 package hr.java.restaurant.model;
 
+import hr.java.restaurant.exception.DuplicateEntryException;
 import hr.java.service.Input;
 import hr.java.service.Output;
+import hr.java.service.Validation;
 
 import java.math.BigDecimal;
 import java.util.Scanner;
@@ -65,7 +67,19 @@ public class Ingredient  extends Entity {
 
     public static void inputIngredient(Ingredient[] ingredients, Category[] categories, Scanner scanner) {
         for(int i = 0; i < ingredients.length; i++) {
-            String ingredientName = Input.string(scanner, "Unesite naziv  "+ (i+1) +". sastojka: ");
+            String ingredientName;
+
+            while(true) {
+                ingredientName = Input.string(scanner, "Unesite naziv "+ (i+1) +". sastojka: ");
+
+                try {
+                    Validation.checkDuplicateIngredient(ingredients, ingredientName);
+                    break;
+                } catch (DuplicateEntryException e) {
+                    System.out.println("Sastojak s tim nazivom već postoji. Molimo unesite drugi naziv.");
+                }
+            }
+
             Category ingredientCategory = Input.categoryName(scanner, "Unesite naziv kategorije "+ (i+1) +". sastojka", categories);
             BigDecimal ingredientKcal = Input.bigDecimal(scanner, "Unesite kalorije " + (i+1) + ". sastojka.");
             String ingredientPreparationMethod = Input.string(scanner, "Unesite metodu pripremanja " + (i+1) + ". sastojka: ");

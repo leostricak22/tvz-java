@@ -1,7 +1,9 @@
 package hr.java.restaurant.model;
 
+import hr.java.restaurant.exception.DuplicateEntryException;
 import hr.java.service.Input;
 import hr.java.service.Output;
+import hr.java.service.Validation;
 
 import java.math.BigDecimal;
 import java.util.Scanner;
@@ -36,8 +38,19 @@ public final class MeatMeal extends Meal implements Meat {
         this.meatOrigin = meatOrigin;
     }
 
-    public static MeatMeal inputMeatMeal(Category[] categories, Ingredient[] ingredients , Scanner scanner) {
-        String mealName = Input.string(scanner, "Unesite naziv jela: ");
+    public static MeatMeal inputMeatMeal(Category[] categories, Ingredient[] ingredients, Meal[] meals, Scanner scanner) {
+        String mealName;
+
+        while (true) {
+            mealName = Input.string(scanner, "Unesite naziv mesnog jela: ");
+            try {
+                Validation.checkDuplicateMeal(meals, mealName);
+                break;
+            } catch (DuplicateEntryException e) {
+                System.out.println("Jelo s tim nazivom već postoji!");
+            }
+        }
+
         Category mealCategory = Input.categoryName(scanner, "Unesite kategoriju  jela: ", categories);
 
         Integer numberOfIngredients = Input.integer(scanner, "Unesite broj sastojaka koji želite dodati: ");

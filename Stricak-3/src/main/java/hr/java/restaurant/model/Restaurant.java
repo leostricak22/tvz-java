@@ -2,6 +2,7 @@ package hr.java.restaurant.model;
 
 import hr.java.service.Input;
 import hr.java.service.Output;
+import hr.java.service.Validation;
 
 import java.util.Scanner;
 
@@ -73,7 +74,18 @@ public class Restaurant extends Entity {
 
     public static void inputRestaurant(Restaurant[] restaurants, Meal[] meals, Chef[] chefs, Waiter[] waiters, Deliverer[] deliverers, Scanner scanner) {
         for(int i = 0; i < restaurants.length; i++) {
-            String restaurantName = Input.string(scanner, "Unesite naziv  "+ (i+1) +". restorana: ");
+            String restaurantName;
+
+            while (true) {
+                restaurantName = Input.string(scanner, "Unesite naziv  "+ (i+1) +". restorana: ");
+
+                try {
+                    Validation.checkDuplicateRestaurant(restaurants, restaurantName);
+                    break;
+                } catch (Exception e) {
+                    System.out.println("Restoran s tim imenom već postoji. Molimo unesite drugo ime.");
+                }
+            }
 
             Address restaurantAddress = Address.inputAddress(scanner);
 

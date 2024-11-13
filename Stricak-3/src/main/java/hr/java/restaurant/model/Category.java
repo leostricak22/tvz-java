@@ -1,7 +1,9 @@
 package hr.java.restaurant.model;
 
+import hr.java.restaurant.exception.DuplicateEntryException;
 import hr.java.service.Input;
 import hr.java.service.Output;
+import hr.java.service.Validation;
 
 import java.util.Scanner;
 
@@ -44,7 +46,19 @@ public class Category extends Entity {
 
     public static void inputCategory(Category[] categories, Scanner scanner) {
         for(int i = 0; i < categories.length; i++) {
-            String categoryName = Input.string(scanner, "Unesite naziv "+ (i+1) +". kategorije: ");
+            String categoryName;
+
+            while(true) {
+                categoryName = Input.string(scanner, "Unesite naziv "+ (i+1) +". kategorije: ");
+
+                try {
+                    Validation.checkDuplicateCategory(categories, categoryName);
+                    break;
+                } catch (DuplicateEntryException e) {
+                    System.out.println("Kategorija s tim nazivom već postoji. Molimo unesite drugi naziv.");
+                }
+            }
+
             String categoryDescription = Input.string(scanner, "Unesite opis  "+ (i+1) +". kategorije: ");
 
             categories[i] = new Builder()

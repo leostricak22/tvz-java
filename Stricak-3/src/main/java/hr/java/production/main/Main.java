@@ -21,33 +21,33 @@ Main {
 
         System.out.println("Unos veganskih jela: ");
         for (;counter < 3; counter++)
-            meals[counter] = VeganMeal.inputVeganMeal(categories, ingredients, scanner);
+            meals[counter] = VeganMeal.inputVeganMeal(categories, ingredients, meals, scanner);
 
         System.out.println("Unos vegetarijanskih jela: ");
         for (;counter < 6; counter++)
-            meals[counter] = VegeterianMeal.inputVegeterianMeal(categories, ingredients, scanner);
+            meals[counter] = VegeterianMeal.inputVegeterianMeal(categories, ingredients, meals, scanner);
 
         System.out.println("Unos mesnih jela: ");
         for (;counter < 9; counter++)
-            meals[counter] = MeatMeal.inputMeatMeal(categories, ingredients, scanner);
+            meals[counter] = MeatMeal.inputMeatMeal(categories, ingredients, meals, scanner);
 
         Person[] people = new Person[9];
         int index = 0;
 
         Chef[] chefs = new Chef[3];
-        Chef.inputChef(chefs, scanner);
+        Chef.inputChef(chefs, people, scanner);
         for (Chef chef : chefs) {
             people[index++] = chef;
         }
 
         Waiter[] waiters = new Waiter[3];
-        Waiter.inputWaiter(waiters, scanner);
+        Waiter.inputWaiter(waiters, people, scanner);
         for (Waiter waiter : waiters) {
             people[index++] = waiter;
         }
 
         Deliverer[] deliverers = new Deliverer[3];
-        Deliverer.inputDeliverer(deliverers, scanner);
+        Deliverer.inputDeliverer(deliverers, people, scanner);
         for (Deliverer deliverer : deliverers) {
             people[index++] = deliverer;
         }
@@ -85,6 +85,7 @@ Juha
 Topla i kremasta jela od povrća ili mesa.
 Salata
 Svježe i zdrave miješane salate.
+Juha
 Tjestenina
 Talijanska tjestenina s različitim umacima.
 Mrkva
@@ -93,6 +94,7 @@ Juha
 abcjelo
 41
 Kuhano
+Mrkva
 Rajčica
 Salata
 18.5
@@ -122,6 +124,7 @@ soja
 da
 ne
 
+Juha od mrkve
 Špagete bolonjez
 Tjestenina
 2
@@ -131,207 +134,8 @@ Rajčica
 soja
 da
 da
-
-Salata od krastavca
-Salata
-1
-Krastavac
-18
-tofu
-da
-da
-
-
-Juha od koprive
-Juha
--1
-0
-2
-Mrkva
-Krumpir
-15
-tofu
-ne
-ne
-
-Špagete karbonare
-Tjestenina
-1
-Špageti
-20
-soja
-ne
-ne
-
-Zelena salata
-Salata
-1
-Krastavac
-18
-tofu
-ne
-da
-
-
-
-Juha sa piletinom
-Juha
--1
-0
-2
-Mrkva
-Krumpir
-15
-Piletina
-Kokoš
-Pečeno
-
-Pužići sa saftom
-Tjestenina
-1
-Špageti
-20
-Govedina
-Krava
-kuhano
-
-Zelena salata s mesom
-Salata
-1
-Krastavac
-18
-Piletina
-Kokoš
-Pečeno
-
-Nikola
-Jambrešić
-1200
-2023-10-12
-2023-12-12
-FULL_TIME
-0
-
-Luka
-Vincelj
-1300
-2023-11-12
-2023-12-12
-PART_TIME
-100
-
-Mateo
-Spevec
-1400
-2023-12-12
-2025-12-12
-FULL_TIME
-0
-
-Julia
-Janković
-1500
-2023-12-12
-2025-12-12
-PART_TIME
-500
-
-Matija
-Trstenjak
-1400
-2022-12-12
-2025-12-12
-FULL_TIME
-0
-
-Karlo
-Puklek
-1300
-2024-01-01
-2025-12-12
-PART_TIME
-0
-
-Matija
-Puklek
-1200
-2023-12-12
-2025-12-12
-FULL_TIME
-50
-
-Natali
-Kovačić
-1200
-2022-12-12
-2025-12-12
-PART_TIME
-0
-
-Karlo
-Kontrec
-1300
-2023-12-12
-2025-12-12
-FULL_TIME
-0
-
-McDonalds
-Jarunska ulica
-2
-Zagreb
-10000
-4
-Juha
-Topla i kremasta jela od povrća ili mesa.
-Salata
-Svježe i zdrave miješane salate.
-Tjestenina
-Talijanska tjestenina s različitim umacima.
-Mrkva
-Voće
-Juha
-abcjelo
-41
-Kuhano
-Rajčica
-Salata
-18.5
-Svježe
-Špageti
-Tjestenina
-158
-Kuhano
-Krumpir
-Juha
-77
-Pečeno
-Krastavac
-Salata
-16
-Svježe
 
 Juha od mrkve
-Juha
--1
-0
-2
-Mrkva
-Krumpir
-15
-soja
-da
-ne
-
-Špagete bolonjez
-Tjestenina
-2
-Špageti
-Rajčica
-20
-soja
-da
-da
 
 Salata od krastavca
 Salata
@@ -342,6 +146,7 @@ tofu
 da
 da
 
+Juha od mrkve
 
 Juha od koprive
 Juha
@@ -355,6 +160,8 @@ tofu
 ne
 ne
 
+Juha od mrkve
+
 Špagete karbonare
 Tjestenina
 1
@@ -363,6 +170,8 @@ Tjestenina
 soja
 ne
 ne
+
+Juha od mrkve
 
 Zelena salata
 Salata
@@ -374,6 +183,7 @@ ne
 da
 
 
+Juha od mrkve
 
 Juha sa piletinom
 Juha
@@ -387,6 +197,8 @@ Piletina
 Kokoš
 Pečeno
 
+Juha od mrkve
+
 Pužići sa saftom
 Tjestenina
 1
@@ -395,6 +207,8 @@ Tjestenina
 Govedina
 Krava
 kuhano
+
+Juha od mrkve
 
 Zelena salata s mesom
 Salata
@@ -413,6 +227,8 @@ Jambrešić
 FULL_TIME
 0
 
+Nikola
+Jambrešić
 Luka
 Vincelj
 1300
@@ -437,6 +253,8 @@ Janković
 PART_TIME
 500
 
+Julia
+Janković
 Matija
 Trstenjak
 1400
@@ -445,6 +263,8 @@ Trstenjak
 FULL_TIME
 0
 
+Matija
+Trstenjak
 Karlo
 Puklek
 1300
@@ -461,6 +281,8 @@ Puklek
 FULL_TIME
 50
 
+Nikola
+Jambrešić
 Natali
 Kovačić
 1200
@@ -483,6 +305,7 @@ Jarunska ulica
 Zagreb
 10000
 4
+Juha
 Juha od mrkve
 Salata od krastavca
 Zelena salata s mesom
@@ -497,6 +320,9 @@ Matija Trstenjak
 Matija Puklek
 Natali Kovačić
 Karlo Kontrec
+McDonalds
+McDonalds
+McDonalds
 Arka
 Ulica Ivana Plemenitog Zajca
 13
@@ -513,6 +339,7 @@ Karlo Puklek
 2
 Matija Puklek
 Karlo Kontrec
+Arka
 Laganini
 Športska ulica
 8

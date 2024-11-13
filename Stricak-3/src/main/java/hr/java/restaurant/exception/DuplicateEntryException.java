@@ -1,6 +1,6 @@
 package hr.java.restaurant.exception;
 
-public class DuplicateEntryException extends RuntimeException {
+public class DuplicateEntryException extends Exception {
     public DuplicateEntryException() {
       super();
     }
