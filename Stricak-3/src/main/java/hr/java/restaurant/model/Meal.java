@@ -7,6 +7,8 @@ import java.math.BigDecimal;
 import java.util.Scanner;
 
 public class Meal extends Entity {
+    private static final BigDecimal unrealPrice = new BigDecimal(500);
+
     private static Long counter = 0L;
 
     private String name;
@@ -20,6 +22,10 @@ public class Meal extends Entity {
         this.category = category;
         this.ingredients = ingredients;
         this.price = price;
+    }
+
+    public static BigDecimal getUnrealPrice() {
+        return unrealPrice;
     }
 
     public String getName() {

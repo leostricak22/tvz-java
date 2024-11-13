@@ -1,6 +1,7 @@
 package hr.java.restaurant.model;
 
 import hr.java.restaurant.exception.DuplicateEntryException;
+import hr.java.restaurant.exception.InvalidValueException;
 import hr.java.service.Input;
 import hr.java.service.Output;
 import hr.java.service.Validation;
@@ -51,15 +52,26 @@ public final class MeatMeal extends Meal implements Meat {
             }
         }
 
-        Category mealCategory = Input.categoryName(scanner, "Unesite kategoriju  jela: ", categories);
+        Category mealCategory = Input.categoryName(scanner, "Unesite kategoriju mesnog jela: ", categories);
 
         Integer numberOfIngredients = Input.integer(scanner, "Unesite broj sastojaka koji želite dodati: ");
         Ingredient[] ingredientsEntered = new Ingredient[numberOfIngredients];
         for(int j=0;j<numberOfIngredients;j++) {
-            ingredientsEntered[j] = Input.ingredientName(scanner,"Unesite naziv sastojka kojeg želite dodati u jelo: ", ingredients);
+            ingredientsEntered[j] = Input.ingredientName(scanner,"Unesite naziv sastojka kojeg želite dodati u mesno jelo: ", ingredients);
         }
 
-        BigDecimal mealPrice = Input.bigDecimal(scanner, "Unesite cijenu jela: ");
+        BigDecimal mealPrice;
+        while (true) {
+            mealPrice = Input.bigDecimal(scanner, "Unesite cijenu mesnog jela: ");
+
+            try {
+                Validation.checkMealPrice(mealPrice);
+                break;
+            } catch (InvalidValueException e) {
+                System.out.println("Cijena mora biti veća od 0 i treba biti realna. Pokušajte ponovno:");
+            }
+        }
+
         String meatType = Input.string(scanner, "Unesite tip mesa: ");
         String meatOrigin = Input.string(scanner, "Unesite podrijetlo mesa: ");
         String meatCookingType = Input.string(scanner, "Unesite način pripreme mesa: ");

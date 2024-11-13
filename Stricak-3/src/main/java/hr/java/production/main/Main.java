@@ -119,6 +119,7 @@ Juha
 2
 Mrkva
 Krumpir
+1500
 15
 soja
 da
@@ -130,6 +131,7 @@ Tjestenina
 2
 Špageti
 Rajčica
+-20
 20
 soja
 da
@@ -275,6 +277,7 @@ PART_TIME
 
 Matija
 Puklek
+500
 1200
 2023-12-12
 2025-12-12

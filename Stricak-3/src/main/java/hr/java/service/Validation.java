@@ -1,7 +1,10 @@
 package hr.java.service;
 
 import hr.java.restaurant.exception.DuplicateEntryException;
+import hr.java.restaurant.exception.InvalidValueException;
 import hr.java.restaurant.model.*;
+
+import java.math.BigDecimal;
 
 public class Validation {
     public static boolean isBigDecimal(String value) {
@@ -61,5 +64,15 @@ public class Validation {
             if (meal != null && meal.getName().equals(name))
                 throw new DuplicateEntryException();
         }
+    }
+
+    public static void checkSalary(BigDecimal salary) throws InvalidValueException{
+        if (salary.compareTo(Contract.getMinSalary()) <= 0)
+            throw new InvalidValueException();
+    }
+
+    public static void checkMealPrice(BigDecimal price) throws InvalidValueException {
+        if(price.compareTo(Meal.getUnrealPrice()) >= 0 || price.compareTo(BigDecimal.ZERO) < 0)
+            throw new InvalidValueException();
     }
 }

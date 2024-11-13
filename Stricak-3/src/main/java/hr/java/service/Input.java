@@ -1,5 +1,6 @@
 package hr.java.service;
 
+import hr.java.restaurant.exception.InvalidValueException;
 import hr.java.restaurant.model.*;
 
 import java.math.BigDecimal;
@@ -188,7 +189,19 @@ public class Input {
     }
 
     public static Contract contract(Scanner scanner, String message) {
-        BigDecimal salary = Input.bigDecimal(scanner, "Unesite plaću.");
+        BigDecimal salary;
+
+        while (true) {
+            salary = Input.bigDecimal(scanner, "Unesite plaću.");
+
+            try {
+                Validation.checkSalary(salary);
+                break;
+            } catch (InvalidValueException e) {
+                System.out.println("Unesena plaća je neispravna. Plaća mora biti veća od minimalne (" + Contract.getMinSalary() + ").");
+            }
+        }
+
         LocalDate startDate = Input.localDate(scanner, "Unesite početak ugovora.");
         LocalDate endDate = Input.localDate(scanner, "Unesite kraj ugovora.");
         String contractType = Input.string(scanner, "Unesite tip ugovora.");

@@ -1,6 +1,7 @@
 package hr.java.restaurant.model;
 
 import hr.java.restaurant.exception.DuplicateEntryException;
+import hr.java.restaurant.exception.InvalidValueException;
 import hr.java.service.Input;
 import hr.java.service.Output;
 import hr.java.service.Validation;
@@ -57,7 +58,18 @@ public final class VegeterianMeal extends Meal implements Vegeterian {
             ingredientsEntered[j] = Input.ingredientName(scanner,"Unesite naziv sastojka kojeg želite dodati u jelo: ", ingredients);
         }
 
-        BigDecimal mealPrice = Input.bigDecimal(scanner, "Unesite cijenu vegetarijanskog jela: ");
+        BigDecimal mealPrice;
+        while (true) {
+            mealPrice = Input.bigDecimal(scanner, "Unesite cijenu vegetarijanskog jela: ");
+
+            try {
+                Validation.checkMealPrice(mealPrice);
+                break;
+            } catch (InvalidValueException e) {
+                System.out.println("Cijena mora biti veća od 0 i treba biti realna. Pokušajte ponovno:");
+            }
+        }
+
         String mealProteinSource = Input.string(scanner, "Unesite izvor proteina vegetarijanskog jela: ");
         boolean mealContainsDiary = Input.booleanValue(scanner, "Sadrži li jelo mliječne proizvode? ");
         boolean mealContainsEggs = Input.booleanValue(scanner, "Sadrži li jelo jaja? ");

@@ -8,6 +8,7 @@ import java.time.LocalDate;
 
 public class Contract {
     private final  static String[] CONTRACT_TYPES = {"FULL_TIME", "PART_TIME"};
+    private final static BigDecimal MIN_SALARY = new BigDecimal(800);
 
     private BigDecimal salary;
     private LocalDate startDate;
@@ -29,6 +30,9 @@ public class Contract {
         this.salary = salary;
     }
 
+    public static BigDecimal getMinSalary() {
+        return MIN_SALARY;
+    }
 
     public LocalDate getStartDate() {
         return startDate;
