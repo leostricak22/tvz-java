@@ -281,7 +281,8 @@ Jarunska ulica
 2
 Zagreb
 10000
-4Juha
+4
+Juha
 Topla i kremasta jela od povrća ili mesa.
 Salata
 Svježe i zdrave miješane salate.
