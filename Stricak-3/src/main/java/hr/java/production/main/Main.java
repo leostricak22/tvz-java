@@ -1,13 +1,17 @@
 package hr.java.production.main;
 
 import hr.java.restaurant.model.*;
-import hr.java.service.Input;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Scanner;
 
-public class
-Main {
+public class Main {
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
+
     public static void main(String[] args) {
+        logger.info("Starting the application");
+
         Scanner scanner = new Scanner(System.in);
 
         Category[] categories = new Category[3];
