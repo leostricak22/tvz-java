@@ -5,6 +5,8 @@ import hr.java.restaurant.exception.InvalidValueException;
 import hr.java.service.Input;
 import hr.java.service.Output;
 import hr.java.service.Validation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.Scanner;
@@ -13,6 +15,7 @@ public final class VeganMeal extends Meal implements Vegan {
     private String proteinSource;
     private boolean organic;
     private boolean glutenFree;
+    private static final Logger logger = LoggerFactory.getLogger(VeganMeal.class);
 
     public VeganMeal(String name, Category category, Ingredient[] ingredients, BigDecimal price, String proteinSource, boolean organic, boolean glutenFree) {
         super(name, category, ingredients, price);
@@ -49,6 +52,8 @@ public final class VeganMeal extends Meal implements Vegan {
 
     public static VeganMeal inputVeganMeal(Category[] categories, Ingredient[] ingredients, Meal[] meals, Scanner scanner) {
         String mealName;
+
+        logger.info("Vegan meal input");
 
         while (true) {
             mealName = Input.string(scanner, "Unesite naziv veganskog jela: ");
@@ -88,6 +93,8 @@ public final class VeganMeal extends Meal implements Vegan {
 
     @Override
     public void print(Integer tabulators) {
+        logger.info("Printing vegan meal.");
+
         super.print(tabulators);
         Output.tabulatorPrint(tabulators);
         System.out.println("Izvor proteina: " + this.proteinSource);

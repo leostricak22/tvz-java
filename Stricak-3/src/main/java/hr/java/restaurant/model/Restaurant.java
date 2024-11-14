@@ -3,11 +3,14 @@ package hr.java.restaurant.model;
 import hr.java.service.Input;
 import hr.java.service.Output;
 import hr.java.service.Validation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Scanner;
 
 public class Restaurant extends Entity {
     private static Long counter = 0L;
+    private static final Logger logger = LoggerFactory.getLogger(Restaurant.class);
 
     private String name;
     private Address address;
@@ -73,6 +76,7 @@ public class Restaurant extends Entity {
     }
 
     public static void inputRestaurant(Restaurant[] restaurants, Meal[] meals, Chef[] chefs, Waiter[] waiters, Deliverer[] deliverers, Scanner scanner) {
+        logger.info("Restaurant input");
         for(int i = 0; i < restaurants.length; i++) {
             String restaurantName;
 
@@ -140,6 +144,8 @@ public class Restaurant extends Entity {
     }
 
     public void print(Integer tabulators) {
+        logger.info("Printing restaurant.");
+
         Output.tabulatorPrint(tabulators);
         System.out.println("Id: " + this.getId());
 

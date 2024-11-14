@@ -5,6 +5,8 @@ import hr.java.restaurant.exception.InvalidValueException;
 import hr.java.service.Input;
 import hr.java.service.Output;
 import hr.java.service.Validation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.Scanner;
@@ -13,6 +15,7 @@ public final class MeatMeal extends Meal implements Meat {
     private String meatType;
     private String meatOrigin;
     private String meatCookingType;
+    private static final Logger logger = LoggerFactory.getLogger(MeatMeal.class);
 
     public MeatMeal(String name, Category category, Ingredient[] ingredients, BigDecimal price, String meatType, String meatOrigin, String meatCookingType) {
         super(name, category, ingredients, price);
@@ -40,6 +43,8 @@ public final class MeatMeal extends Meal implements Meat {
     }
 
     public static MeatMeal inputMeatMeal(Category[] categories, Ingredient[] ingredients, Meal[] meals, Scanner scanner) {
+        logger.info("Meat meal input");
+
         String mealName;
 
         while (true) {
@@ -48,6 +53,7 @@ public final class MeatMeal extends Meal implements Meat {
                 Validation.checkDuplicateMeal(meals, mealName);
                 break;
             } catch (DuplicateEntryException e) {
+                logger.error("Duplicate meal entry");
                 System.out.println("Jelo s tim nazivom već postoji!");
             }
         }
@@ -68,6 +74,7 @@ public final class MeatMeal extends Meal implements Meat {
                 Validation.checkMealPrice(mealPrice);
                 break;
             } catch (InvalidValueException e) {
+                logger.error("Invalid meal price");
                 System.out.println("Cijena mora biti veća od 0 i treba biti realna. Pokušajte ponovno:");
             }
         }
@@ -81,6 +88,7 @@ public final class MeatMeal extends Meal implements Meat {
 
     @Override
     public void print(Integer tabulators) {
+        logger.info("Printing meat meal.");
         super.print(tabulators);
         Output.tabulatorPrint(tabulators);
         System.out.println("Tip mesa: " + this.meatType);

@@ -3,6 +3,8 @@ package hr.java.restaurant.model;
 import hr.java.restaurant.exception.DuplicateEntryException;
 import hr.java.service.Input;
 import hr.java.service.Validation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.Scanner;
@@ -11,6 +13,7 @@ public class Waiter extends Person {
     private static Long counter = 0L;
     private Contract contract;
     private Bonus bonus;
+    private static final Logger logger = LoggerFactory.getLogger(Waiter.class);
 
     public Waiter(Builder builder) {
         super(builder.id, builder.firstName, builder.lastName);
@@ -33,6 +36,7 @@ public class Waiter extends Person {
 
     public static void inputWaiter(Waiter[] waiters, Person[] people, Scanner scanner) {
         for (int i = 0; i < waiters.length; i++) {
+            logger.info("Waiter input");
             String waiterFirstName, waiterLastName;
 
             while (true) {
@@ -44,6 +48,7 @@ public class Waiter extends Person {
                     Validation.checkDuplicatePerson(waiters, waiterFirstName + " " + waiterLastName);
                     break;
                 } catch (DuplicateEntryException e) {
+                    logger.error("Duplicate waiter entry");
                     System.out.println("Konobar s tim imenom i prezimenom već postoji. Molimo unesite drugo ime i prezime.");
                 }
             }
@@ -77,6 +82,7 @@ public class Waiter extends Person {
 
     @Override
     public void print(Integer tabulators) {
+        logger.info("Waiter print");
         Person.outputFullData(tabulators, getId(), getFirstName(), getLastName() , contract, bonus);
     }
 

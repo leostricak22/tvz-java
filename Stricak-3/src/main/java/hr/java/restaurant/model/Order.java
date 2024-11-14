@@ -2,6 +2,8 @@ package hr.java.restaurant.model;
 
 import hr.java.service.Input;
 import hr.java.service.Output;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -10,6 +12,7 @@ import java.util.Scanner;
 
 public class Order extends Entity {
     private static Long counter = 0L;
+    private static final Logger logger = LoggerFactory.getLogger(Order.class);
 
     private Restaurant restaurant;
     private Meal[] meals;
@@ -57,6 +60,7 @@ public class Order extends Entity {
     }
     public static void inputOrder(Order[] orders, Restaurant[] restaurants, Meal[] meals, Scanner scanner) {
         for (int i = 0; i < orders.length; i++) {
+            logger.info("Order input");
             Restaurant orderRestaurant = Input.restaurantName(scanner, "Unesite naziv restorana " + (i + 1) + ". narudžbe", restaurants);
 
             Integer numberOfMeals = Input.integer(scanner, "Unesite broj jela koji želite dodati: ");
@@ -146,6 +150,7 @@ public class Order extends Entity {
     }
 
     public void print() {
+        logger.info("Printing order.");
         Output.tabulatorPrint(1);
         System.out.println("Id: " + this.getId());
 

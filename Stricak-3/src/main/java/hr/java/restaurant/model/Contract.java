@@ -2,11 +2,14 @@ package hr.java.restaurant.model;
 
 import hr.java.service.Input;
 import hr.java.service.Output;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class Contract {
+    private static final Logger logger = LoggerFactory.getLogger(Contract.class);
     private final  static String[] CONTRACT_TYPES = {"FULL_TIME", "PART_TIME"};
     private final static BigDecimal MIN_SALARY = new BigDecimal(800);
 
@@ -63,6 +66,7 @@ public class Contract {
     }
 
     public void print(Integer tabulators) {
+        logger.info("Printing contract.");
         Output.tabulatorPrint(tabulators);
         System.out.println("Plaća: " + this.salary + ", Početak ugovora: " + this.startDate + ", Kraj ugovora: " + this.endDate + ", Tip ugovora: " + this.contractType);
     }

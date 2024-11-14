@@ -2,12 +2,15 @@ package hr.java.restaurant.model;
 
 import hr.java.service.Input;
 import hr.java.service.Output;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.Scanner;
 
 public class Meal extends Entity {
     private static final BigDecimal unrealPrice = new BigDecimal(500);
+    private static final Logger logger = LoggerFactory.getLogger(Meal.class);
 
     private static Long counter = 0L;
 
@@ -71,6 +74,7 @@ public class Meal extends Entity {
 
 
     public static Meal inputMeal(Category[] categories, Ingredient[] ingredients, Scanner scanner) {
+        logger.info("Meal input");
         String mealName = Input.string(scanner, "Unesite naziv jela: ");
         Category mealCategory = Input.categoryName(scanner, "Unesite naziv kategorije jela", categories);
 
@@ -96,6 +100,8 @@ public class Meal extends Entity {
     }
 
     public void print(Integer tabulators) {
+        logger.info("Printing meal.");
+
         Output.tabulatorPrint(tabulators);
         System.out.println("Id: " + this.getId() + ", Naziv: " + this.name + ", Cijena: " + this.price);
 

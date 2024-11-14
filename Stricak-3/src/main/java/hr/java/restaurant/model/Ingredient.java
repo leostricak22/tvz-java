@@ -4,12 +4,15 @@ import hr.java.restaurant.exception.DuplicateEntryException;
 import hr.java.service.Input;
 import hr.java.service.Output;
 import hr.java.service.Validation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.Scanner;
 
 public class Ingredient  extends Entity {
     private static Long counter = 0L;
+    private static final Logger logger = LoggerFactory.getLogger(Ingredient.class);
 
     private String name;
     private Category category;
@@ -67,6 +70,8 @@ public class Ingredient  extends Entity {
 
     public static void inputIngredient(Ingredient[] ingredients, Category[] categories, Scanner scanner) {
         for(int i = 0; i < ingredients.length; i++) {
+            logger.info("Ingredient input");
+
             String ingredientName;
 
             while(true) {
@@ -99,6 +104,7 @@ public class Ingredient  extends Entity {
     }
 
     public void print(Integer tabulators) {
+        logger.info("Ingredient print");
         Output.tabulatorPrint(tabulators);
         System.out.println("Id: " + this.getId() + ", Naziv: " + this.name + ", Kalorije: " + this.kcal + ", Metoda pripreme: " + this.preparationMethod);
 

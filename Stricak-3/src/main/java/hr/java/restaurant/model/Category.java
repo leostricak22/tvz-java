@@ -4,11 +4,14 @@ import hr.java.restaurant.exception.DuplicateEntryException;
 import hr.java.service.Input;
 import hr.java.service.Output;
 import hr.java.service.Validation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Scanner;
 
 public class Category extends Entity {
     private static Long counter = 0L;
+    private static final Logger logger = LoggerFactory.getLogger(Category.class);
 
     private String name;
     private String description;
@@ -45,6 +48,8 @@ public class Category extends Entity {
     }
 
     public static void inputCategory(Category[] categories, Scanner scanner) {
+        logger.info("Category input");
+
         for(int i = 0; i < categories.length; i++) {
             String categoryName;
 
@@ -80,6 +85,7 @@ public class Category extends Entity {
     }
 
     public void print(Integer tabulators) {
+        logger.info("Printing category.");
         Output.tabulatorPrint(tabulators);
         System.out.println("Id: " + this.getId() + ", Naziv kategorije: " + this.name + ", Opis kategorije: "+ this.description);
     }

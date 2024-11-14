@@ -3,11 +3,15 @@ package hr.java.restaurant.model;
 import hr.java.restaurant.exception.DuplicateEntryException;
 import hr.java.service.Input;
 import hr.java.service.Validation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.Scanner;
 
 public class Deliverer  extends Person {
+    private static final Logger logger = LoggerFactory.getLogger(Deliverer.class);
+
     private static Long counter = 0L;
     private Contract contract;
     private Bonus bonus;
@@ -37,6 +41,7 @@ public class Deliverer  extends Person {
 
     public static void inputDeliverer(Deliverer[] deliverers, Person[] people, Scanner scanner) {
         for (int i = 0; i < deliverers.length; i++) {
+            logger.info("Deliverer input");
             String delivererFirstName, delivererLastName;
 
             while (true) {
@@ -90,6 +95,7 @@ public class Deliverer  extends Person {
 
     @Override
     public void print(Integer tabulators) {
+        logger.info("Printing deliverer.");
         Person.outputFullData(tabulators, getId(), getFirstName(), getLastName() , contract, bonus);
     }
 
