@@ -15,14 +15,13 @@ public class Address extends Entity {
 
     private static Long counter = 0L;
 
-    private String street;
-    private String houseNumber;
-    private String city;
-    private String postalCode;
+    private final String street;
+    private final String houseNumber;
+    private final String city;
+    private final String postalCode;
 
     /**
      * Constructs an Address object using the provided builder.
-     *
      * @param builder the builder instance containing address information
      */
     private Address(Builder builder) {
@@ -33,41 +32,8 @@ public class Address extends Entity {
         this.postalCode = builder.postalCode;
     }
 
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public String getHouseNumber() {
-        return houseNumber;
-    }
-
-    public void setHouseNumber(String houseNumber) {
-        this.houseNumber = houseNumber;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
-    }
-
     /**
      * Prompts the user to input address details using a scanner.
-     *
      * @param scanner the Scanner object to read user input
      * @return a new Address instance with the entered details
      */
@@ -86,17 +52,6 @@ public class Address extends Entity {
                 .city(addressCity)
                 .postalCode(addressPostalCode)
                 .build();
-    }
-
-    /**
-     * Prints the address details with the specified number of tabulators.
-     *
-     * @param tabulators the number of tabulators to format the output
-     */
-    public void print(Integer tabulators) {
-        logger.info("Printing address.");
-        Output.tabulatorPrint(tabulators);
-        System.out.println("Id: " + this.getId() + ", Ulica: " + this.street + ", Kućni broj: " + this.houseNumber + ", Grad: " + this.city + ", Poštanski broj: " + this.postalCode);
     }
 
     /**
@@ -137,5 +92,15 @@ public class Address extends Entity {
         public Address build() {
             return new Address(this);
         }
+    }
+
+    /**
+     * Prints the address details with the specified number of tabulators.
+     * @param tabulators the number of tabulators to format the output
+     */
+    public void print(Integer tabulators) {
+        logger.info("Printing address.");
+        Output.tabulatorPrint(tabulators);
+        System.out.println("Id: " + this.getId() + ", Ulica: " + this.street + ", Kućni broj: " + this.houseNumber + ", Grad: " + this.city + ", Poštanski broj: " + this.postalCode);
     }
 }

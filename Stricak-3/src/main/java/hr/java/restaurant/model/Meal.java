@@ -8,6 +8,9 @@ import org.slf4j.LoggerFactory;
 import java.math.BigDecimal;
 import java.util.Scanner;
 
+/**
+ * Represents a meal in a restaurant.
+ */
 public class Meal extends Entity {
     private static final BigDecimal unrealPrice = new BigDecimal(500);
     private static final Logger logger = LoggerFactory.getLogger(Meal.class);
@@ -15,10 +18,18 @@ public class Meal extends Entity {
     private static Long counter = 0L;
 
     private String name;
-    private Category category;
-    private Ingredient[] ingredients;
-    private BigDecimal price;
+    private final Category category;
+    private final Ingredient[] ingredients;
+    private final BigDecimal price;
 
+    /**
+     * Constructs a Meal object using the provided builder.
+     *
+     * @param name the name of the meal
+     * @param category the category of the meal
+     * @param ingredients the ingredients of the meal
+     * @param price the price of the meal
+     */
     public Meal(String name, Category category, Ingredient[] ingredients, BigDecimal price) {
         super(++counter);
         this.name = name;
@@ -30,39 +41,25 @@ public class Meal extends Entity {
     public static BigDecimal getUnrealPrice() {
         return unrealPrice;
     }
-
     public String getName() {
         return name;
     }
-
     public void setName(String name) {
         this.name = name;
     }
-
-    public Category getCategory() {
-        return category;
-    }
-
-    public void setCategory(Category category) {
-        this.category = category;
-    }
-
     public Ingredient[] getIngredients() {
         return ingredients;
     }
-
-    public void setIngredients(Ingredient[] ingredients) {
-        this.ingredients = ingredients;
-    }
-
     public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
+    /**
+     * Checks if the meal with the provided name already exists in the array of meals.
+     * @param meals the meals
+     * @param mealName the name of the meal
+     * @return the index of the meal if it exists, -1 otherwise
+     */
     public static Integer existsByName(Meal[] meals, String mealName) {
         for (int j=0;j<meals.length;j++) {
             if (mealName.equals(meals[j].getName())) {
@@ -72,23 +69,11 @@ public class Meal extends Entity {
         return -1;
     }
 
-
-    public static Meal inputMeal(Category[] categories, Ingredient[] ingredients, Scanner scanner) {
-        logger.info("Meal input");
-        String mealName = Input.string(scanner, "Unesite naziv jela: ");
-        Category mealCategory = Input.categoryName(scanner, "Unesite naziv kategorije jela", categories);
-
-        Integer numberOfIngredients = Input.integer(scanner, "Unesite broj sastojaka koji želite dodati: ");
-        Ingredient[] ingredientsEntered = new Ingredient[numberOfIngredients];
-        for(int j=0;j<numberOfIngredients;j++) {
-            ingredientsEntered[j] = Input.ingredientName(scanner,"Unesite naziv sastojka kojeg želite dodati u jelo: ", ingredients);
-        }
-
-        BigDecimal mealPrice = Input.bigDecimal(scanner, "Unesite cijenu jela.");
-
-        return new Meal(mealName, mealCategory, ingredientsEntered, mealPrice);
-    }
-
+    /**
+     * Add meal names to a String array.
+     * @param meals the meals
+     * @return the meal names
+     */
     public static String[] mealNameArray(Meal[] meals) {
         String[] mealNames = new String[meals.length];
 
@@ -99,6 +84,67 @@ public class Meal extends Entity {
         return mealNames;
     }
 
+    /**
+     * Calculates the total calories of the meal.
+     * @return the total calories of the meal
+     */
+    public BigDecimal getTotalCalories() {
+        BigDecimal mealCalories = BigDecimal.valueOf(0);
+
+        for (int j = 0; j < this.getIngredients().length; j++)
+            mealCalories = mealCalories.add(this.getIngredients()[j].getKcal());
+
+        return  mealCalories;
+    }
+
+    /**
+     * Finds the most caloric meal
+     * @param meals the meals
+     * @return the most caloric meal
+     */
+    public static Meal findMostCaloricMeal(Meal[] meals) {
+        Meal mostCaloricMeal = meals[0];
+        BigDecimal mostMealCalories = BigDecimal.valueOf(-1);
+        BigDecimal mealCalories;
+
+        for (Meal meal : meals) {
+            mealCalories = meal.getTotalCalories();
+
+            if (mealCalories.compareTo(mostMealCalories) > 0) {
+                mostCaloricMeal = meal;
+                mostMealCalories = mealCalories;
+            }
+        }
+
+        return mostCaloricMeal;
+    }
+
+    /**
+     * Finds the least caloric meal.
+     * @param meals the meals
+     * @return the least caloric meal
+     */
+    public static Meal findLeastCaloricMeal(Meal[] meals) {
+        Meal mostCaloricMeal = meals[0];
+        BigDecimal mostMealCalories = BigDecimal.valueOf(Double.MAX_VALUE);
+        BigDecimal mealCalories;
+
+        for (Meal meal : meals) {
+            mealCalories = meal.getTotalCalories();
+
+            if (mealCalories.compareTo(mostMealCalories) < 0) {
+                mostCaloricMeal = meal;
+                mostMealCalories = mealCalories;
+            }
+        }
+
+        return mostCaloricMeal;
+    }
+
+    /**
+     * print meal
+     * @param tabulators number of tabulators
+     */
     public void print(Integer tabulators) {
         logger.info("Printing meal.");
 
@@ -117,48 +163,4 @@ public class Meal extends Entity {
             ingredients[i].print(tabulators + 2);
         }
     }
-
-    public BigDecimal getTotalCalories() {
-        BigDecimal mealCalories = BigDecimal.valueOf(0);
-
-        for (int j = 0; j < this.getIngredients().length; j++)
-            mealCalories = mealCalories.add(this.getIngredients()[j].getKcal());
-
-        return  mealCalories;
-    }
-
-    public static Meal findMostCaloricMeal(Meal[] meals) {
-        Meal mostCaloricMeal = meals[0];
-        BigDecimal mostMealCalories = BigDecimal.valueOf(-1);
-        BigDecimal mealCalories;
-
-        for (Meal meal : meals) {
-            mealCalories = meal.getTotalCalories();
-
-            if (mealCalories.compareTo(mostMealCalories) > 0) {
-                mostCaloricMeal = meal;
-                mostMealCalories = mealCalories;
-            }
-        }
-
-        return mostCaloricMeal;
-    }
-
-    public static Meal findLeastCaloricMeal(Meal[] meals) {
-        Meal mostCaloricMeal = meals[0];
-        BigDecimal mostMealCalories = BigDecimal.valueOf(Double.MAX_VALUE);
-        BigDecimal mealCalories;
-
-        for (Meal meal : meals) {
-            mealCalories = meal.getTotalCalories();
-
-            if (mealCalories.compareTo(mostMealCalories) < 0) {
-                mostCaloricMeal = meal;
-                mostMealCalories = mealCalories;
-            }
-        }
-
-        return mostCaloricMeal;
-    }
-
 }

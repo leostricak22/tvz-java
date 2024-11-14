@@ -11,9 +11,19 @@ import java.time.LocalDateTime;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+/**
+ * Represents an input from the user.
+ */
 public class Input {
     private static final Logger logger = LoggerFactory.getLogger(Input.class);
 
+    /**
+     * Reads an integer value from the user.
+     * @param scanner the scanner object used for input
+     * @param message the message to be displayed to the user
+     * @throws InputMismatchException if the input value is not an integer
+     * @return the integer value
+     */
     public static Integer integer(Scanner scanner, String message) {
         logger.info("Integer input.");
 
@@ -22,7 +32,6 @@ public class Input {
             try {
                 int input = scanner.nextInt();
                 scanner.nextLine();
-
                 if (input <= 0)
                     throw new InputMismatchException();
 
@@ -35,9 +44,15 @@ public class Input {
         }
     }
 
+    /**
+     * Reads a BigDecimal value from the user.
+     * @param scanner the scanner object used for input
+     * @param message the message to be displayed to the user
+     * @throws InputMismatchException if the input value is not a BigDecimal
+     * @return the BigDecimal value
+     */
     public static BigDecimal bigDecimal(Scanner scanner, String message) {
         logger.info("BigDecimal input.");
-
         while (true) {
             System.out.println(message);
             try {
@@ -53,9 +68,14 @@ public class Input {
         }
     }
 
+    /**
+     * Reads a string value from the user.
+     * @param scanner the scanner object used for input
+     * @param message the message to be displayed to the user
+     * @return the string value
+     */
     public static String string(Scanner scanner, String message) {
         logger.info("String input.");
-
         System.out.println(message);
         String stringInputValue = scanner.nextLine();
 
@@ -68,9 +88,14 @@ public class Input {
         }
     }
 
+    /**
+     * Reads a postal code from the user.
+     * @param scanner the scanner object used for input
+     * @param message the message to be displayed to the user
+     * @return the postal code
+     */
     public static String postalCode(Scanner scanner, String message) {
         logger.info("Postal code input.");
-
         System.out.println(message);
         String postalCodeInputValue = scanner.nextLine();
 
@@ -83,9 +108,14 @@ public class Input {
         }
     }
 
+    /**
+     * Reads a LocalDateTime value from the user.
+     * @param scanner the scanner object used for input
+     * @param message the message to be displayed to the user
+     * @return the LocalDateTime value
+     */
     public static LocalDateTime localDateTime(Scanner scanner, String message) {
         logger.info("LocalDateTime input.");
-
         System.out.println(message);
         String localDateTimeInputValue = scanner.nextLine();
 
@@ -98,9 +128,14 @@ public class Input {
         }
     }
 
+    /**
+     * Reads a LocalDate value from the user.
+     * @param scanner the scanner object used for input
+     * @param message the message to be displayed to the user
+     * @return the LocalDate value
+     */
     public static LocalDate localDate(Scanner scanner, String message) {
         logger.info("LocalDate input.");
-
         System.out.println(message);
         String localDateInputValue = scanner.nextLine();
 
@@ -113,120 +148,12 @@ public class Input {
         }
     }
 
-    public static Category categoryName(Scanner scanner, String message, Category[] categories) {
-        logger.info("Category name input.");
-        String categoryNameInput = Input.string(scanner, message + Output.objectNameOptions(Category.categoryNameArray(categories)));
-        Integer selectedCategoryIndex = Category.existsByName(categories, categoryNameInput);
-
-        if (selectedCategoryIndex != -1) {
-            return categories[selectedCategoryIndex];
-        } else {
-            logger.warn("Entered invalid category name.");
-            System.out.println("Unesena kategorija ne postoji.");
-            return categoryName(scanner, message, categories);
-        }
-    }
-
-    public static Ingredient ingredientName(Scanner scanner, String message, Ingredient[] ingredients) {
-        logger.info("Ingredient name input.");
-
-        String ingredientNameInput = Input.string(scanner, message  + Output.objectNameOptions(Ingredient.ingredientNameArray(ingredients)));
-        Integer selectedIngredientIndex = Ingredient.existsByName(ingredients, ingredientNameInput);
-
-        if (selectedIngredientIndex != -1) {
-            return ingredients[selectedIngredientIndex];
-        } else {
-            logger.warn("Entered invalid ingredient name.");
-            System.out.println("Uneseni sastojak ne postoji.");
-            return ingredientName(scanner, message, ingredients);
-        }
-    }
-
-    public static Meal mealName(Scanner scanner, String message, Meal[] meals) {
-        logger.info("Find if meal exists by name.");
-
-        String mealNameInput = Input.string(scanner, message + Output.objectNameOptions(Meal.mealNameArray(meals)));
-        Integer selectedMealIndex = Meal.existsByName(meals, mealNameInput);
-
-        if (selectedMealIndex != -1) {
-            return meals[selectedMealIndex];
-        } else {
-            logger.warn("Meal doesn't exist.");
-            System.out.println("Uneseno jelo ne postoji.");
-            return mealName(scanner, message, meals);
-        }
-    }
-
-    public static Chef chefName(Scanner scanner, String message, Chef[] chefs) {
-        logger.info("Find if chef exists by name.");
-
-        String chefFirstAndLastNameInput = Input.string(scanner, message + Output.objectNameOptions(Chef.chefNameArray(chefs)));
-        String[] chefNameInput = chefFirstAndLastNameInput.split(" ");
-
-        if (chefNameInput.length > 1) {
-            Integer selectedChefIndex = Chef.existsByName(chefs, chefNameInput[0], chefNameInput[1]);
-
-            if(selectedChefIndex != -1) {
-                return chefs[selectedChefIndex];
-            }
-        }
-
-        logger.warn("Chef doesn't exist.");
-        System.out.println("Unesena osoba ne postoji.");
-        return chefName(scanner, message, chefs);
-    }
-
-    public static Waiter waiterName(Scanner scanner, String message, Waiter[] waiters) {
-        logger.info("Find if waiter exists by name.");
-
-        String waiterFirstAndLastNameInput = Input.string(scanner, message  + Output.objectNameOptions(Waiter.waiterNameArray(waiters)));
-        String[] waiterNameInput = waiterFirstAndLastNameInput.split(" ");
-
-        if (waiterNameInput.length > 1) {
-            Integer selectedWaiterIndex = Waiter.existsByName(waiters, waiterNameInput[0], waiterNameInput[1]);
-
-            if(selectedWaiterIndex != -1) {
-                return waiters[selectedWaiterIndex];
-            }
-        }
-
-        logger.warn("Waiter doesn't exist.");
-        System.out.println("Unesena osoba ne postoji.");
-        return waiterName(scanner, message, waiters);
-    }
-
-    public static Deliverer delivererName(Scanner scanner, String message, Deliverer[] deliverers) {
-        logger.info("Find if deliverer exists by name.");
-        String delivererFirstAndLastNameInput = Input.string(scanner, message  + Output.objectNameOptions(Deliverer.delivererNameArray(deliverers)));
-        String[] delivererNameInput = delivererFirstAndLastNameInput.split(" ");
-
-        if (delivererNameInput.length > 1) {
-            Integer selectedDelivererIndex = Deliverer.existsByName(deliverers, delivererNameInput[0], delivererNameInput[1]);
-
-            if(selectedDelivererIndex != -1) {
-                return deliverers[selectedDelivererIndex];
-            }
-        }
-
-        logger.warn("Deliverer doesn't exist.");
-        System.out.println("Unesena osoba ne postoji.");
-        return delivererName(scanner, message, deliverers);
-    }
-
-    public static Restaurant restaurantName(Scanner scanner, String message, Restaurant[] restaurants) {
-        logger.info("Find if restaurant exists by name.");
-        String restaurantNameInput = Input.string(scanner, message  + Output.objectNameOptions(Restaurant.restaurantNameArray(restaurants)));
-        Integer selectedRestaurantIndex = Restaurant.existsByName(restaurants, restaurantNameInput);
-
-        if(selectedRestaurantIndex != -1) {
-            return restaurants[selectedRestaurantIndex];
-        }
-
-        logger.warn("Restaurant doesn't exist.");
-        System.out.println("Uneseni restoran ne postoji.");
-        return restaurantName(scanner, message, restaurants);
-    }
-
+    /**
+     * Reads a person from the user.
+     * @param scanner the scanner object used for input
+     * @param message the message to be displayed to the user
+     * @return the person
+     */
     public static Contract contract(Scanner scanner, String message) {
         logger.info("Contract input.");
         BigDecimal salary;
@@ -250,6 +177,12 @@ public class Input {
         return new Contract(salary, startDate, endDate, contractType);
     }
 
+    /**
+     * Reads a boolean value from the user.
+     * @param scanner the scanner object used for input
+     * @param message the message to be displayed to the user
+     * @return the boolean value
+     */
     public static boolean booleanValue(Scanner scanner, String message) {
         logger.info("Boolean input.");
         System.out.println(message);

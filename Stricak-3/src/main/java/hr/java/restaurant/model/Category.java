@@ -9,6 +9,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Scanner;
 
+/**
+ * Represents a category of a meal.
+ */
 public class Category extends Entity {
     private static Long counter = 0L;
     private static final Logger logger = LoggerFactory.getLogger(Category.class);
@@ -16,6 +19,10 @@ public class Category extends Entity {
     private String name;
     private String description;
 
+    /**
+     * Constructs a Category object using the provided builder.
+     * @param builder the builder instance containing category information
+     */
     private Category(Builder builder) {
         super(builder.id);
         this.name = builder.name;
@@ -30,14 +37,12 @@ public class Category extends Entity {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
+    /**
+     * Checks if the category with the provided name already exists in the array of categories.
+     * @param categories the categories
+     * @param categoryName the name of the category
+     * @return the index of the category if it exists, -1 otherwise
+     */
     public static Integer existsByName(Category[] categories, String categoryName) {
         for (int j=0;j<categories.length;j++) {
             if (categoryName.equals(categories[j].getName())) {
@@ -47,6 +52,11 @@ public class Category extends Entity {
         return -1;
     }
 
+    /**
+     * Inputs the category information.
+     * @param categories the categories
+     * @param scanner the scanner object used for input
+     */
     public static void inputCategory(Category[] categories, Scanner scanner) {
         logger.info("Category input");
 
@@ -74,6 +84,11 @@ public class Category extends Entity {
         }
     }
 
+    /**
+     * Returns the names of the categories in the array.
+     * @param categories the categories
+     * @return the array of category names
+     */
     public static String[] categoryNameArray(Category[] categories) {
         String[] categoryNames = new String[categories.length];
 
@@ -84,12 +99,9 @@ public class Category extends Entity {
         return categoryNames;
     }
 
-    public void print(Integer tabulators) {
-        logger.info("Printing category.");
-        Output.tabulatorPrint(tabulators);
-        System.out.println("Id: " + this.getId() + ", Naziv kategorije: " + this.name + ", Opis kategorije: "+ this.description);
-    }
-
+    /**
+     * Builder class for creating instances of {@link Category}.
+     */
     public static class Builder {
         private Long id;
         private String name;
@@ -113,5 +125,15 @@ public class Category extends Entity {
         public Category build() {
             return new Category(this)   ;
         }
+    }
+
+    /**
+     * Prints the category details with the specified number of tabulators.
+     * @param tabulators the number of tabulators to format the output
+     */
+    public void print(Integer tabulators) {
+        logger.info("Printing category.");
+        Output.tabulatorPrint(tabulators);
+        System.out.println("Id: " + this.getId() + ", Naziv kategorije: " + this.name + ", Opis kategorije: "+ this.description);
     }
 }

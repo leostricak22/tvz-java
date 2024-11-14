@@ -1,5 +1,8 @@
 package hr.java.restaurant.exception;
 
+/**
+ * Represents an invalid value exception.
+ */
 public class InvalidValueException extends RuntimeException {
     public InvalidValueException() {
     }

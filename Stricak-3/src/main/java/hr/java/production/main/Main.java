@@ -6,6 +6,9 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Scanner;
 
+/**
+ * Represents the main class.
+ */
 public class Main {
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
@@ -60,7 +63,7 @@ public class Main {
         Restaurant.inputRestaurant(restaurants, meals, chefs, waiters, deliverers, scanner);
 
         Order[] orders = new Order[3];
-        Order.inputOrder(orders, restaurants, meals, scanner);
+        Order.inputOrder(orders, restaurants, scanner);
 
         System.out.println("Osoba s najvećom plaćom:");
         Person highestSalaryPerson = Person.findHighestSalaryPerson(people);

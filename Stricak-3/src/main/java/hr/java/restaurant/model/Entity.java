@@ -1,5 +1,8 @@
 package hr.java.restaurant.model;
 
+/**
+ * Represents an entity.
+ */
 public class Entity {
     private Long id;
 

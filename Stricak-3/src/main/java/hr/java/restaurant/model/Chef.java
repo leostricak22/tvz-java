@@ -9,13 +9,21 @@ import org.slf4j.LoggerFactory;
 import java.math.BigDecimal;
 import java.util.Scanner;
 
+/**
+ * Represents a chef in a restaurant.
+ */
 public class Chef extends Person {
     private static final Logger logger = LoggerFactory.getLogger(Chef.class);
 
     private static Long counter = 0L;
     private Contract contract;
-    private Bonus bonus;
+    private final Bonus bonus;
 
+    /**
+     * Constructs a Chef object using the provided builder.
+     *
+     * @param builder the builder instance containing chef information
+     */
     private Chef(Builder builder) {
         super(builder.id, builder.firstName, builder.lastName);
         this.contract = builder.contract;
@@ -26,6 +34,13 @@ public class Chef extends Person {
         this.contract = contract;
     }
 
+    /**
+     * Checks if the chef with the provided name already exists in the array of chefs.
+     * @param chefs the chefs
+     * @param firstName the first name of the chef
+     * @param lastName the last name of the chef
+     * @return the index of the chef if it exists, -1 otherwise
+     */
     public static Integer existsByName(Chef[] chefs, String firstName, String lastName) {
         for (int j=0;j<chefs.length;j++) {
             if (firstName.equals(chefs[j].getFirstName()) && lastName.equals(chefs[j].getLastName())) {
@@ -35,8 +50,13 @@ public class Chef extends Person {
         return -1;
     }
 
+    /**
+     * Inputs chef data from the console.
+     * @param chefs the chefs
+     * @param people the Person array
+     * @param scanner the scanner object used for input
+     */
     public static void inputChef(Chef[] chefs, Person[] people, Scanner scanner) {
-
         for (int i = 0; i < chefs.length; i++) {
             logger.info("Chef input");
             String chefFirstName, chefLastName;
@@ -67,6 +87,11 @@ public class Chef extends Person {
         }
     }
 
+    /**
+     * Returns an array of chef names.
+     * @param chefs the chefs
+     * @return the array of chef names
+     */
     public static String[] chefNameArray(Chef[] chefs) {
         String[] chefNames = new String[chefs.length];
 
@@ -77,20 +102,9 @@ public class Chef extends Person {
         return chefNames;
     }
 
-    @Override
-    public void print(Integer tabulators) {
-        logger.info("Printing chef.");
-        Person.outputFullData(tabulators, getId(), getFirstName(), getLastName() , contract, bonus);
-    }
-
-    public Bonus getBonus() {
-        return bonus;
-    }
-
-    public void setBonus(Bonus bonus) {
-        this.bonus = bonus;
-    }
-
+    /**
+     * Builder class for creating instances of {@link Chef}.
+     */
     public static class Builder {
         private Long id;
         private String firstName;
@@ -136,5 +150,15 @@ public class Chef extends Person {
     @Override
     public Contract getContract() {
         return contract;
+    }
+
+    /**
+     * Prints the chef details with the specified number of tabulators.
+     * @param tabulators the number of tabulators to format the output
+     */
+    @Override
+    public void print(Integer tabulators) {
+        logger.info("Printing chef.");
+        Person.outputFullData(tabulators, getId(), getFirstName(), getLastName() , contract, bonus);
     }
 }

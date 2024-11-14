@@ -1,5 +1,8 @@
 package hr.java.restaurant.exception;
 
+/**
+ * Represents a duplicate entry exception.
+ */
 public class DuplicateEntryException extends Exception {
     public DuplicateEntryException() {
       super();

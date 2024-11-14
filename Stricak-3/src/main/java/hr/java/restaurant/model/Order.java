@@ -1,5 +1,6 @@
 package hr.java.restaurant.model;
 
+import hr.java.service.EntityFinder;
 import hr.java.service.Input;
 import hr.java.service.Output;
 import org.slf4j.Logger;
@@ -10,15 +11,25 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Scanner;
 
+/**
+ * Represents an order.
+ */
 public class Order extends Entity {
     private static Long counter = 0L;
     private static final Logger logger = LoggerFactory.getLogger(Order.class);
 
     private Restaurant restaurant;
-    private Meal[] meals;
-    private Deliverer deliverer;
-    private LocalDateTime deliveryDateAndTime;
+    private final Meal[] meals;
+    private final Deliverer deliverer;
+    private final LocalDateTime deliveryDateAndTime;
 
+    /**
+     * Constructs an Order object.
+     * @param restaurant the restaurant
+     * @param meals the meals
+     * @param deliverer the deliverer
+     * @param deliveryDateAndTime the delivery date and time
+     */
     public Order(Restaurant restaurant, Meal[] meals, Deliverer deliverer, LocalDateTime deliveryDateAndTime) {
         super(++counter);
         this.restaurant = restaurant;
@@ -35,47 +46,38 @@ public class Order extends Entity {
         this.restaurant = restaurant;
     }
 
-    public Meal[] getMeals() {
-        return meals;
-    }
-
-    public void setMeals(Meal[] meals) {
-        this.meals = meals;
-    }
-
     public Deliverer getDeliverer() {
         return deliverer;
     }
 
-    public void setDeliverer(Deliverer deliverer) {
-        this.deliverer = deliverer;
-    }
-
-    public LocalDateTime getDeliveryDateAndTime() {
-        return deliveryDateAndTime;
-    }
-
-    public void setDeliveryDateAndTime(LocalDateTime deliveryDateAndTime) {
-        this.deliveryDateAndTime = deliveryDateAndTime;
-    }
-    public static void inputOrder(Order[] orders, Restaurant[] restaurants, Meal[] meals, Scanner scanner) {
+    /**
+     * Inputs the order information.
+     * @param orders the orders
+     * @param restaurants the restaurants
+     * @param scanner the scanner object used for input
+     */
+    public static void inputOrder(Order[] orders, Restaurant[] restaurants, Scanner scanner) {
         for (int i = 0; i < orders.length; i++) {
             logger.info("Order input");
-            Restaurant orderRestaurant = Input.restaurantName(scanner, "Unesite naziv restorana " + (i + 1) + ". narudžbe", restaurants);
+            Restaurant orderRestaurant = EntityFinder.restaurantName(scanner, "Unesite naziv restorana " + (i + 1) + ". narudžbe", restaurants);
 
-            Integer numberOfMeals = Input.integer(scanner, "Unesite broj jela koji želite dodati: ");
+            int numberOfMeals = Input.integer(scanner, "Unesite broj jela koji želite dodati: ");
             Meal[] mealsEntered = new Meal[numberOfMeals];
             for(int j=0;j<numberOfMeals;j++) {
-                mealsEntered[j] = Input.mealName(scanner,"Unesite naziv "+(j+1)+". jela koje želite dodati: ", orderRestaurant.getMeals());
+                mealsEntered[j] = EntityFinder.mealName(scanner,"Unesite naziv "+(j+1)+". jela koje želite dodati: ", orderRestaurant.getMeals());
             }
 
-            Deliverer orderDeliverer = Input.delivererName(scanner,"Unesite ime i prezime (odvojeno razmakom) dostavljača kojeg želite dodati: ", orderRestaurant.getDeliverers());
+            Deliverer orderDeliverer = EntityFinder.delivererName(scanner,"Unesite ime i prezime (odvojeno razmakom) dostavljača kojeg želite dodati: ", orderRestaurant.getDeliverers());
             LocalDateTime orderDeliveryDateAndTime = Input.localDateTime(scanner, "Unesite datum dostave narudžbe. (primjer formata: yyyy-MM-ddTHH:mm:ss)");
 
             orders[i] = new Order(orderRestaurant, mealsEntered, orderDeliverer, orderDeliveryDateAndTime);
         }
     }
 
+    /**
+     * Calculates the total price of the meals in the order.
+     * @return the total price of the meals
+     */
     public BigDecimal totalMealPrice() {
         BigDecimal total = BigDecimal.valueOf(0);
 
@@ -86,51 +88,62 @@ public class Order extends Entity {
         return total;
     }
 
+    /**
+     * Finds the most expensive orders.
+     * @param orders the orders
+     * @return the most expensive orders
+     */
     public static Order[] findMostExpensiveOrders(Order[] orders) {
         Order[] mostExpensiveOrders = new Order[orders.length];
-        Integer counterOfMostExpensiveOrders = 0;
+        int counterOfMostExpensiveOrders = 0;
 
         BigDecimal mostExpensive = BigDecimal.valueOf(0);
         BigDecimal totalPrice;
-        for (int i = 0; i < orders.length; i++) {
-            totalPrice = orders[i].totalMealPrice();
+        for (Order order : orders) {
+            totalPrice = order.totalMealPrice();
 
-            if(totalPrice.compareTo(mostExpensive) == 0) { // -1 <, 0 =, 1 >
-                mostExpensiveOrders[counterOfMostExpensiveOrders] = orders[i];
+            if (totalPrice.compareTo(mostExpensive) == 0) { // -1 <, 0 =, 1 >
+                mostExpensiveOrders[counterOfMostExpensiveOrders] = order;
                 counterOfMostExpensiveOrders++;
             } else if (totalPrice.compareTo(mostExpensive) > 0) {
-                mostExpensiveOrders[0] = orders[i];
-                counterOfMostExpensiveOrders =1;
+                mostExpensiveOrders[0] = order;
+                counterOfMostExpensiveOrders = 1;
                 mostExpensive = totalPrice;
             }
         }
 
         Order[] mostExpensiveOrdersReturn = new Order[counterOfMostExpensiveOrders];
-        for (int i = 0; i < counterOfMostExpensiveOrders; i++) {
+        for (int i = 0; i < counterOfMostExpensiveOrders; i++)
             mostExpensiveOrdersReturn[i] = mostExpensiveOrders[i];
-        }
 
         return mostExpensiveOrdersReturn;
     }
 
+    /**
+     * Finds the deliverers with the most deliveries.
+     * @param orders the orders
+     * @return the deliverers with the most deliveries
+     */
     public static Deliverer[] findDeliverersWithMostDeliveries(Order[] orders) {
         Deliverer[] deliverersWithMostDeliveries = new Deliverer[orders.length];
-        Integer counterOfDeliverersWithMostDeliveries = 0;
+        int counterOfDeliverersWithMostDeliveries = 0;
         Integer mostDeliveries = 0;
 
-        for(int i=0;i<orders.length;i++) {
-            Deliverer orderDeliverer = orders[i].deliverer;
+        for (Order order : orders) {
+            Deliverer orderDeliverer = order.deliverer;
 
             boolean found = false;
-            for(int j=0;j<counterOfDeliverersWithMostDeliveries;j++) {
-                if(deliverersWithMostDeliveries[j].equals(orderDeliverer))
+            for (int j = 0; j < counterOfDeliverersWithMostDeliveries; j++) {
+                if (deliverersWithMostDeliveries[j].equals(orderDeliverer)) {
                     found = true;
+                    break;
+                }
             }
 
-            if(!found) {
+            if (!found) {
                 Integer numberOfDeliveries = orderDeliverer.findNumberOfDeliveries(orders);
 
-                if(Objects.equals(numberOfDeliveries, mostDeliveries)) {
+                if (Objects.equals(numberOfDeliveries, mostDeliveries)) {
                     deliverersWithMostDeliveries[counterOfDeliverersWithMostDeliveries] = orderDeliverer;
                     counterOfDeliverersWithMostDeliveries++;
                 } else if (numberOfDeliveries > mostDeliveries) {
@@ -149,6 +162,9 @@ public class Order extends Entity {
         return deliverersWithMostDeliveriesReturn;
     }
 
+    /**
+     * Prints order
+     */
     public void print() {
         logger.info("Printing order.");
         Output.tabulatorPrint(1);

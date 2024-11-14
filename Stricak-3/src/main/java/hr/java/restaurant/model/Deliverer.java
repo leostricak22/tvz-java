@@ -9,27 +9,32 @@ import org.slf4j.LoggerFactory;
 import java.math.BigDecimal;
 import java.util.Scanner;
 
+/**
+ * Represents a deliverer in a restaurant.
+ */
 public class Deliverer  extends Person {
     private static final Logger logger = LoggerFactory.getLogger(Deliverer.class);
 
     private static Long counter = 0L;
-    private Contract contract;
-    private Bonus bonus;
+    private final Contract contract;
+    private final Bonus bonus;
 
+    /**
+     * Constructs a Deliverer object using the provided builder.
+     * @param builder the builder instance containing deliverer information
+     */
     private Deliverer(Builder builder) {
         super(builder.id, builder.firstName, builder.lastName);
         this.contract = builder.contract;
         this.bonus = builder.bonus;
     }
 
-    public void setContract(Contract contract) {
-        this.contract = contract;
-    }
-
-    public void setBonus(Bonus bonus) {
-        this.bonus = bonus;
-    }
-
+    /**
+     * Checks if the deliverer with the provided name already exists in the array of deliverers.
+     * @param deliverers the deliverers
+     * @param firstName the first name of the deliverer
+     * @param lastName the last name of the deliverer
+     */
     public static Integer existsByName(Deliverer[] deliverers, String firstName, String lastName) {
         for (int j=0;j<deliverers.length;j++) {
             if (firstName.equals(deliverers[j].getFirstName()) && lastName.equals(deliverers[j].getLastName())) {
@@ -39,6 +44,12 @@ public class Deliverer  extends Person {
         return -1;
     }
 
+    /**
+     * Inputs deliverer data from the console.
+     * @param deliverers the deliverers
+     * @param people the Person array
+     * @param scanner the scanner object used for input
+     */
     public static void inputDeliverer(Deliverer[] deliverers, Person[] people, Scanner scanner) {
         for (int i = 0; i < deliverers.length; i++) {
             logger.info("Deliverer input");
@@ -70,6 +81,11 @@ public class Deliverer  extends Person {
         }
     }
 
+    /**
+     * Returns the names of the deliverers in the array.
+     * @param deliverers the deliverers
+     * @return the array of deliverer names
+     */
     public static String[] delivererNameArray(Deliverer[] deliverers) {
         String[] delivererNames = new String[deliverers.length];
 
@@ -80,12 +96,17 @@ public class Deliverer  extends Person {
         return delivererNames;
     }
 
+    /**
+     * Returns the number of deliveries for the deliverer.
+     * @param orders the orders
+     * @return the number of deliveries
+     */
     public Integer findNumberOfDeliveries(Order[] orders) {
         Integer deliveryCounter=0;
         Deliverer orderDeliverer = this;
 
-        for(int i=0;i<orders.length;i++) {
-            if(orderDeliverer.equals(orders[i].getDeliverer())) {
+        for (Order order : orders) {
+            if (orderDeliverer.equals(order.getDeliverer())) {
                 deliveryCounter++;
             }
         }
@@ -93,12 +114,9 @@ public class Deliverer  extends Person {
         return deliveryCounter;
     }
 
-    @Override
-    public void print(Integer tabulators) {
-        logger.info("Printing deliverer.");
-        Person.outputFullData(tabulators, getId(), getFirstName(), getLastName() , contract, bonus);
-    }
-
+    /**
+     * Builder class for creating instances of {@link Deliverer}.
+     */
     public static class Builder {
         private Long id;
         private String firstName;
@@ -144,5 +162,15 @@ public class Deliverer  extends Person {
     @Override
     public Contract getContract() {
         return contract;
+    }
+
+    /**
+     * Prints the deliverer details with the specified number of tabulators.
+     * @param tabulators the number of tabulators to format the output
+     */
+    @Override
+    public void print(Integer tabulators) {
+        logger.info("Printing deliverer.");
+        Person.outputFullData(tabulators, getId(), getFirstName(), getLastName() , contract, bonus);
     }
 }
