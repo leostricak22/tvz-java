@@ -5,6 +5,7 @@ import hr.java.restaurant.exception.InvalidValueException;
 import hr.java.restaurant.model.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -81,7 +82,7 @@ public class Validation {
      * @param name the name
      * @throws DuplicateEntryException if the name is a duplicate
      */
-    public static void checkDuplicateRestaurant(Restaurant[] restaurants, String name) throws DuplicateEntryException {
+    public static void checkDuplicateRestaurant(List<Restaurant> restaurants, String name) throws DuplicateEntryException {
         for (Restaurant restaurant : restaurants) {
             if (restaurant != null && restaurant.getName().equals(name))
                 throw new DuplicateEntryException();
@@ -94,7 +95,7 @@ public class Validation {
      * @param name the name
      * @throws DuplicateEntryException if the name is a duplicate
      */
-    public static void checkDuplicateCategory(Category[] categories, String name) throws DuplicateEntryException {
+    public static void checkDuplicateCategory(List<Category> categories, String name) throws DuplicateEntryException {
         for (Category category : categories) {
             if (category != null && category.getName().equals(name))
                 throw new DuplicateEntryException();

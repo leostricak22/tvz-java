@@ -1,21 +1,16 @@
 package hr.java.production.main;
 
 import hr.java.restaurant.model.*;
+import hr.java.service.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashSet;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Represents the main class.
  */
 public class Main {
-    private static final int numberOfIngredients = 5;
-    private static final int numberOfChefs = 3;
-    private static final int numberOfWaiters = 3;
-    private static final int numberOfDeliverers = 3;
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) {
@@ -23,55 +18,23 @@ public class Main {
 
         Scanner scanner = new Scanner(System.in);
 
-        Category[] categories = new Category[3];
-        Category.inputCategory(categories, scanner);
-
-        Set<Ingredient> ingredients = Ingredient.inputIngredientSet(numberOfIngredients, categories, scanner);
-
-        Set<Meal> meals = new HashSet<>();
-
-        System.out.println("Unos veganskih jela: ");
-        for (int i = 0; i < 3; i++) {
-            meals.add(VeganMeal.inputVeganMeal(categories, ingredients, meals, scanner));
-        }
-
-        System.out.println("Unos vegetarijanskih jela: ");
-        for (int i = 0; i < 3; i++) {
-            meals.add(VegeterianMeal.inputVegeterianMeal(categories, ingredients, meals, scanner));
-        }
-
-        System.out.println("Unos mesnih jela: ");
-        for (int i = 0; i < 3; i++) {
-            meals.add(MeatMeal.inputMeatMeal(categories, ingredients, meals, scanner));
-        }
-
+        List<Category> categories = Category.inputCategoryList(Constants.NUM_OF_CATEGORIES, scanner);
+        Set<Ingredient> ingredients = Ingredient.inputIngredientSet(Constants.NUM_OF_INGREDIENTS, categories, scanner);
+        Set<Meal> meals = Meal.inputMealSet(categories, ingredients, scanner);
 
         Set<Person> people = new HashSet<>();
 
-        Set<Chef> chefs = Chef.inputChefSet(numberOfChefs, people, scanner);
+        Set<Chef> chefs = Chef.inputChefSet(Constants.NUM_OF_CHEFS, people, scanner);
         people.addAll(chefs);
 
-        Set<Waiter> waiters = Waiter.inputWaiterSet(numberOfWaiters, people, scanner);
+        Set<Waiter> waiters = Waiter.inputWaiterSet(Constants.NUM_OF_WAITERS, people, scanner);
         people.addAll(waiters);
 
-        Set<Deliverer> deliverers = Deliverer.inputDeliverer(numberOfDeliverers, people, scanner);
+        Set<Deliverer> deliverers = Deliverer.inputDeliverer(Constants.NUM_OF_DELIVERERS, people, scanner);
         people.addAll(deliverers);
 
-        Restaurant[] restaurants = new Restaurant[3];
-        Restaurant.inputRestaurant(restaurants, meals, chefs, waiters, deliverers, scanner);
-
-        Order[] orders = new Order[3];
-        Order.inputOrder(orders, restaurants, scanner);
-
-        /*
-        System.out.println("Osoba s najvećom plaćom:");
-        Person highestSalaryPerson = Person.findHighestSalaryPerson(people);
-        highestSalaryPerson.print(1);
-
-        System.out.println("\nOsoba s najduljim ugovorom (koji je najranije započeo): ");
-        Person longestContractPerson = Person.findLongestContractPerson(people);
-        longestContractPerson.print(1);
-         */
+        List<Restaurant> restaurants = Restaurant.inputRestaurant(Constants.NUM_OF_RESTAURANTS, meals, chefs, waiters, deliverers, scanner);
+        List<Order> orders = Order.inputOrder(Constants.NUM_OF_ORDERS, restaurants, scanner);
 
         for (Order order : orders) {
             order.print();

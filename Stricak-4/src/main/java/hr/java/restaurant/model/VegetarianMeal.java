@@ -10,21 +10,22 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
 /**
  * Represents a meal that is vegetarian.
  */
-public final class VegeterianMeal extends Meal implements Vegeterian {
+public final class VegetarianMeal extends Meal implements Vegetarian {
     private final boolean containsDairy;
     private final boolean containsEggs;
     private final String proteinSource;
 
-    private static final Logger logger = LoggerFactory.getLogger(VegeterianMeal.class);
+    private static final Logger logger = LoggerFactory.getLogger(VegetarianMeal.class);
 
     /**
-     * Constructs a VegeterianMeal object.
+     * Constructs a VegetarianMeal object.
      * @param name the name of the meal
      * @param category the category of the meal
      * @param ingredients the ingredients of the meal
@@ -33,7 +34,7 @@ public final class VegeterianMeal extends Meal implements Vegeterian {
      * @param containsDairy if the meal contains dairy
      * @param containsEggs if the meal contains eggs
      */
-    public VegeterianMeal(String name, Category category, Set<Ingredient> ingredients, BigDecimal price, String proteinSource, boolean containsDairy, boolean containsEggs) {
+    public VegetarianMeal(String name, Category category, Set<Ingredient> ingredients, BigDecimal price, String proteinSource, boolean containsDairy, boolean containsEggs) {
         super(name, category, ingredients, price);
         this.containsDairy = containsDairy;
         this.containsEggs = containsEggs;
@@ -56,10 +57,10 @@ public final class VegeterianMeal extends Meal implements Vegeterian {
      * @param scanner the scanner object used for input
      * @return the vegetarian meal
      */
-    public static VegeterianMeal inputVegeterianMeal(Category[] categories, Set<Ingredient> ingredients, Set<Meal> meals, Scanner scanner) {
+    public static VegetarianMeal inputVegetarianMeal(List<Category> categories, Set<Ingredient> ingredients, Set<Meal> meals, Scanner scanner) {
         String mealName;
 
-        logger.info("Vegeterian meal input");
+        logger.info("Vegetarian meal input");
         while (true) {
             mealName = Input.string(scanner, "Unesite naziv vegetarijanskog jela: ");
             try {
@@ -90,7 +91,7 @@ public final class VegeterianMeal extends Meal implements Vegeterian {
         boolean mealContainsDiary = Input.booleanValue(scanner, "Sadrži li jelo mliječne proizvode? ");
         boolean mealContainsEggs = Input.booleanValue(scanner, "Sadrži li jelo jaja? ");
 
-        return new VegeterianMeal(mealName, mealCategory, ingredientsEntered, mealPrice, mealProteinSource, mealContainsDiary, mealContainsEggs);
+        return new VegetarianMeal(mealName, mealCategory, ingredientsEntered, mealPrice, mealProteinSource, mealContainsDiary, mealContainsEggs);
     }
 
     /**
@@ -99,7 +100,7 @@ public final class VegeterianMeal extends Meal implements Vegeterian {
      */
     @Override
     public void print(Integer tabulators) {
-        logger.info("Printing vegeterian meal.");
+        logger.info("Printing vegetarian meal.");
 
         super.print(tabulators);
         Output.tabulatorPrint(tabulators);

@@ -8,8 +8,7 @@ import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
 /**
  * Represents an order.
@@ -19,7 +18,7 @@ public class Order extends Entity {
     private static final Logger logger = LoggerFactory.getLogger(Order.class);
 
     private Restaurant restaurant;
-    private final Meal[] meals;
+    private final List<Meal> meals;
     private final Deliverer deliverer;
     private final LocalDateTime deliveryDateAndTime;
 
@@ -30,7 +29,7 @@ public class Order extends Entity {
      * @param deliverer the deliverer
      * @param deliveryDateAndTime the delivery date and time
      */
-    public Order(Restaurant restaurant, Meal[] meals, Deliverer deliverer, LocalDateTime deliveryDateAndTime) {
+    public Order(Restaurant restaurant, List<Meal> meals, Deliverer deliverer, LocalDateTime deliveryDateAndTime) {
         super(++counter);
         this.restaurant = restaurant;
         this.meals = meals;
@@ -52,26 +51,30 @@ public class Order extends Entity {
 
     /**
      * Inputs the order information.
-     * @param orders the orders
+     * @param numOfElements the orders
      * @param restaurants the restaurants
      * @param scanner the scanner object used for input
      */
-    public static void inputOrder(Order[] orders, Restaurant[] restaurants, Scanner scanner) {
-        for (int i = 0; i < orders.length; i++) {
+    public static List<Order> inputOrder(int numOfElements, List<Restaurant> restaurants, Scanner scanner) {
+        List<Order> orders = new ArrayList<>();
+
+        for (int i = 0; i < numOfElements; i++) {
             logger.info("Order input");
             Restaurant orderRestaurant = EntityFinder.restaurantName(scanner, "Unesite naziv restorana " + (i + 1) + ". narudžbe", restaurants);
 
             int numberOfMeals = Input.integer(scanner, "Unesite broj jela koji želite dodati: ");
-            Meal[] mealsEntered = new Meal[numberOfMeals];
+            List<Meal> mealsEntered = new ArrayList<>();
             for(int j=0;j<numberOfMeals;j++) {
-                mealsEntered[j] = EntityFinder.mealName(scanner,"Unesite naziv "+(j+1)+". jela koje želite dodati: ", orderRestaurant.getMeals());
+                mealsEntered.add(EntityFinder.mealName(scanner,"Unesite naziv "+(j+1)+". jela koje želite dodati: ", orderRestaurant.getMeals()));
             }
 
             Deliverer orderDeliverer = EntityFinder.delivererName(scanner,"Unesite ime i prezime (odvojeno razmakom) dostavljača kojeg želite dodati: ", orderRestaurant.getDeliverers());
             LocalDateTime orderDeliveryDateAndTime = Input.localDateTime(scanner, "Unesite datum dostave narudžbe. (primjer formata: yyyy-MM-ddTHH:mm:ss)");
 
-            orders[i] = new Order(orderRestaurant, mealsEntered, orderDeliverer, orderDeliveryDateAndTime);
+            orders.add(new Order(orderRestaurant, mealsEntered, orderDeliverer, orderDeliveryDateAndTime));
         }
+
+        return orders;
     }
 
     /**
@@ -81,8 +84,8 @@ public class Order extends Entity {
     public BigDecimal totalMealPrice() {
         BigDecimal total = BigDecimal.valueOf(0);
 
-        for (int j = 0; j < this.meals.length; j++) {
-            total = total.add(this.meals[j].getPrice());
+        for (Meal meal : this.meals) {
+            total = total.add(meal.getPrice());
         }
 
         return total;
@@ -93,8 +96,8 @@ public class Order extends Entity {
      * @param orders the orders
      * @return the most expensive orders
      */
-    public static Order[] findMostExpensiveOrders(Order[] orders) {
-        Order[] mostExpensiveOrders = new Order[orders.length];
+    public static List<Order> findMostExpensiveOrders(List<Order> orders) {
+        List<Order> mostExpensiveOrders = new ArrayList<>();
         int counterOfMostExpensiveOrders = 0;
 
         BigDecimal mostExpensive = BigDecimal.valueOf(0);
@@ -103,18 +106,18 @@ public class Order extends Entity {
             totalPrice = order.totalMealPrice();
 
             if (totalPrice.compareTo(mostExpensive) == 0) { // -1 <, 0 =, 1 >
-                mostExpensiveOrders[counterOfMostExpensiveOrders] = order;
+                mostExpensiveOrders.set(counterOfMostExpensiveOrders, order);
                 counterOfMostExpensiveOrders++;
             } else if (totalPrice.compareTo(mostExpensive) > 0) {
-                mostExpensiveOrders[0] = order;
+                mostExpensiveOrders.set(0, order);
                 counterOfMostExpensiveOrders = 1;
                 mostExpensive = totalPrice;
             }
         }
 
-        Order[] mostExpensiveOrdersReturn = new Order[counterOfMostExpensiveOrders];
+        List<Order> mostExpensiveOrdersReturn = new ArrayList<>();
         for (int i = 0; i < counterOfMostExpensiveOrders; i++)
-            mostExpensiveOrdersReturn[i] = mostExpensiveOrders[i];
+            mostExpensiveOrdersReturn.add(mostExpensiveOrders.get(i));
 
         return mostExpensiveOrdersReturn;
     }
@@ -124,8 +127,8 @@ public class Order extends Entity {
      * @param orders the orders
      * @return the deliverers with the most deliveries
      */
-    public static Deliverer[] findDeliverersWithMostDeliveries(Order[] orders) {
-        Deliverer[] deliverersWithMostDeliveries = new Deliverer[orders.length];
+    public static List<Deliverer> findDeliverersWithMostDeliveries(List<Order> orders) {
+        List<Deliverer> deliverersWithMostDeliveries = new ArrayList<>();
         int counterOfDeliverersWithMostDeliveries = 0;
         Integer mostDeliveries = 0;
 
@@ -134,7 +137,7 @@ public class Order extends Entity {
 
             boolean found = false;
             for (int j = 0; j < counterOfDeliverersWithMostDeliveries; j++) {
-                if (deliverersWithMostDeliveries[j].equals(orderDeliverer)) {
+                if (deliverersWithMostDeliveries.get(j).equals(orderDeliverer)) {
                     found = true;
                     break;
                 }
@@ -144,19 +147,19 @@ public class Order extends Entity {
                 Integer numberOfDeliveries = orderDeliverer.findNumberOfDeliveries(orders);
 
                 if (Objects.equals(numberOfDeliveries, mostDeliveries)) {
-                    deliverersWithMostDeliveries[counterOfDeliverersWithMostDeliveries] = orderDeliverer;
+                    deliverersWithMostDeliveries.set(counterOfDeliverersWithMostDeliveries, orderDeliverer);
                     counterOfDeliverersWithMostDeliveries++;
                 } else if (numberOfDeliveries > mostDeliveries) {
-                    deliverersWithMostDeliveries[counterOfDeliverersWithMostDeliveries] = orderDeliverer;
+                    deliverersWithMostDeliveries.set(counterOfDeliverersWithMostDeliveries, orderDeliverer);
                     counterOfDeliverersWithMostDeliveries = 1;
                     mostDeliveries = numberOfDeliveries;
                 }
             }
         }
 
-        Deliverer[] deliverersWithMostDeliveriesReturn = new Deliverer[counterOfDeliverersWithMostDeliveries];
+        List<Deliverer> deliverersWithMostDeliveriesReturn = new ArrayList<>();
         for (int i = 0; i < counterOfDeliverersWithMostDeliveries; i++) {
-            deliverersWithMostDeliveriesReturn[i] = deliverersWithMostDeliveries[i];
+            deliverersWithMostDeliveriesReturn.add(deliverersWithMostDeliveries.get(i));
         }
 
         return deliverersWithMostDeliveriesReturn;
@@ -176,10 +179,10 @@ public class Order extends Entity {
 
         Output.tabulatorPrint(1);
         System.out.println("Naručena jela:");
-        for(int i=0;i<this.meals.length;i++) {
+        for(int i=0;i<this.meals.size();i++) {
             Output.tabulatorPrint(2);
             System.out.println("Jelo "+(i+1)+":");
-            this.meals[i].print(3);
+            this.meals.get(i).print(3);
         }
 
         Output.tabulatorPrint(1);

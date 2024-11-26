@@ -7,10 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Represents a waiter.
@@ -98,13 +95,11 @@ public class Waiter extends Person {
      * Returns the waiter's first name.
      * @return the waiter's first name
      */
-    public static String[] waiterNameArray(Set<Waiter> waiters) {
-        String[] waiterNames = new String[waiters.size()];
+    public static List<String> waiterNameArray(Set<Waiter> waiters) {
+        List<String> waiterNames = new ArrayList<>();
 
-        int i = 0;
         for (Waiter waiter : waiters) {
-            waiterNames[i] = waiter.getFirstName() + " " + waiter.getLastName();
-            i++;
+            waiterNames.add(waiter.getFirstName() + " " + waiter.getLastName());
         }
 
         return waiterNames;

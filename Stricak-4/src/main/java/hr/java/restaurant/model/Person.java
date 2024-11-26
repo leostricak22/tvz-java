@@ -1,9 +1,12 @@
 package hr.java.restaurant.model;
 
+import hr.java.service.Constants;
 import hr.java.service.Input;
 import hr.java.service.Output;
 
+import java.awt.datatransfer.MimeTypeParseException;
 import java.math.BigDecimal;
+import java.util.*;
 
 /**
  * Abstract class that represents a person.
@@ -29,8 +32,8 @@ public abstract class Person extends  Entity{
      * @param people the array of people
      * @return the person with the highest salary
      */
-    public static Person findHighestSalaryPerson(Person[] people) {
-        Person highestSalaryPerson = people[0];
+    public static Person findHighestSalaryPerson(List<Person> people) {
+        Person highestSalaryPerson = people.getFirst();
 
         for (Person person : people) {
             if (person.getSalary().compareTo(highestSalaryPerson.getSalary()) > 0) {
@@ -46,8 +49,8 @@ public abstract class Person extends  Entity{
      * @param people the array of people
      * @return the person with the longest contract
      */
-    public static Person findLongestContractPerson(Person[] people) {
-        Person longestContractPerson = people[0];
+    public static Person findLongestContractPerson(List<Person> people) {
+        Person longestContractPerson = people.getFirst();
 
         for (Person person : people) {
             if (person.getContract().getStartDate().isBefore(longestContractPerson.getContract().getStartDate())) {

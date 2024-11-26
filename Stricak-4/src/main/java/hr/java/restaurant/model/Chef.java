@@ -7,10 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Represents a chef in a restaurant.
@@ -62,7 +59,7 @@ public class Chef extends Person {
      * @param numOfElements the chefs
      * @param people        the Person array
      * @param scanner       the scanner object used for input
-     * @return
+     * @return returns Set of Chef
      */
     public static Set<Chef> inputChefSet(int numOfElements, Set<Person> people, Scanner scanner) {
         Set<Chef> chefs = new HashSet<>();
@@ -105,13 +102,11 @@ public class Chef extends Person {
      * @param chefs the chefs
      * @return the array of chef names
      */
-    public static String[] chefNameArray(Set<Chef> chefs) {
-        String[] chefNames = new String[chefs.size()];
+    public static List<String> chefNameArray(Set<Chef> chefs) {
+        List<String> chefNames = new ArrayList<>();
 
-        int i=0;
         for(Chef chef : chefs) {
-            chefNames[i] = (chef.getFirstName() + " " + chef.getLastName());
-            i++;
+            chefNames.add(chef.getFirstName() + " " + chef.getLastName());
         }
 
         return chefNames;

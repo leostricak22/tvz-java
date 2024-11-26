@@ -9,9 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
-import java.util.Objects;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Represents an ingredient of a meal.
@@ -76,7 +74,7 @@ public class Ingredient  extends Entity {
      * @param categories the categories
      * @param scanner the scanner object used for input
      */
-    public static Set<Ingredient> inputIngredientSet(int numOfElements, Category[] categories, Scanner scanner) {
+    public static Set<Ingredient> inputIngredientSet(int numOfElements, List<Category> categories, Scanner scanner) {
         Set<Ingredient> ingredients = new java.util.HashSet<>(Set.of());
         for(int i = 0; i < numOfElements; i++) {
             logger.info("Ingredient input");
@@ -107,15 +105,13 @@ public class Ingredient  extends Entity {
     /**
      * Returns an array of ingredient names.
      * @param ingredients the ingredients
-     * @return the array of ingredient names
+     * @return the string list of ingredient names
      */
-    public static String[] ingredientNameArray(Set<Ingredient> ingredients) {
-        String[] ingredientsNames = new String[ingredients.size()];
+    public static List<String> ingredientNameArray(Set<Ingredient> ingredients) {
+        List<String> ingredientsNames = new ArrayList<>();
 
-        int index = 0;
         for (Ingredient ingredient : ingredients) {
-            ingredientsNames[index] = ingredient.getName();
-            index++;
+            ingredientsNames.add(ingredient.getName());
         }
 
         return ingredientsNames;

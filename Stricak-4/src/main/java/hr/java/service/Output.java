@@ -1,5 +1,7 @@
 package hr.java.service;
 
+import java.util.List;
+
 /**
  * Represents an output service.
  */
@@ -9,14 +11,14 @@ public class Output {
      * @param nameOptions The name options.
      * @return The object name options.
      */
-    public static String objectNameOptions(String[] nameOptions) {
+    public static String objectNameOptions(List<String> nameOptions) {
         String messageExtend = "";
-        if(nameOptions.length > 0) {
+        if(!nameOptions.isEmpty()) {
             messageExtend += " - (";
-            for (int i = 0; i < nameOptions.length; i++) {
-                messageExtend += nameOptions[i];
+            for (int i = 0; i < nameOptions.size(); i++) {
+                messageExtend = messageExtend + nameOptions.get(i);
 
-                if (i + 1 != nameOptions.length)
+                if (i + 1 != nameOptions.size())
                     messageExtend += ", ";
                 else
                     messageExtend += ")";

@@ -7,10 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Represents a deliverer in a restaurant.
@@ -99,13 +96,11 @@ public class Deliverer  extends Person {
      * @param deliverers the deliverers
      * @return the array of deliverer names
      */
-    public static String[] delivererNameArray(Set<Deliverer> deliverers) {
-        String[] delivererNames = new String[deliverers.size()];
+    public static List<String> delivererNameArray(Set<Deliverer> deliverers) {
+        List<String> delivererNames = new ArrayList<>();
 
-        int i=0;
         for (Deliverer deliverer : deliverers) {
-            delivererNames[i] = deliverer.getFirstName() + " " + deliverer.getLastName();
-            i++;
+            delivererNames.add(deliverer.getFirstName() + " " + deliverer.getLastName());
         }
 
         return delivererNames;
@@ -116,7 +111,7 @@ public class Deliverer  extends Person {
      * @param orders the orders
      * @return the number of deliveries
      */
-    public Integer findNumberOfDeliveries(Order[] orders) {
+    public Integer findNumberOfDeliveries(List<Order> orders) {
         Integer deliveryCounter=0;
         Deliverer orderDeliverer = this;
 

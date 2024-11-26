@@ -7,6 +7,8 @@ import hr.java.service.Validation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -17,7 +19,7 @@ public class Category extends Entity {
     private static final Logger logger = LoggerFactory.getLogger(Category.class);
 
     private String name;
-    private String description;
+    private final String description;
 
     /**
      * Constructs a Category object using the provided builder.
@@ -43,9 +45,9 @@ public class Category extends Entity {
      * @param categoryName the name of the category
      * @return the index of the category if it exists, -1 otherwise
      */
-    public static Integer existsByName(Category[] categories, String categoryName) {
-        for (int j=0;j<categories.length;j++) {
-            if (categoryName.equals(categories[j].getName())) {
+    public static Integer existsByName(List<Category> categories, String categoryName) {
+        for (int j=0;j<categories.size();j++) {
+            if (categoryName.equals(categories.get(j).getName())) {
                 return j;
             }
         }
@@ -54,13 +56,16 @@ public class Category extends Entity {
 
     /**
      * Inputs the category information.
-     * @param categories the categories
-     * @param scanner the scanner object used for input
+     *
+     * @param numOfElements number of categories
+     * @param scanner       the scanner object used for input
+     * @return
      */
-    public static void inputCategory(Category[] categories, Scanner scanner) {
+    public static List<Category> inputCategoryList(int numOfElements, Scanner scanner) {
         logger.info("Category input");
+        List<Category> categories = new ArrayList<>();
 
-        for(int i = 0; i < categories.length; i++) {
+        for(int i = 0; i < numOfElements; i++) {
             String categoryName;
 
             while(true) {
@@ -76,24 +81,27 @@ public class Category extends Entity {
 
             String categoryDescription = Input.string(scanner, "Unesite opis  "+ (i+1) +". kategorije: ");
 
-            categories[i] = new Builder()
+            categories.add(
+                    new Builder()
                     .id(++counter)
                     .name(categoryName)
                     .description(categoryDescription)
-                    .build();
+                    .build()
+            );
         }
+        return categories;
     }
 
     /**
      * Returns the names of the categories in the array.
      * @param categories the categories
-     * @return the array of category names
+     * @return the category names
      */
-    public static String[] categoryNameArray(Category[] categories) {
-        String[] categoryNames = new String[categories.length];
+    public static List<String> categoryNameArray(List<Category> categories) {
+        List<String> categoryNames = new ArrayList<>();
 
-        for (int i = 0; i < categories.length; i++) {
-            categoryNames[i] = categories[i].getName();
+        for (Category category : categories) {
+            categoryNames.add(category.getName());
         }
 
         return categoryNames;

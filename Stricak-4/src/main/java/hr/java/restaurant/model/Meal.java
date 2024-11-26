@@ -1,15 +1,12 @@
 package hr.java.restaurant.model;
 
-import hr.java.service.Input;
+import hr.java.service.Constants;
 import hr.java.service.Output;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Represents a meal in a restaurant.
@@ -44,6 +41,28 @@ public class Meal extends Entity {
     public static BigDecimal getUnrealPrice() {
         return unrealPrice;
     }
+
+    public static Set<Meal> inputMealSet(List<Category> categories, Set<Ingredient> ingredients, Scanner scanner) {
+        Set<Meal> meals = new HashSet<>();
+
+        System.out.println("Unos veganskih jela: ");
+        for (int i = 0; i < Constants.NUM_OF_VEGAN_MEALS; i++) {
+            meals.add(VeganMeal.inputVeganMeal(categories, ingredients, meals, scanner));
+        }
+
+        System.out.println("Unos vegetarijanskih jela: ");
+        for (int i = 0; i < Constants.NUM_OF_VEGETARIAN_MEALS; i++) {
+            meals.add(VegetarianMeal.inputVegetarianMeal(categories, ingredients, meals, scanner));
+        }
+
+        System.out.println("Unos mesnih jela: ");
+        for (int i = 0; i < Constants.NUM_OF_MEAT_MEALS; i++) {
+            meals.add(MeatMeal.inputMeatMeal(categories, ingredients, meals, scanner));
+        }
+
+        return meals;
+    }
+
     public String getName() {
         return name;
     }
@@ -79,13 +98,11 @@ public class Meal extends Entity {
      * @param meals the meals
      * @return the meal names
      */
-    public static String[] mealNameArray(Set<Meal> meals) {
-        String[] mealNames = new String[meals.size()];
+    public static List<String> mealNameArray(Set<Meal> meals) {
+        List<String> mealNames = new ArrayList<>();
 
-        int i=0;
         for (Meal meal : meals) {
-            mealNames[i] = meal.getName();
-            i++;
+            mealNames.add(meal.getName());
         }
 
         return mealNames;
@@ -110,8 +127,8 @@ public class Meal extends Entity {
      * @param meals the meals
      * @return the most caloric meal
      */
-    public static Meal findMostCaloricMeal(Meal[] meals) {
-        Meal mostCaloricMeal = meals[0];
+    public static Meal findMostCaloricMeal(List<Meal> meals) {
+        Meal mostCaloricMeal = meals.getFirst();
         BigDecimal mostMealCalories = BigDecimal.valueOf(-1);
         BigDecimal mealCalories;
 
@@ -132,8 +149,8 @@ public class Meal extends Entity {
      * @param meals the meals
      * @return the least caloric meal
      */
-    public static Meal findLeastCaloricMeal(Meal[] meals) {
-        Meal mostCaloricMeal = meals[0];
+    public static Meal findLeastCaloricMeal(List<Meal> meals) {
+        Meal mostCaloricMeal = meals.getFirst();
         BigDecimal mostMealCalories = BigDecimal.valueOf(Double.MAX_VALUE);
         BigDecimal mealCalories;
 

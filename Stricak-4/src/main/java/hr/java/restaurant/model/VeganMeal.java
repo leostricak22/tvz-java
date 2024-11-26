@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -57,7 +58,7 @@ public final class VeganMeal extends Meal implements Vegan {
      * @param scanner the scanner object used for input
      * @return the vegan meal
      */
-    public static VeganMeal inputVeganMeal(Category[] categories, Set<Ingredient> ingredients, Set<Meal> meals, Scanner scanner) {
+    public static VeganMeal inputVeganMeal(List<Category> categories, Set<Ingredient> ingredients, Set<Meal> meals, Scanner scanner) {
         String mealName;
 
         logger.info("Vegan meal input");

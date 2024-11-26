@@ -1,9 +1,9 @@
 package hr.java.restaurant.model;
 
 /**
- * Represents a vegeterian meal.
+ * Represents a vegetarian meal.
  */
-public sealed interface Vegeterian permits VegeterianMeal {
+public sealed interface Vegetarian permits VegetarianMeal {
     boolean containsDairy();
     boolean containsEggs();
 }
