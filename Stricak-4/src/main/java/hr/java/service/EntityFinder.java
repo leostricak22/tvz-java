@@ -71,14 +71,21 @@ public class EntityFinder {
      * @param meals the meals
      * @return the meal
      */
-    public static Meal mealName(Scanner scanner, String message, Meal[] meals) {
+    public static Meal mealName(Scanner scanner, String message, Set<Meal> meals) {
         logger.info("Find if meal exists by name.");
 
         String mealNameInput = Input.string(scanner, message + Output.objectNameOptions(Meal.mealNameArray(meals)));
         Integer selectedMealIndex = Meal.existsByName(meals, mealNameInput);
 
         if (selectedMealIndex != -1) {
-            return meals[selectedMealIndex];
+            int index = 0;
+            for (Meal meal : meals) {
+                if (index == selectedMealIndex) {
+                    return meal;
+                }
+                index++;
+            }
+            return null;
         } else {
             logger.warn("Meal doesn't exist.");
             System.out.println("Uneseno jelo ne postoji.");
@@ -93,17 +100,32 @@ public class EntityFinder {
      * @param chefs the chefs
      * @return the chef
      */
-    public static Chef chefName(Scanner scanner, String message, Chef[] chefs) {
+    public static Chef chefName(Scanner scanner, String message, Set<Chef> chefs) {
         logger.info("Find if chef exists by name.");
 
         String chefFirstAndLastNameInput = Input.string(scanner, message + Output.objectNameOptions(Chef.chefNameArray(chefs)));
         String[] chefNameInput = chefFirstAndLastNameInput.split(" ");
 
+
         if (chefNameInput.length > 1) {
+            System.out.println(chefNameInput[0] + " " + chefNameInput[1]);
             Integer selectedChefIndex = Chef.existsByName(chefs, chefNameInput[0], chefNameInput[1]);
 
+            System.out.println(selectedChefIndex);
+
+            for (Chef chef : chefs) {
+                System.out.println(chef.getFirstName() + " " + chef.getLastName());
+            }
+
             if(selectedChefIndex != -1) {
-                return chefs[selectedChefIndex];
+                int index = 0;
+                for (Chef chef : chefs) {
+                    if (index == selectedChefIndex) {
+                        return chef;
+                    }
+                    index++;
+                }
+                return null;
             }
         }
 
@@ -119,7 +141,7 @@ public class EntityFinder {
      * @param waiters the waiters
      * @return the waiter
      */
-    public static Waiter waiterName(Scanner scanner, String message, Waiter[] waiters) {
+    public static Waiter waiterName(Scanner scanner, String message, Set<Waiter> waiters) {
         logger.info("Find if waiter exists by name.");
 
         String waiterFirstAndLastNameInput = Input.string(scanner, message  + Output.objectNameOptions(Waiter.waiterNameArray(waiters)));
@@ -129,7 +151,14 @@ public class EntityFinder {
             Integer selectedWaiterIndex = Waiter.existsByName(waiters, waiterNameInput[0], waiterNameInput[1]);
 
             if(selectedWaiterIndex != -1) {
-                return waiters[selectedWaiterIndex];
+                int index = 0;
+                for (Waiter waiter : waiters) {
+                    if (index == selectedWaiterIndex) {
+                        return waiter;
+                    }
+                    index++;
+                }
+                return null;
             }
         }
 
@@ -145,7 +174,7 @@ public class EntityFinder {
      * @param deliverers the deliverers
      * @return the deliverer
      */
-    public static Deliverer delivererName(Scanner scanner, String message, Deliverer[] deliverers) {
+    public static Deliverer delivererName(Scanner scanner, String message, Set<Deliverer> deliverers) {
         logger.info("Find if deliverer exists by name.");
         String delivererFirstAndLastNameInput = Input.string(scanner, message  + Output.objectNameOptions(Deliverer.delivererNameArray(deliverers)));
         String[] delivererNameInput = delivererFirstAndLastNameInput.split(" ");
@@ -154,7 +183,14 @@ public class EntityFinder {
             Integer selectedDelivererIndex = Deliverer.existsByName(deliverers, delivererNameInput[0], delivererNameInput[1]);
 
             if(selectedDelivererIndex != -1) {
-                return deliverers[selectedDelivererIndex];
+                int index = 0;
+                for (Deliverer deliverer : deliverers) {
+                    if (index == selectedDelivererIndex) {
+                        return deliverer;
+                    }
+                    index++;
+                }
+                return null;
             }
         }
 

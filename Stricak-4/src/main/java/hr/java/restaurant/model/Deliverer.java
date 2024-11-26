@@ -7,7 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Scanner;
+import java.util.Set;
 
 /**
  * Represents a deliverer in a restaurant.
@@ -35,23 +38,29 @@ public class Deliverer  extends Person {
      * @param firstName the first name of the deliverer
      * @param lastName the last name of the deliverer
      */
-    public static Integer existsByName(Deliverer[] deliverers, String firstName, String lastName) {
-        for (int j=0;j<deliverers.length;j++) {
-            if (firstName.equals(deliverers[j].getFirstName()) && lastName.equals(deliverers[j].getLastName())) {
-                return j;
+    public static Integer existsByName(Set<Deliverer> deliverers, String firstName, String lastName) {
+        int i=0;
+        for (Deliverer deliverer : deliverers) {
+            if (deliverer.getFirstName().equals(firstName) && deliverer.getLastName().equals(lastName)) {
+                return i;
             }
+
+            i++;
         }
+
         return -1;
     }
 
     /**
      * Inputs deliverer data from the console.
-     * @param deliverers the deliverers
+     * @param numOfElements the deliverers
      * @param people the Person array
      * @param scanner the scanner object used for input
      */
-    public static void inputDeliverer(Deliverer[] deliverers, Person[] people, Scanner scanner) {
-        for (int i = 0; i < deliverers.length; i++) {
+    public static Set<Deliverer> inputDeliverer(int numOfElements, Set<Person> people, Scanner scanner) {
+        Set<Deliverer> deliverers = new HashSet<>();
+
+        for (int i = 0; i < numOfElements; i++) {
             logger.info("Deliverer input");
             String delivererFirstName, delivererLastName;
 
@@ -61,7 +70,7 @@ public class Deliverer  extends Person {
 
                 try {
                     Validation.checkDuplicatePerson(people, delivererFirstName + " " + delivererLastName);
-                    Validation.checkDuplicatePerson(deliverers, delivererFirstName + " " + delivererLastName);
+                    Validation.checkDuplicateDeliverer(deliverers, delivererFirstName + " " + delivererLastName);
                     break;
                 } catch (DuplicateEntryException e) {
                     System.out.println("Dostavljač s tim imenom i prezimenom već postoji. Molimo unesite drugo ime i prezime.");
@@ -71,14 +80,18 @@ public class Deliverer  extends Person {
             Contract contract = Input.contract(scanner, "Unesite ugovor "+(i+1)+". dostavljača.");
             BigDecimal bonus = Input.bigDecimal(scanner, "Unesite bonus "+(i+1)+". dostavljača.");
 
-            deliverers[i] = new Builder()
+            deliverers.add(
+                    new Builder()
                     .id(++counter)
                     .firstName(delivererFirstName)
                     .lastName(delivererLastName)
                     .contract(contract)
                     .bonus(new Bonus(bonus))
-                    .build();
+                    .build()
+            );
         }
+
+        return deliverers;
     }
 
     /**
@@ -86,11 +99,13 @@ public class Deliverer  extends Person {
      * @param deliverers the deliverers
      * @return the array of deliverer names
      */
-    public static String[] delivererNameArray(Deliverer[] deliverers) {
-        String[] delivererNames = new String[deliverers.length];
+    public static String[] delivererNameArray(Set<Deliverer> deliverers) {
+        String[] delivererNames = new String[deliverers.size()];
 
-        for (int i = 0; i < deliverers.length; i++) {
-            delivererNames[i] = (deliverers[i].getFirstName() + " " + deliverers[i].getLastName());
+        int i=0;
+        for (Deliverer deliverer : deliverers) {
+            delivererNames[i] = deliverer.getFirstName() + " " + deliverer.getLastName();
+            i++;
         }
 
         return delivererNames;
@@ -162,6 +177,19 @@ public class Deliverer  extends Person {
     @Override
     public Contract getContract() {
         return contract;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Deliverer deliverer = (Deliverer) o;
+        return Objects.equals(contract, deliverer.contract) && Objects.equals(bonus, deliverer.bonus);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(contract, bonus);
     }
 
     /**

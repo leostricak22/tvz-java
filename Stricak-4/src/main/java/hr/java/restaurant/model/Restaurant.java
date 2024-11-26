@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Scanner;
+import java.util.Set;
 
 /**
  * Represents a restaurant.
@@ -18,10 +19,10 @@ public class Restaurant extends Entity {
 
     private String name;
     private final Address address;
-    private final Meal[] meals;
-    private final Chef[] chefs;
-    private final Waiter[] waiters;
-    private final Deliverer[] deliverers;
+    private final Set<Meal> meals;
+    private final Set<Chef> chefs;
+    private final Set<Waiter> waiters;
+    private final Set<Deliverer> deliverers;
 
     /**
      * Constructs a Restaurant object from provided data.
@@ -32,7 +33,7 @@ public class Restaurant extends Entity {
      * @param waiters the waiters in the restaurant
      * @param deliverers the deliverers in the restaurant
      */
-    public Restaurant(String name, Address address, Meal[] meals, Chef[] chefs, Waiter[] waiters, Deliverer[] deliverers) {
+    public Restaurant(String name, Address address, Set<Meal> meals, Set<Chef> chefs, Set<Waiter> waiters, Set<Deliverer> deliverers) {
         super(++counter);
         this.name = name;
         this.address = address;
@@ -44,8 +45,8 @@ public class Restaurant extends Entity {
 
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
-    public Meal[] getMeals() { return meals; }
-    public Deliverer[] getDeliverers() { return deliverers; }
+    public Set<Meal> getMeals() { return meals; }
+    public Set<Deliverer> getDeliverers() { return deliverers; }
 
     /**
      * Checks if the restaurant with the given name already exists.
@@ -71,7 +72,7 @@ public class Restaurant extends Entity {
      * @param deliverers the choice of deliverers to be input
      * @param scanner the scanner object used for input
      */
-    public static void inputRestaurant(Restaurant[] restaurants, Meal[] meals, Chef[] chefs, Waiter[] waiters, Deliverer[] deliverers, Scanner scanner) {
+    public static void inputRestaurant(Restaurant[] restaurants, Set<Meal> meals, Set<Chef> chefs, Set<Waiter> waiters, Set<Deliverer> deliverers, Scanner scanner) {
         logger.info("Restaurant input");
         for(int i = 0; i < restaurants.length; i++) {
             String restaurantName;
@@ -90,27 +91,27 @@ public class Restaurant extends Entity {
             Address restaurantAddress = Address.inputAddress(scanner);
 
             int numberOfMeals = Input.integer(scanner, "Unesite broj jela koji želite dodati: ");
-            Meal[] mealsEntered = new Meal[numberOfMeals];
+            Set<Meal> mealsEntered = new java.util.HashSet<>(Set.of());
             for(int j=0;j<numberOfMeals;j++) {
-                mealsEntered[j] = EntityFinder.mealName(scanner,"Unesite naziv "+(j+1)+". jela koje želite dodati: ", meals);
+                mealsEntered.add(EntityFinder.mealName(scanner,"Unesite naziv "+(j+1)+". jela koje želite dodati: ", meals));
             }
 
             int numberOfChefs = Input.integer(scanner, "Unesite broj kuhara koji želite dodati: ");
-            Chef[] chefsEntered = new Chef[numberOfChefs];
+            Set<Chef> chefsEntered = new java.util.HashSet<>(Set.of());
             for(int j=0;j<numberOfChefs;j++) {
-                chefsEntered[j] = EntityFinder.chefName(scanner,"Unesite ime i prezime (odvojeno razmakom) "+(j+1)+". kuhara kojeg želite dodati: ", chefs);
+                chefsEntered.add(EntityFinder.chefName(scanner,"Unesite ime i prezime (odvojeno razmakom) "+(j+1)+". kuhara kojeg želite dodati: ", chefs));
             }
 
             int numberOfWaiters = Input.integer(scanner, "Unesite broj konobara koji želite dodati: ");
-            Waiter[] waitersEntered = new Waiter[numberOfWaiters];
+            Set<Waiter> waitersEntered = new java.util.HashSet<>(Set.of());
             for(int j = 0; j< numberOfWaiters; j++) {
-                waitersEntered[j] = EntityFinder.waiterName(scanner,"Unesite ime i prezime (odvojeno razmakom) "+(j+1)+". konobara kojeg želite dodati: ", waiters);
+                waitersEntered.add(EntityFinder.waiterName(scanner,"Unesite ime i prezime (odvojeno razmakom) "+(j+1)+". konobara kojeg želite dodati: ", waiters));
             }
 
             int numberOfDeliverers = Input.integer(scanner, "Unesite broj dostavljača koji želite dodati: ");
-            Deliverer[] deliverersEntered = new Deliverer[numberOfDeliverers];
+            Set<Deliverer> deliverersEntered = new java.util.HashSet<>(Set.of());
             for(int j = 0; j< numberOfDeliverers; j++) {
-                deliverersEntered[j] = EntityFinder.delivererName(scanner,"Unesite ime i prezime (odvojeno razmakom) "+(j+1)+". dostavljača kojeg želite dodati: ", deliverers);
+                deliverersEntered.add(EntityFinder.delivererName(scanner,"Unesite ime i prezime (odvojeno razmakom) "+(j+1)+". dostavljača kojeg želite dodati: ", deliverers));
             }
 
             restaurants[i] = new Restaurant(restaurantName, restaurantAddress, mealsEntered, chefsEntered, waitersEntered, deliverersEntered);
@@ -164,34 +165,42 @@ public class Restaurant extends Entity {
 
         Output.tabulatorPrint(tabulators);
         System.out.println("Sva jela u restoranu:");
-        for(int i=0;i<this.meals.length;i++) {
+        int i=0;
+        for(Meal meal : this.meals) {
             Output.tabulatorPrint(tabulators+1);
             System.out.println("Jelo "+(i+1)+":");
-            this.meals[i].print(tabulators+2);
+            meal.print(tabulators+2);
+            i++;
         }
 
         Output.tabulatorPrint(tabulators);
         System.out.println("Svi kuhari u restoranu:");
-        for(int i=0;i<this.chefs.length;i++) {
+        i=0;
+        for(Chef chef : this.chefs) {
             Output.tabulatorPrint(tabulators+1);
             System.out.println("Kuhar "+(i+1)+":");
-            this.chefs[i].print(tabulators+2);
+            chef.print(tabulators+2);
+            i++;
         }
 
         Output.tabulatorPrint(tabulators);
         System.out.println("Svi konobari u restoranu:");
-        for(int i=0;i<this.waiters.length;i++) {
+        i=0;
+        for (Waiter waiter : this.waiters) {
             Output.tabulatorPrint(tabulators+1);
             System.out.println("Konobar "+(i+1)+":");
-            this.waiters[i].print(tabulators+2);
+            waiter.print(tabulators+2);
+            i++;
         }
 
         Output.tabulatorPrint(tabulators);
         System.out.println("Svi dostavljači u restoranu:");
-        for(int i=0;i<this.deliverers.length;i++) {
+        i=0;
+        for(Deliverer deliverer : this.deliverers) {
             Output.tabulatorPrint(tabulators+1);
             System.out.println("Dostavljač "+(i+1)+":");
-            this.deliverers[i].print(tabulators+2);
+            deliverer.print(tabulators+2);
+            i++;
         }
     }
 }

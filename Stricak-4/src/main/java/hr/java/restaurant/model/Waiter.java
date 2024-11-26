@@ -7,7 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Scanner;
+import java.util.Set;
 
 /**
  * Represents a waiter.
@@ -35,23 +38,28 @@ public class Waiter extends Person {
      * @param lastName the last name of the waiter
      * @return the index of the waiter if it exists, -1 otherwise
      */
-    public static Integer existsByName(Waiter[] waiters, String firstName, String lastName) {
-        for (int j=0;j<waiters.length;j++) {
-            if (firstName.equals(waiters[j].getFirstName()) && lastName.equals(waiters[j].getLastName())) {
-                return j;
+    public static Integer existsByName(Set<Waiter> waiters, String firstName, String lastName) {
+        int i=0;
+        for (Waiter waiter : waiters) {
+            if(firstName.equals(waiter.getFirstName()) && lastName.equals(waiter.getLastName())) {
+                return i;
             }
+            i++;
         }
+
         return -1;
     }
 
     /**
      * Inputs waiter data from the console.
-     * @param waiters the waiters
+     * @param numOfElements the waiters
      * @param people the Person array
      * @param scanner the scanner object used for input
      */
-    public static void inputWaiter(Waiter[] waiters, Person[] people, Scanner scanner) {
-        for (int i = 0; i < waiters.length; i++) {
+    public static Set<Waiter> inputWaiterSet(int numOfElements, Set<Person> people, Scanner scanner) {
+        Set<Waiter> waiters = new HashSet<>();
+
+        for (int i = 0; i < numOfElements; i++) {
             logger.info("Waiter input");
             String waiterFirstName, waiterLastName;
 
@@ -61,7 +69,7 @@ public class Waiter extends Person {
 
                 try {
                     Validation.checkDuplicatePerson(people, waiterFirstName + " " + waiterLastName);
-                    Validation.checkDuplicatePerson(waiters, waiterFirstName + " " + waiterLastName);
+                    Validation.checkDuplicateWaiter(waiters, waiterFirstName + " " + waiterLastName);
                     break;
                 } catch (DuplicateEntryException e) {
                     logger.error("Duplicate waiter entry");
@@ -72,25 +80,31 @@ public class Waiter extends Person {
             Contract contract = Input.contract(scanner, "Unesite ugovor  "+(i+1)+". konobara.");
             BigDecimal bonus = Input.bigDecimal(scanner, "Unesite bonus "+(i+1)+". konobara.");
 
-            waiters[i] = new Waiter.Builder()
+            waiters.add(
+                    new Builder()
                     .id(++counter)
                     .firstName(waiterFirstName)
                     .lastName(waiterLastName)
                     .contract(contract)
                     .bonus(new Bonus(bonus))
-                    .build();
+                    .build()
+            );
         }
+
+        return waiters;
     }
 
     /**
      * Returns the waiter's first name.
      * @return the waiter's first name
      */
-    public static String[] waiterNameArray(Waiter[] waiters) {
-        String[] waiterNames = new String[waiters.length];
+    public static String[] waiterNameArray(Set<Waiter> waiters) {
+        String[] waiterNames = new String[waiters.size()];
 
-        for (int i = 0; i < waiters.length; i++) {
-            waiterNames[i] = (waiters[i].getFirstName() + " " + waiters[i].getLastName());
+        int i = 0;
+        for (Waiter waiter : waiters) {
+            waiterNames[i] = waiter.getFirstName() + " " + waiter.getLastName();
+            i++;
         }
 
         return waiterNames;
@@ -144,6 +158,19 @@ public class Waiter extends Person {
     @Override
     public Contract getContract() {
         return contract;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Waiter waiter = (Waiter) o;
+        return Objects.equals(contract, waiter.contract) && Objects.equals(bonus, waiter.bonus);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(contract, bonus);
     }
 
     /**

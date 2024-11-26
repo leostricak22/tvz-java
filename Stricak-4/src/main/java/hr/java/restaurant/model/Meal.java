@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -62,11 +63,13 @@ public class Meal extends Entity {
      * @param mealName the name of the meal
      * @return the index of the meal if it exists, -1 otherwise
      */
-    public static Integer existsByName(Meal[] meals, String mealName) {
-        for (int j=0;j<meals.length;j++) {
-            if (mealName.equals(meals[j].getName())) {
-                return j;
+    public static Integer existsByName(Set<Meal> meals, String mealName) {
+        int i=0;
+        for (Meal meal : meals) {
+            if (mealName.equals(meal.getName())) {
+                return i;
             }
+            i++;
         }
         return -1;
     }
@@ -76,11 +79,13 @@ public class Meal extends Entity {
      * @param meals the meals
      * @return the meal names
      */
-    public static String[] mealNameArray(Meal[] meals) {
-        String[] mealNames = new String[meals.length];
+    public static String[] mealNameArray(Set<Meal> meals) {
+        String[] mealNames = new String[meals.size()];
 
-        for (int i = 0; i < meals.length; i++) {
-            mealNames[i] = meals[i].getName();
+        int i=0;
+        for (Meal meal : meals) {
+            mealNames[i] = meal.getName();
+            i++;
         }
 
         return mealNames;
@@ -142,6 +147,19 @@ public class Meal extends Entity {
         }
 
         return mostCaloricMeal;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Meal meal = (Meal) o;
+        return Objects.equals(name, meal.name) && Objects.equals(category, meal.category) && Objects.equals(ingredients, meal.ingredients) && Objects.equals(price, meal.price);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, category, ingredients, price);
     }
 
     /**

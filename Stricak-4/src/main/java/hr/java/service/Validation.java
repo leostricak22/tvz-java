@@ -45,12 +45,35 @@ public class Validation {
      * @param name the name
      * @throws DuplicateEntryException if the name is a duplicate
      */
-    public static void checkDuplicatePerson(Person[] people, String name) throws DuplicateEntryException {
+    public static void checkDuplicatePerson(Set<Person> people, String name) throws DuplicateEntryException {
         for (Person person : people) {
             if (person != null && (person.getFirstName() + " " + person.getLastName()).equals(name))
                 throw new DuplicateEntryException();
         }
     }
+
+    public static void checkDuplicateChef(Set<Chef> chefs, String name) throws DuplicateEntryException {
+        for (Chef person : chefs) {
+            if (person != null && (person.getFirstName() + " " + person.getLastName()).equals(name))
+                throw new DuplicateEntryException();
+        }
+    }
+
+    public static void checkDuplicateWaiter(Set<Waiter> waiters, String name) throws DuplicateEntryException {
+        for (Waiter person : waiters) {
+            if (person != null && (person.getFirstName() + " " + person.getLastName()).equals(name))
+                throw new DuplicateEntryException();
+        }
+    }
+
+    public static void checkDuplicateDeliverer(Set<Deliverer> deliverers, String name) throws DuplicateEntryException {
+        for (Deliverer person : deliverers) {
+            if (person != null && (person.getFirstName() + " " + person.getLastName()).equals(name))
+                throw new DuplicateEntryException();
+        }
+    }
+
+
 
     /**
      * Checks if the given name is a duplicate.
@@ -97,7 +120,7 @@ public class Validation {
      * @param name the name
      * @throws DuplicateEntryException if the name is a duplicate
      */
-    public static void checkDuplicateMeal(Meal[] meals, String name) throws DuplicateEntryException {
+    public static void checkDuplicateMeal(Set<Meal> meals, String name) throws DuplicateEntryException {
         for (Meal meal : meals) {
             if (meal != null && meal.getName().equals(name))
                 throw new DuplicateEntryException();

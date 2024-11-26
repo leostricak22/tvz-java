@@ -58,7 +58,7 @@ public final class MeatMeal extends Meal implements Meat {
      * @param scanner the scanner object used for input
      * @return the meat meal
      */
-    public static MeatMeal inputMeatMeal(Category[] categories, Set<Ingredient> ingredients, Meal[] meals, Scanner scanner) {
+    public static MeatMeal inputMeatMeal(Category[] categories, Set<Ingredient> ingredients, Set<Meal> meals, Scanner scanner) {
         logger.info("Meat meal input");
 
         String mealName;

@@ -57,7 +57,7 @@ public final class VeganMeal extends Meal implements Vegan {
      * @param scanner the scanner object used for input
      * @return the vegan meal
      */
-    public static VeganMeal inputVeganMeal(Category[] categories, Set<Ingredient> ingredients, Meal[] meals, Scanner scanner) {
+    public static VeganMeal inputVeganMeal(Category[] categories, Set<Ingredient> ingredients, Set<Meal> meals, Scanner scanner) {
         String mealName;
 
         logger.info("Vegan meal input");

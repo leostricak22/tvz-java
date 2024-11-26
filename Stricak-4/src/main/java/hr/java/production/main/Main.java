@@ -4,6 +4,7 @@ import hr.java.restaurant.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -11,6 +12,10 @@ import java.util.Set;
  * Represents the main class.
  */
 public class Main {
+    private static final int numberOfIngredients = 5;
+    private static final int numberOfChefs = 3;
+    private static final int numberOfWaiters = 3;
+    private static final int numberOfDeliverers = 3;
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) {
@@ -21,43 +26,36 @@ public class Main {
         Category[] categories = new Category[3];
         Category.inputCategory(categories, scanner);
 
-        Set<Ingredient> ingredients = Ingredient.inputIngredientSet(5, categories, scanner);
+        Set<Ingredient> ingredients = Ingredient.inputIngredientSet(numberOfIngredients, categories, scanner);
 
-        Meal[] meals = new Meal[9];
-        int counter = 0;
+        Set<Meal> meals = new HashSet<>();
 
         System.out.println("Unos veganskih jela: ");
-        for (;counter < 3; counter++)
-            meals[counter] = VeganMeal.inputVeganMeal(categories, ingredients, meals, scanner);
+        for (int i = 0; i < 3; i++) {
+            meals.add(VeganMeal.inputVeganMeal(categories, ingredients, meals, scanner));
+        }
 
         System.out.println("Unos vegetarijanskih jela: ");
-        for (;counter < 6; counter++)
-            meals[counter] = VegeterianMeal.inputVegeterianMeal(categories, ingredients, meals, scanner);
+        for (int i = 0; i < 3; i++) {
+            meals.add(VegeterianMeal.inputVegeterianMeal(categories, ingredients, meals, scanner));
+        }
 
         System.out.println("Unos mesnih jela: ");
-        for (;counter < 9; counter++)
-            meals[counter] = MeatMeal.inputMeatMeal(categories, ingredients, meals, scanner);
-
-        Person[] people = new Person[9];
-        int index = 0;
-
-        Chef[] chefs = new Chef[3];
-        Chef.inputChef(chefs, people, scanner);
-        for (Chef chef : chefs) {
-            people[index++] = chef;
+        for (int i = 0; i < 3; i++) {
+            meals.add(MeatMeal.inputMeatMeal(categories, ingredients, meals, scanner));
         }
 
-        Waiter[] waiters = new Waiter[3];
-        Waiter.inputWaiter(waiters, people, scanner);
-        for (Waiter waiter : waiters) {
-            people[index++] = waiter;
-        }
 
-        Deliverer[] deliverers = new Deliverer[3];
-        Deliverer.inputDeliverer(deliverers, people, scanner);
-        for (Deliverer deliverer : deliverers) {
-            people[index++] = deliverer;
-        }
+        Set<Person> people = new HashSet<>();
+
+        Set<Chef> chefs = Chef.inputChefSet(numberOfChefs, people, scanner);
+        people.addAll(chefs);
+
+        Set<Waiter> waiters = Waiter.inputWaiterSet(numberOfWaiters, people, scanner);
+        people.addAll(waiters);
+
+        Set<Deliverer> deliverers = Deliverer.inputDeliverer(numberOfDeliverers, people, scanner);
+        people.addAll(deliverers);
 
         Restaurant[] restaurants = new Restaurant[3];
         Restaurant.inputRestaurant(restaurants, meals, chefs, waiters, deliverers, scanner);
@@ -65,6 +63,7 @@ public class Main {
         Order[] orders = new Order[3];
         Order.inputOrder(orders, restaurants, scanner);
 
+        /*
         System.out.println("Osoba s najvećom plaćom:");
         Person highestSalaryPerson = Person.findHighestSalaryPerson(people);
         highestSalaryPerson.print(1);
@@ -72,14 +71,11 @@ public class Main {
         System.out.println("\nOsoba s najduljim ugovorom (koji je najranije započeo): ");
         Person longestContractPerson = Person.findLongestContractPerson(people);
         longestContractPerson.print(1);
+         */
 
-        Meal mostCaloricMeal = Meal.findMostCaloricMeal(meals);
-        System.out.println("\nNajkaloričnije jelo (" + mostCaloricMeal.getTotalCalories() + " kcal): ");
-        mostCaloricMeal.print(1);
-
-        Meal leastCaloricMeal = Meal.findLeastCaloricMeal(meals);
-        System.out.println("\nNajmanje kalorično jelo: (" + leastCaloricMeal.getTotalCalories() + " kcal): ");
-        leastCaloricMeal.print(1);
+        for (Order order : orders) {
+            order.print();
+        }
 
         scanner.close();
     }

@@ -7,7 +7,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Scanner;
+import java.util.Set;
 
 /**
  * Represents a chef in a restaurant.
@@ -41,23 +44,30 @@ public class Chef extends Person {
      * @param lastName the last name of the chef
      * @return the index of the chef if it exists, -1 otherwise
      */
-    public static Integer existsByName(Chef[] chefs, String firstName, String lastName) {
-        for (int j=0;j<chefs.length;j++) {
-            if (firstName.equals(chefs[j].getFirstName()) && lastName.equals(chefs[j].getLastName())) {
-                return j;
+    public static Integer existsByName(Set<Chef> chefs, String firstName, String lastName) {
+        int i=0;
+        for (Chef chef : chefs) {
+            if (chef.getFirstName().equals(firstName) && chef.getLastName().equals(lastName)) {
+                return i;
             }
+            i++;
         }
+
         return -1;
     }
 
     /**
      * Inputs chef data from the console.
-     * @param chefs the chefs
-     * @param people the Person array
-     * @param scanner the scanner object used for input
+     *
+     * @param numOfElements the chefs
+     * @param people        the Person array
+     * @param scanner       the scanner object used for input
+     * @return
      */
-    public static void inputChef(Chef[] chefs, Person[] people, Scanner scanner) {
-        for (int i = 0; i < chefs.length; i++) {
+    public static Set<Chef> inputChefSet(int numOfElements, Set<Person> people, Scanner scanner) {
+        Set<Chef> chefs = new HashSet<>();
+
+        for (int i = 0; i < numOfElements; i++) {
             logger.info("Chef input");
             String chefFirstName, chefLastName;
 
@@ -67,7 +77,7 @@ public class Chef extends Person {
 
                 try {
                     Validation.checkDuplicatePerson(people, chefFirstName + " " + chefLastName);
-                    Validation.checkDuplicatePerson(chefs, chefFirstName + " " + chefLastName);
+                    Validation.checkDuplicateChef(chefs, chefFirstName + " " + chefLastName);
                     break;
                 } catch (DuplicateEntryException e) {
                     System.out.println("Kuhar s tim imenom i prezimenom već postoji. Molimo unesite drugo ime i prezime.");
@@ -77,14 +87,17 @@ public class Chef extends Person {
             Contract contract = Input.contract(scanner, "Unesite ugovor "+(i+1)+". kuhara.");
             BigDecimal bonus = Input.bigDecimal(scanner, "Unesite bonus "+(i+1)+". kuhara.");
 
-            chefs[i] = new Builder()
+            chefs.add(
+                    new Builder()
                     .id(++counter)
                     .firstName(chefFirstName)
                     .lastName(chefLastName)
                     .contract(contract)
                     .bonus(new Bonus(bonus))
-                    .build();
+                    .build()
+            );
         }
+        return chefs;
     }
 
     /**
@@ -92,11 +105,13 @@ public class Chef extends Person {
      * @param chefs the chefs
      * @return the array of chef names
      */
-    public static String[] chefNameArray(Chef[] chefs) {
-        String[] chefNames = new String[chefs.length];
+    public static String[] chefNameArray(Set<Chef> chefs) {
+        String[] chefNames = new String[chefs.size()];
 
-        for (int i = 0; i < chefs.length; i++) {
-            chefNames[i] = (chefs[i].getFirstName() + " " + chefs[i].getLastName());
+        int i=0;
+        for(Chef chef : chefs) {
+            chefNames[i] = (chef.getFirstName() + " " + chef.getLastName());
+            i++;
         }
 
         return chefNames;
@@ -150,6 +165,19 @@ public class Chef extends Person {
     @Override
     public Contract getContract() {
         return contract;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Chef chef = (Chef) o;
+        return Objects.equals(contract, chef.contract) && Objects.equals(bonus, chef.bonus);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(contract, bonus);
     }
 
     /**

@@ -56,7 +56,7 @@ public final class VegeterianMeal extends Meal implements Vegeterian {
      * @param scanner the scanner object used for input
      * @return the vegetarian meal
      */
-    public static VegeterianMeal inputVegeterianMeal(Category[] categories, Set<Ingredient> ingredients, Meal[] meals, Scanner scanner) {
+    public static VegeterianMeal inputVegeterianMeal(Category[] categories, Set<Ingredient> ingredients, Set<Meal> meals, Scanner scanner) {
         String mealName;
 
         logger.info("Vegeterian meal input");
