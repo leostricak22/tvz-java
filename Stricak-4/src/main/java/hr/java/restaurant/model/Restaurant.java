@@ -7,6 +7,7 @@ import hr.java.service.Validation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -75,8 +76,16 @@ public class Restaurant extends Entity {
         } else {
             System.out.println("* ne poslužuje se u ni jednom restoranu");
         }
+    }
 
+    public Person personWithHighestSalary() {
+        List<Person> restaurantWorkers = new ArrayList<>();
 
+        restaurantWorkers.addAll(chefs);
+        restaurantWorkers.addAll(waiters);
+        restaurantWorkers.addAll(deliverers);
+
+        return Person.findHighestSalaryPerson(restaurantWorkers);
     }
 
     public String getName() { return name; }

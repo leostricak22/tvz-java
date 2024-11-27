@@ -1,6 +1,7 @@
 package hr.java.production.main;
 
 import hr.java.restaurant.model.*;
+import hr.java.restaurant.sort.PersonSalaryComparator;
 import hr.java.service.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +40,17 @@ public class Main {
         Map<Meal, List<Restaurant>> mealRestaurants = Restaurant.addMealsToMealRestaurantMap(restaurants);
         Restaurant.findMealInRestaurants(mealRestaurants, meals, scanner);
 
+/*        List<Person> peopleSortedBySalary = new ArrayList<>(people);
+        peopleSortedBySalary.sort(new PersonSalaryComparator());
+
+        for (Person person : peopleSortedBySalary) {
+            person.print(0);
+        }
+*/
+        for(Restaurant restaurant : restaurants) {
+            System.out.println("\nRestoran: " + restaurant.getName());
+            restaurant.personWithHighestSalary().print(0);
+        }
 
         scanner.close();
     }
@@ -63,7 +75,7 @@ Kuhano
 Mrkva
 Rajčica
 Salata
-18.5
+18,5
 Svježe
 Špageti
 Tjestenina
@@ -302,7 +314,6 @@ Ulica Ivana Plemenitog Zajca
 1
 Nikola Jambrešić
 2
-Julia Janković
 Matija Trstenjak
 Karlo Puklek
 2
@@ -314,9 +325,10 @@ Laganini
 8
 Čakovec
 40000
-2
+3
 Juha od mrkve
 Špagete bolonjez
+Zelena salata s mesom
 1
 Matea Spevec
 Julia Janković
@@ -332,12 +344,14 @@ Arka
 Matija Puklek
 2023-10-22T14:30:45
 Arka
-1
+2
 Špagete bolonjez
+Špagete karbonare
 Matija Puklek
 2023-11-11T11:32:35
 McDonalds
-3
+4
+Špagete bolonjez
 Špagete karbonare
 Juha od mrkve
 Zelena salata s mesom
@@ -400,11 +414,6 @@ Arka
 Špagete bolonjez
 Matija Puklek
 2023-11-11T11:32:35
-McDonalds
-3
-Špagete karbonare
-Juha od mrkve
-Zelena salata s mesom
-Natali Kovačić
-2023-11-17T23:32:31
+Bolonjez
+Špagete bolonjez
 */
