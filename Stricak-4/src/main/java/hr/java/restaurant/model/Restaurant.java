@@ -42,6 +42,43 @@ public class Restaurant extends Entity {
         this.deliverers = deliverers;
     }
 
+    public static Map<Meal, List<Restaurant>> addMealsToMealRestaurantMap(List<Restaurant> restaurants) {
+        Map<Meal, List<Restaurant>> mealRestaurants = new HashMap<>();
+
+        for (Restaurant restaurant : restaurants) {
+            Set<Meal> meals = restaurant.getMeals();
+
+            for(Meal meal : meals) {
+                if(mealRestaurants.get(meal) == null) {
+                    mealRestaurants.put(meal, new ArrayList<>(Collections.singleton(restaurant)));
+                } else {
+                    mealRestaurants.get(meal).add(restaurant);
+                }
+            }
+        }
+
+        return mealRestaurants;
+    }
+
+    public static void findMealInRestaurants(Map<Meal, List<Restaurant>> mealRestaurants, Set<Meal> meals, Scanner scanner) {
+        Meal meal = EntityFinder.mealName(scanner, "Unesite naziv jela da bi vidjeli u kojim se restoranima nalazi: ", meals);
+
+        if(meal == null)
+            return;
+
+        System.out.println("Meal: " + meal.getName());
+        if (mealRestaurants.get(meal) != null) {
+            List<Restaurant> restaurantList = mealRestaurants.get(meal);
+            for (Restaurant restaurant : restaurantList) {
+                System.out.println("- " + restaurant.getName());
+            }
+        } else {
+            System.out.println("* ne poslužuje se u ni jednom restoranu");
+        }
+
+
+    }
+
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
     public Set<Meal> getMeals() { return meals; }
@@ -73,7 +110,7 @@ public class Restaurant extends Entity {
      * @param scanner          the scanner object used for input
      * @return
      */
-    public static List<Restaurant> inputRestaurant(int numOfRestaurants, Set<Meal> meals, Set<Chef> chefs, Set<Waiter> waiters, Set<Deliverer> deliverers, Scanner scanner) {
+    public static List<Restaurant> inputRestaurantList(int numOfRestaurants, Set<Meal> meals, Set<Chef> chefs, Set<Waiter> waiters, Set<Deliverer> deliverers, Scanner scanner) {
         logger.info("Restaurant input");
         List<Restaurant> restaurants = new ArrayList<>();
 

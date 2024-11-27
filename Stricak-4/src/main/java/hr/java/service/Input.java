@@ -1,5 +1,6 @@
 package hr.java.service;
 
+import hr.java.restaurant.enumeration.ContractType;
 import hr.java.restaurant.exception.InvalidValueException;
 import hr.java.restaurant.model.*;
 import org.slf4j.Logger;
@@ -172,7 +173,7 @@ public class Input {
 
         LocalDate startDate = Input.localDate(scanner, "Unesite početak ugovora.");
         LocalDate endDate = Input.localDate(scanner, "Unesite kraj ugovora.");
-        String contractType = Input.string(scanner, "Unesite tip ugovora.");
+        ContractType contractType = ContractType.valueOf(Input.string(scanner, "Unesite tip ugovora."));
 
         return new Contract(salary, startDate, endDate, contractType);
     }

@@ -1,5 +1,6 @@
 package hr.java.restaurant.model;
 
+import hr.java.restaurant.enumeration.ContractType;
 import hr.java.service.Input;
 import hr.java.service.Output;
 import org.slf4j.Logger;
@@ -13,13 +14,12 @@ import java.time.LocalDate;
  */
 public class Contract {
     private static final Logger logger = LoggerFactory.getLogger(Contract.class);
-    private final  static String[] CONTRACT_TYPES = {"FULL_TIME", "PART_TIME"};
     private final static BigDecimal MIN_SALARY = new BigDecimal(800);
 
     private final BigDecimal salary;
     private final LocalDate startDate;
     private final LocalDate endDate;
-    private final String contractType;
+    private final ContractType contractType;
 
     /**
      * Constructs a Contract object using the provided builder.
@@ -28,7 +28,7 @@ public class Contract {
      * @param endDate  the end date of the contract
      * @param contractType the type of the contract
      */
-    public Contract(BigDecimal salary, LocalDate startDate, LocalDate endDate, String contractType) {
+    public Contract(BigDecimal salary, LocalDate startDate, LocalDate endDate, ContractType contractType) {
         this.salary = salary;
         this.startDate = startDate;
         this.endDate = endDate;

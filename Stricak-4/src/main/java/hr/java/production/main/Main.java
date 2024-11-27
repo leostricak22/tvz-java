@@ -33,12 +33,12 @@ public class Main {
         Set<Deliverer> deliverers = Deliverer.inputDeliverer(Constants.NUM_OF_DELIVERERS, people, scanner);
         people.addAll(deliverers);
 
-        List<Restaurant> restaurants = Restaurant.inputRestaurant(Constants.NUM_OF_RESTAURANTS, meals, chefs, waiters, deliverers, scanner);
+        List<Restaurant> restaurants = Restaurant.inputRestaurantList(Constants.NUM_OF_RESTAURANTS, meals, chefs, waiters, deliverers, scanner);
         List<Order> orders = Order.inputOrder(Constants.NUM_OF_ORDERS, restaurants, scanner);
 
-        for (Order order : orders) {
-            order.print();
-        }
+        Map<Meal, List<Restaurant>> mealRestaurants = Restaurant.addMealsToMealRestaurantMap(restaurants);
+        Restaurant.findMealInRestaurants(mealRestaurants, meals, scanner);
+
 
         scanner.close();
     }
