@@ -1,5 +1,7 @@
 package hr.java.restaurant.model;
 
+import hr.java.restaurant.sort.PersonContractLengthComparator;
+import hr.java.restaurant.sort.PersonSalaryComparator;
 import hr.java.service.EntityFinder;
 import hr.java.service.Input;
 import hr.java.service.Output;
@@ -41,6 +43,21 @@ public class Restaurant extends Entity {
         this.chefs = chefs;
         this.waiters = waiters;
         this.deliverers = deliverers;
+    }
+
+    public Person personWithLongestContract() {
+        List<Person> restaurantWorkers = new ArrayList<>();
+
+        restaurantWorkers.addAll(chefs);
+        restaurantWorkers.addAll(waiters);
+        restaurantWorkers.addAll(deliverers);
+
+        restaurantWorkers.sort(new PersonContractLengthComparator());
+
+        if(restaurantWorkers.isEmpty())
+            return null;
+
+        return restaurantWorkers.getFirst();
     }
 
     public static Map<Meal, List<Restaurant>> addMealsToMealRestaurantMap(List<Restaurant> restaurants) {
@@ -85,7 +102,12 @@ public class Restaurant extends Entity {
         restaurantWorkers.addAll(waiters);
         restaurantWorkers.addAll(deliverers);
 
-        return Person.findHighestSalaryPerson(restaurantWorkers);
+        restaurantWorkers.sort(new PersonSalaryComparator());
+
+        if(restaurantWorkers.isEmpty())
+            return null;
+
+        return restaurantWorkers.getFirst();
     }
 
     public String getName() { return name; }

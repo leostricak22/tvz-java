@@ -47,6 +47,7 @@ public class Contract {
         return startDate;
     }
 
+
     /**
      * Prints the contract information.
      * @param tabulators the number of tabulators

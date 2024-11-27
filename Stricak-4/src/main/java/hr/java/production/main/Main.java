@@ -1,7 +1,7 @@
 package hr.java.production.main;
 
 import hr.java.restaurant.model.*;
-import hr.java.restaurant.sort.PersonSalaryComparator;
+import hr.java.restaurant.sort.MealRestaurantComparator;
 import hr.java.service.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,10 +47,31 @@ public class Main {
             person.print(0);
         }
 */
+
+        System.out.println("RADNICI S NAJVEĆOM PLAĆOM U SVAKOM OD RESTORANA");
         for(Restaurant restaurant : restaurants) {
-            System.out.println("\nRestoran: " + restaurant.getName());
+            System.out.println("Restoran: " + restaurant.getName());
             restaurant.personWithHighestSalary().print(0);
         }
+
+        System.out.println("\nRADNICI S NAJDUŽIM UGOVOROM U SVAKOM OD RESTORANA");
+        for(Restaurant restaurant : restaurants) {
+            System.out.println("Restoran: " + restaurant.getName());
+            restaurant.personWithLongestContract().print(0);
+        }
+
+        System.out.println("\nNAJVIŠE JELA PO BROJU RESTORANA");
+        List<Map.Entry<Meal, List<Restaurant>>> mealRestaurantSortedEntries = new ArrayList<>(mealRestaurants.entrySet());
+        mealRestaurantSortedEntries.sort(new MealRestaurantComparator());
+
+        int i=0;
+        for (Map.Entry<Meal, List<Restaurant>> mealRestaurant : mealRestaurantSortedEntries) {
+            System.out.println(mealRestaurant.getKey().getName() + ": " + mealRestaurant.getValue().size());
+            i++;
+        }
+
+/*        for (Restaurant restaurant : restaurants)
+            restaurant.print(0);*/
 
         scanner.close();
     }

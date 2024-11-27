@@ -1,5 +1,6 @@
 package hr.java.restaurant.model;
 
+import hr.java.restaurant.sort.IngredientNameComparator;
 import hr.java.service.Constants;
 import hr.java.service.Output;
 import org.slf4j.Logger;
@@ -197,7 +198,10 @@ public class Meal extends Entity {
         System.out.println("Sastojci: ");
         int index = 1;
 
-        for (Ingredient ingredient : ingredients) {
+
+        List<Ingredient> sortedIngredients = new ArrayList<>(this.ingredients);
+        sortedIngredients.sort(new IngredientNameComparator());
+        for (Ingredient ingredient : sortedIngredients) {
             Output.tabulatorPrint(tabulators + 1);
             System.out.println("Sastojak " + index + ":");
             ingredient.print(tabulators + 2);
