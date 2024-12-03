@@ -1,5 +1,7 @@
 package org.example.model;
 
+import java.util.Arrays;
+
 public class CoffeeShop {
     private String name;
     private String address;

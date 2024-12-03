@@ -2,12 +2,15 @@ package org.example;
 
 import org.example.model.Beverage;
 import org.example.model.CoffeeShop;
+import org.example.model.DvodimenzionalniOblik;
+import org.example.model.Krug;
 
 import java.math.BigDecimal;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        /*
         Scanner sc = new Scanner(System.in); // kreiranje Scanner objekta
 
         System.out.println("Unesite naziv kafića: ");
@@ -57,5 +60,9 @@ public class Main {
 
         sc.close(); // zatvaranje scanner objekta
         // zatvara se zbog oslobodenja resura i zbog pravilnog upravljanja memorijom
+         */
+
+        Krug krug = new Krug();
+        System.out.println(krug.izracunajPovrsinu());
     }
 }
