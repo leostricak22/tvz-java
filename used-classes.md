@@ -48,4 +48,9 @@ Operatori
 Builder Pattern
 
 java.lang.Object
+- koje sve metode ima ta klasa
+
+Pattern
+
+Matcher
 

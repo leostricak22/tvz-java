@@ -5,6 +5,7 @@ import org.example.model.CoffeeShop;
 import org.example.model.DvodimenzionalniOblik;
 import org.example.model.Krug;
 
+import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.util.Scanner;
 
@@ -62,7 +63,35 @@ public class Main {
         // zatvara se zbog oslobodenja resura i zbog pravilnog upravljanja memorijom
          */
 
-        Krug krug = new Krug();
-        System.out.println(krug.izracunajPovrsinu());
+        Scanner sc = new Scanner(System.in);
+
+        boolean ispravno;
+        Integer nekiBroj = null;
+        do {
+            ispravno = true;
+
+            try {
+                System.out.println("unesi broj");
+                nekiBroj = sc.nextInt();
+
+                if(nekiBroj < 0) {
+                    ispravno = false;
+                    System.out.println("Krivo.");
+                }
+            } catch (Exception e) {
+                System.out.println("Krivo.");
+                ispravno = false;
+            }
+            sc.nextLine();
+
+        } while (!ispravno);
+
+        System.out.println("Unesi nesto drugo: ");
+        String hmhm = sc.nextLine();
+
+        System.out.println("Neki broj: " + nekiBroj);
+        System.out.println("Nesto drugo: " + hmhm);
+
+        sc.close();
     }
 }
