@@ -141,3 +141,5 @@
     - RuntimeException
 - FileNotFoundException
     - Exception
+- UnsupportedOperationException
+- EmptyStackException

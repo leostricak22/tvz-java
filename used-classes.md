@@ -54,3 +54,4 @@ Pattern
 
 Matcher
 
+compareTo -> Comparable
