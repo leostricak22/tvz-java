@@ -125,5 +125,15 @@
             return total;
         }
         ```
+        ```java
+        public static <T extends Number> double sum(List<T> list ) { // zamjena od ovog
+            double total = 0;
+            for(Number element : list) {
+                total += element.doubleValue();
+            }
+
+            return total;
+        }
+        ```
     - zamjenski simbol **?** označava *nepoznati tip* koji mora nasljeđivati klasu *Number*
     - mana korištenja *?* je ta da nije moguće znati o kojem se tipu radi

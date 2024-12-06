@@ -80,7 +80,10 @@
     throw new RuntimeException("Pogreška u programu!");
     ```
 - označene iznimke
-    - ??
+
+    ```java
+    throw new IOException("Pogreška u programu!");
+    ```
 - ako se iznimka ne obrađuje na mjestu gdje se može dogoditi, moguće je kod metode navesti *throws*
     - **ne treba** se navesti kod unchecked iznimaka
     

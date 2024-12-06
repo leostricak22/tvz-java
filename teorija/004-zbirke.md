@@ -17,7 +17,7 @@
 ### Sučelje Collection i klasa Collections
 - *Collection* sadrži skupne operacije koje se izvode nad svim objektima unutar zbirke
     - udruživanje, brisanje, uspoređivanje objekata ili elemenata zbirke
-- zbirka iz skupine *Collection* također se može konvertirati u polje
+- zbirka iz skupine *Collection* također se može konvertirati u polje `collection.toArray()`
 - *Collection* sadrži i metodu koja vraća *Iterator* objekt koji omogućava prolazak po svim elementima zbirke
 - klasa *Collections* sadrži niz statičkih metoda koje omogućavaju pretraživanje, sortiranje i druge operacije nad elementima zbirke
     - uključuje i "wrapper" metode koje omogućavaju "sinkroniziranje" operacija nad elementima zbirke koje se koriste u višenitnom okruženju
@@ -424,6 +424,12 @@ long count = allArtists.stream()
         Stream.of(1,2,3,4,5,6,7,8,9,10).dropWhile(i -> i < 5 ).forEach(System.out::println);
         ```
 
-
-### Filter Predicate
 ### Comparator
+```java
+public class PersonSalaryComparator implements Comparator<Person> {
+    @Override
+    public int compare(Person p1, Person p2) {
+        return p2.getSalary().compareTo(p1.getSalary());
+    }
+}
+```
