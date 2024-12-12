@@ -1,0 +1,72 @@
+1
+Juha od mrkve
+1
+1,4
+15
+soja
+true
+false
+2
+Špagete bolonjez
+3
+3,2
+20
+soja
+true
+true
+3
+Salata od krastavca
+2
+5
+18
+tofu
+true
+true
+4
+Juha od koprive
+1
+1,4
+15
+tofu
+false
+false
+5
+Špagete karbonare
+3
+3
+20
+soja
+false
+false
+6
+Zelena salata
+2
+5
+18
+tofu
+false
+true
+7
+Juha s piletinom
+1
+1,4
+15
+Piletina
+Kokoš
+Pečeno
+8
+Pužići sa saftom
+3
+3
+20
+Govedina
+Krava
+Kuhano
+9
+Zelena salata s mesom
+2
+5
+18
+Piletina
+Kokoš
+Pečeno

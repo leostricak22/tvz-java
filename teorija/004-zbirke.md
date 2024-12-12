@@ -257,6 +257,8 @@
 - vrijede sljedeća pravila
     - konstante u enumeracijama su implicitno označene modifikatorima final i static
     - nije moguće kreirati objekt koji predstavlja enumeraciju, već samo koristiti predefinirane vrijednosti
+- enumeracije se sortiraju po redosljedu, ne po vrijednosti
+- enumeracije su public static final
 - primjer jednostavne enumeracije
     
     ```java

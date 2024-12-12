@@ -205,12 +205,6 @@
             .map(this::getOrders)
             .orElse(new ArrayList<>());
     }
-    public Stream<Order> findOrdersForCustomer(String customerId) {
-        return findCustomer(customerId)
-            .stream()
-            .map(this::getOrders)
-            .flatMap(List::stream);
-    }
     ```
 - metodom *Optional::or* može se definirati više kriterija (potrebno koristiti povratni tip Optional)
 
