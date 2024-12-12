@@ -9,13 +9,14 @@ import org.slf4j.LoggerFactory;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.*;
 
 /**
  * Represents a meal that is vegetarian.
  */
-public final class VegetarianMeal extends Meal implements Vegetarian {
+public final class VegetarianMeal extends Meal implements Vegetarian, Serializable {
     private final boolean containsDairy;
     private final boolean containsEggs;
     private final String proteinSource;
@@ -32,45 +33,11 @@ public final class VegetarianMeal extends Meal implements Vegetarian {
      * @param containsDairy if the meal contains dairy
      * @param containsEggs if the meal contains eggs
      */
-    public VegetarianMeal(String name, Category category, Set<Ingredient> ingredients, BigDecimal price, String proteinSource, boolean containsDairy, boolean containsEggs) {
-        super(name, category, ingredients, price);
+    public VegetarianMeal(Long id, String name, String mealType, Category category, Set<Ingredient> ingredients, BigDecimal price, String proteinSource, boolean containsDairy, boolean containsEggs) {
+        super(id, name, mealType, category, ingredients, price);
         this.containsDairy = containsDairy;
         this.containsEggs = containsEggs;
         this.proteinSource = proteinSource;
-    }
-
-    public static List<Meal> readVegetarianMealFromFile() {
-        List<Meal> vegetarianMeals = new ArrayList<>();
-
-        int linesRead = 0;
-        try (BufferedReader reader = new BufferedReader(new FileReader(Constants.FILENAME_MEALS))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                linesRead++;
-                if (!(linesRead > 24 && linesRead < 49)) {
-                    break;
-                }
-
-                int id = Integer.parseInt(line.trim());
-
-                String name = reader.readLine().trim();
-                long categoryId = Long.parseLong(reader.readLine().trim());
-                String ingredientsIdentifiers = reader.readLine().trim();
-                BigDecimal price = new BigDecimal(reader.readLine().trim());
-                String proteinSource = reader.readLine().trim();
-                boolean containsDairy = Boolean.parseBoolean(reader.readLine().trim());
-                boolean containsEggs = Boolean.parseBoolean(reader.readLine().trim());
-
-                Category category = EntityFinder.categoryById(categoryId, Category.readCategoryFromFile());
-                Set<Ingredient> ingredients = Ingredient.getIngredientsByIdentifiers(ingredientsIdentifiers, Ingredient.readIngredientFromFile());
-
-                vegetarianMeals.add(new VegetarianMeal(name, category, ingredients, price, proteinSource, containsDairy, containsEggs));
-            }
-        } catch (IOException e) {
-            System.err.println("Greška pri čitanju datoteke: " + e.getMessage());
-        }
-
-        return vegetarianMeals;
     }
 
     public boolean containsDairy() {
@@ -79,6 +46,18 @@ public final class VegetarianMeal extends Meal implements Vegetarian {
 
     public boolean containsEggs() {
         return containsEggs;
+    }
+
+    public boolean isContainsDairy() {
+        return containsDairy;
+    }
+
+    public boolean isContainsEggs() {
+        return containsEggs;
+    }
+
+    public String getProteinSource() {
+        return proteinSource;
     }
 
     /**
@@ -123,7 +102,7 @@ public final class VegetarianMeal extends Meal implements Vegetarian {
         boolean mealContainsDiary = Input.booleanValue(scanner, "Sadrži li jelo mliječne proizvode? ");
         boolean mealContainsEggs = Input.booleanValue(scanner, "Sadrži li jelo jaja? ");
 
-        return new VegetarianMeal(mealName, mealCategory, ingredientsEntered, mealPrice, mealProteinSource, mealContainsDiary, mealContainsEggs);
+        return new VegetarianMeal(1l, mealName, "vegetarian", mealCategory, ingredientsEntered, mealPrice, mealProteinSource, mealContainsDiary, mealContainsEggs);
     }
 
     /**

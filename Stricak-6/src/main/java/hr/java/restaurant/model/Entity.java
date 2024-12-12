@@ -1,9 +1,11 @@
 package hr.java.restaurant.model;
 
+import java.io.Serializable;
+
 /**
  * Represents an entity.
  */
-public class Entity {
+public abstract class Entity implements Serializable {
     private Long id;
 
     public Entity(Long id) {

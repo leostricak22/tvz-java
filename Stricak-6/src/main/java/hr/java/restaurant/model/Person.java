@@ -2,14 +2,12 @@ package hr.java.restaurant.model;
 
 import hr.java.restaurant.enumeration.ContractType;
 import hr.java.service.Constants;
-import hr.java.service.EntityFinder;
-import hr.java.service.Input;
 import hr.java.service.Output;
 
-import java.awt.datatransfer.MimeTypeParseException;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
@@ -17,7 +15,7 @@ import java.util.*;
 /**
  * Abstract class that represents a person.
  */
-public abstract class Person extends  Entity{
+public abstract class Person extends Entity implements Serializable {
     private final String firstName;
     private final String lastName;
 
@@ -126,12 +124,12 @@ public abstract class Person extends  Entity{
         return longestContractPerson;
     }
 
-    public static Set<Person> getPersonByIdentifiers(String deliverersInRestaurantIdentifiers, Set<Person> people) {
-        Set<Person> peopleByIdentifiers = new HashSet<>();
+    public static <T extends Person> Set<T> getPersonByIdentifiers(String deliverersInRestaurantIdentifiers, Set<T> people) {
+        Set<T> peopleByIdentifiers = new HashSet<>();
         String[] identifiers = deliverersInRestaurantIdentifiers.split(",");
 
         for (String identifier : identifiers) {
-            for (Person person : people) {
+            for (T person : people) {
                 if (person.getId().equals(Long.parseLong(identifier))) {
                     peopleByIdentifiers.add(person);
                 }

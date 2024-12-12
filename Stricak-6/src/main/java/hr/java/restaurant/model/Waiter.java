@@ -6,16 +6,17 @@ import hr.java.service.Validation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.*;
 
 /**
  * Represents a waiter.
  */
-public class Waiter extends Person {
+public class Waiter extends Person implements Serializable {
     private static Long counter = 0L;
     private final Contract contract;
-    private final Bonus bonus;
+    private Bonus bonus;
     private static final Logger logger = LoggerFactory.getLogger(Waiter.class);
 
     /**
@@ -26,6 +27,10 @@ public class Waiter extends Person {
         super(builder.id, builder.firstName, builder.lastName);
         this.contract = builder.contract;
         this.bonus = builder.bonus;
+    }
+
+    public Bonus getBonus() {
+        return bonus;
     }
 
     /**

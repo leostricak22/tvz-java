@@ -1,6 +1,7 @@
 package hr.java.restaurant.model;
 
 import hr.java.restaurant.exception.DuplicateEntryException;
+import hr.java.restaurant.repository.IngredientRepository;
 import hr.java.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,20 +9,22 @@ import org.slf4j.LoggerFactory;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.*;
 
 /**
  * Represents an ingredient of a meal.
  */
-public class Ingredient  extends Entity {
-    private static Long counter = 0L;
+public class Ingredient extends Entity implements Serializable {
     private static final Logger logger = LoggerFactory.getLogger(Ingredient.class);
 
     private String name;
     private final Category category;
     private final BigDecimal kcal;
     private final String preparationMethod;
+
+    private static final IngredientRepository<Ingredient> ingredientRepository = new IngredientRepository<>();
 
     /**
      * Constructs an Ingredient object
@@ -38,16 +41,21 @@ public class Ingredient  extends Entity {
         this.preparationMethod = preparationMethod;
     }
 
-    public static Set<Ingredient> getIngredientsByIdentifiers(String ingredientsIdentifiers, Set<Ingredient> ingredients) {
+    public Category getCategory() {
+        return category;
+    }
+
+    public String getPreparationMethod() {
+        return preparationMethod;
+    }
+
+    public static Set<Ingredient> getIngredientsByIdentifiers(String ingredientsIdentifiers) {
         Set<Ingredient> ingredientsList = new HashSet<>();
         String[] identifiers = ingredientsIdentifiers.split(",");
         for (String identifier : identifiers) {
-            for (Ingredient ingredient : ingredients) {
-                if (ingredient.getId().equals(Long.parseLong(identifier))) {
-                    ingredientsList.add(ingredient);
-                }
-            }
+            ingredientsList.add(ingredientRepository.findById(Long.parseLong(identifier)));
         }
+
         return ingredientsList;
     }
 
@@ -129,9 +137,6 @@ public class Ingredient  extends Entity {
 
                 Category category = EntityFinder.categoryById(categoryId, Category.readCategoryFromFile());
 
-                if(category == null) {
-                    throw new IllegalArgumentException("Kategorija s id-em " + categoryId + " ne postoji.");
-                }
 
                 ingredients.add(new Ingredient((long) id, name, category, kcal, preparationMethod));
             }

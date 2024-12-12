@@ -5,12 +5,13 @@ import hr.java.service.Output;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Serializable;
 import java.util.Scanner;
 
 /**
  * Represents an address of a restaurant.
  * */
-public class Address extends Entity {
+public class Address extends Entity implements Serializable {
     private static final Logger logger = LoggerFactory.getLogger(Address.class);
 
     private static Long counter = 0L;

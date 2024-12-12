@@ -6,18 +6,19 @@ import hr.java.service.Validation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.*;
 
 /**
  * Represents a deliverer in a restaurant.
  */
-public class Deliverer  extends Person {
+public class Deliverer extends Person implements Serializable {
     private static final Logger logger = LoggerFactory.getLogger(Deliverer.class);
 
     private static Long counter = 0L;
     private final Contract contract;
-    private final Bonus bonus;
+    private Bonus bonus;
 
     /**
      * Constructs a Deliverer object using the provided builder.
@@ -27,6 +28,10 @@ public class Deliverer  extends Person {
         super(builder.id, builder.firstName, builder.lastName);
         this.contract = builder.contract;
         this.bonus = builder.bonus;
+    }
+
+    public Bonus getBonus() {
+        return bonus;
     }
 
     /**

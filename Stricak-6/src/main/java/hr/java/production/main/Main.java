@@ -1,19 +1,15 @@
 package hr.java.production.main;
 
 import hr.java.restaurant.enumeration.ContractType;
-import hr.java.restaurant.generics.RestaurantLabourExchangeOffice;
 import hr.java.restaurant.model.*;
+import hr.java.restaurant.repository.*;
 import hr.java.service.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
-
-import static hr.java.restaurant.model.Category.readCategoryFromFile;
 
 /**
  * Represents the main class.
@@ -35,51 +31,39 @@ public class Main {
         //List<Restaurant> restaurants = Restaurant.inputRestaurantList(Constants.NUM_OF_RESTAURANTS, meals, chefs, waiters, deliverers, scanner);
         //List<Order> orders = Order.inputOrder(Constants.NUM_OF_ORDERS, restaurants, scanner);
 
-        Set<Category> categories = readCategoryFromFile();
-        Set<Ingredient> ingredients = Ingredient.readIngredientFromFile();
-        Set<Meal> meals = Meal.readMealsFromFile();
+        CategoryRepository<Category> categoryRepository = new CategoryRepository<>();
+        IngredientRepository<Ingredient> ingredientRepository = new IngredientRepository<>();
+        MealRepository<Meal> mealRepository = new MealRepository<>();
+        ChefRepository<Chef> chefRepository = new ChefRepository<>();
+        WaiterRepository<Waiter> waiterRepository = new WaiterRepository<>();
+        DelivererRepository<Deliverer> delivererRepository = new DelivererRepository<>();
+        RestaurantRepository<Restaurant> restaurantRepository = new RestaurantRepository<>();
+        OrderRepository<Order> orderRepository = new OrderRepository<>();
 
-        Set<Person> chefs = Person.readPeopleFromFile(Constants.FILENAME_CHEFS);
-        Set<Person> waiters = Person.readPeopleFromFile(Constants.FILENAME_WAITERS);
-        Set<Person> deliverers = Person.readPeopleFromFile(Constants.FILENAME_DELIVERERS);
+        Set<Category> categories = categoryRepository.findAll();
+        Set<Ingredient> ingredients = ingredientRepository.findAll();
+        Set<Meal> meals = mealRepository.findAll();
+
+        Set<Chef> chefs = chefRepository.findAll();
+        Set<Waiter> waiters = waiterRepository.findAll();
+        Set<Deliverer> deliverers = delivererRepository.findAll();
 
         Set<Person> people = new HashSet<>(chefs);
         people.addAll(waiters);
         people.addAll(deliverers);
 
-        Set<Restaurant> restaurants = Restaurant.readRestaurantsFromFile(meals, people);
+        Set<Restaurant> restaurants = restaurantRepository.findAll();
+        Set<Order> orders = orderRepository.findAll();
 
-        Set<Order> orders = Order.readOrdersFromFile(restaurants);
+        categoryRepository.save(categories);
+        ingredientRepository.save(ingredients);
+        chefRepository.save(chefs);
+        waiterRepository.save(waiters);
+        delivererRepository.save(deliverers);
+        mealRepository.save(meals);
 
-        for (Order order : orders) {
-            order.print();
-        }
-
-        /*
-        List<Order> orders = new ArrayList<>();
-        orders.add(new Order(
-                restaurants.stream().filter(restaurant -> Objects.equals("Arka", restaurant.getName())).toList().getFirst(),
-                meals.stream().filter(meal -> Set.of("Špagete bolonjez").contains(meal.getName())).collect(Collectors.toList()),
-                (Deliverer) deliverers.stream().filter(deliverer -> Objects.equals("Matija Puklek", deliverer.getFirstName() + " " + deliverer.getLastName())).findFirst().get(),
-                LocalDateTime.parse("2023-10-22T14:30:45")));
-
-        orders.add(new Order(
-                restaurants.stream().filter(restaurant -> Objects.equals("Arka", restaurant.getName())).toList().getFirst(),
-                meals.stream().filter(meal -> Set.of("Špagete bolonjez", "Špagete karbonare").contains(meal.getName())).collect(Collectors.toList()),
-                (Deliverer) deliverers.stream().filter(deliverer -> Objects.equals("Matija Puklek", deliverer.getFirstName() + " " + deliverer.getLastName())).findFirst().get(),
-                LocalDateTime.parse("2023-11-11T11:32:35")));
-
-        orders.add(new Order(
-                restaurants.stream().filter(restaurant -> Objects.equals("McDonalds", restaurant.getName())).toList().getFirst(),
-                meals.stream().filter(meal -> Set.of("Juha od mrkve", "Salata od krastavaca", "Zelena salata s mesom", "Špagete karbonare").contains(meal.getName())).collect(Collectors.toList()),
-                (Deliverer) deliverers.stream().filter(deliverer -> Objects.equals("Natali Kovačić", deliverer.getFirstName() + " " + deliverer.getLastName())).findFirst().get(),
-                LocalDateTime.parse("2023-11-17T23:32:31")));
-*/
-
-
-        for (Order order : orders) {
-            order.print();
-        }
+        Order.serializeToFile(orders);
+        Order.deserializeFromFile();
 
         scanner.close();
     }

@@ -9,13 +9,14 @@ import org.slf4j.LoggerFactory;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.*;
 
 /**
  * Represents a meal that contains meat.
  */
-public final class MeatMeal extends Meal implements Meat {
+public final class MeatMeal extends Meal implements Meat, Serializable {
     private final String meatType;
     private final String meatOrigin;
     private final String meatCookingType;
@@ -32,44 +33,11 @@ public final class MeatMeal extends Meal implements Meat {
      * @param meatOrigin the origin of meat
      * @param meatCookingType the cooking type of meat
      */
-    public MeatMeal(String name, Category category, Set<Ingredient> ingredients, BigDecimal price, String meatType, String meatOrigin, String meatCookingType) {
-        super(name, category, ingredients, price);
+    public MeatMeal(Long id, String name, String mealType, Category category, Set<Ingredient> ingredients, BigDecimal price, String meatType, String meatOrigin, String meatCookingType) {
+        super(id, name, mealType, category, ingredients, price);
         this.meatType = meatType;
         this.meatOrigin = meatOrigin;
         this.meatCookingType = meatCookingType;
-    }
-
-    public static List<Meal> readMeatMealFromFile() {
-        List<Meal> meatMeals = new ArrayList<>();
-        int linesRead = 0;
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(Constants.FILENAME_MEALS))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                linesRead++;
-                if (linesRead < 49) {
-                    break;
-                }
-
-                int id = Integer.parseInt(line.trim());
-                String name = reader.readLine().trim();
-                long categoryId = Long.parseLong(reader.readLine().trim());
-                String ingredientsIdentifiers = reader.readLine().trim();
-                BigDecimal price = new BigDecimal(reader.readLine().trim());
-                String meatType = reader.readLine().trim();
-                String meatOrigin = reader.readLine().trim();
-                String meatCookingType = reader.readLine().trim();
-
-                Category category = EntityFinder.categoryById(categoryId, Category.readCategoryFromFile());
-                Set<Ingredient> ingredients = Ingredient.getIngredientsByIdentifiers(ingredientsIdentifiers, Ingredient.readIngredientFromFile());
-
-                meatMeals.add(new MeatMeal(name, category, ingredients, price, meatType, meatOrigin, meatCookingType));
-            }
-        } catch (IOException e) {
-            logger.error("Error reading from file.");
-            System.out.println("Pogreška prilikom čitanja iz datoteke.");
-        }
-        return meatMeals;
     }
 
     @Override
@@ -126,7 +94,11 @@ public final class MeatMeal extends Meal implements Meat {
         String meatOrigin = Input.string(scanner, "Unesite podrijetlo mesa: ");
         String meatCookingType = Input.string(scanner, "Unesite način pripreme mesa: ");
 
-        return new MeatMeal(mealName, mealCategory, ingredientsEntered, mealPrice, meatType, meatOrigin, meatCookingType);
+        return new MeatMeal(1l, mealName, "meat", mealCategory, ingredientsEntered, mealPrice, meatType, meatOrigin, meatCookingType);
+    }
+
+    public String getMeatCookingType() {
+        return meatCookingType;
     }
 
     /**

@@ -1,19 +1,20 @@
 package hr.java.restaurant.model;
 
+import hr.java.restaurant.repository.RestaurantRepository;
 import hr.java.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * Represents a restaurant.
  */
-public class Restaurant extends Entity {
-    private static Long counter = 0L;
+public class Restaurant extends Entity implements Serializable {
     private static final Logger logger = LoggerFactory.getLogger(Restaurant.class);
 
     private String name;
@@ -22,6 +23,8 @@ public class Restaurant extends Entity {
     private final Set<Chef> chefs;
     private final Set<Waiter> waiters;
     private final Set<Deliverer> deliverers;
+
+    private static final RestaurantRepository<Restaurant> restaurantRepository = new RestaurantRepository<>();
 
     /**
      * Constructs a Restaurant object from provided data.
@@ -32,8 +35,8 @@ public class Restaurant extends Entity {
      * @param waiters the waiters in the restaurant
      * @param deliverers the deliverers in the restaurant
      */
-    public Restaurant(String name, Address address, Set<Meal> meals, Set<Chef> chefs, Set<Waiter> waiters, Set<Deliverer> deliverers) {
-        super(++counter);
+    public Restaurant(Long id, String name, Address address, Set<Meal> meals, Set<Chef> chefs, Set<Waiter> waiters, Set<Deliverer> deliverers) {
+        super(id);
         this.name = name;
         this.address = address;
         this.meals = meals;
@@ -42,56 +45,11 @@ public class Restaurant extends Entity {
         this.deliverers = deliverers;
     }
 
-    public static Set<Restaurant> readRestaurantsFromFile(Set<Meal> meals, Set<Person> people) {
-        Set<Restaurant> restaurants = new HashSet<>();
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(Constants.FILENAME_RESTAURANTS))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                int id = Integer.parseInt(line.trim());
-                String name = reader.readLine().trim();;
-
-                String street = reader.readLine().trim();
-                String houseNumber = reader.readLine().trim();
-                String city = reader.readLine().trim();
-                String postalCode = reader.readLine().trim();
-
-                String mealsInRestaurantIdentifiers = reader.readLine().trim();
-                String chefsInRestaurantIdentifiers = reader.readLine().trim();
-                String waitersInRestaurantIdentifiers = reader.readLine().trim();
-                String deliverersInRestaurantIdentifiers = reader.readLine().trim();
-
-                Set<Meal> mealsInRestaurant = Meal.getMealByIdentifiers(mealsInRestaurantIdentifiers, meals);
-                Set<Chef> chefsInRestaurant = Person.getPersonByIdentifiers(chefsInRestaurantIdentifiers, people).stream().map(person -> (Chef) person).collect(Collectors.toSet());
-                Set<Waiter> waitersInRestaurant = Person.getPersonByIdentifiers(waitersInRestaurantIdentifiers, people).stream().map(person -> (Waiter) person).collect(Collectors.toSet());
-                Set<Deliverer> deliverersInRestaurant = Person.getPersonByIdentifiers(deliverersInRestaurantIdentifiers, people).stream().map(person -> (Deliverer) person).collect(Collectors.toSet());
-
-                Address address = new Address.Builder()
-                        .id((long) id)
-                        .street(street)
-                        .houseNumber(houseNumber)
-                        .city(city)
-                        .postalCode(postalCode)
-                        .build();
-
-                restaurants.add(new Restaurant(name, address, mealsInRestaurant, chefsInRestaurant, waitersInRestaurant, deliverersInRestaurant));
-            }
-        } catch (Exception e) {
-            logger.error("Error reading from file: " + e.getMessage());
-        }
-
-        return restaurants;
-    }
-
-    public static Set<Restaurant> restaurantByIdentifier(String restaurantIdentifier, Set<Restaurant> restaurants) {
+    public static Set<Restaurant> restaurantByIdentifier(String restaurantIdentifier) {
         Set<Restaurant> restaurantList = new HashSet<>();
         String[] identifiers = restaurantIdentifier.split(",");
         for (String identifier : identifiers) {
-            for (Restaurant restaurant : restaurants) {
-                if (restaurant.getId().equals(Long.parseLong(identifier))) {
-                    restaurantList.add(restaurant);
-                }
-            }
+            restaurantList.add(restaurantRepository.findById(Long.parseLong(identifier)));
         }
 
         return restaurantList;
@@ -241,7 +199,7 @@ public class Restaurant extends Entity {
                 deliverersEntered.add(EntityFinder.delivererName(scanner,"Unesite ime i prezime (odvojeno razmakom) "+(j+1)+". dostavljača kojeg želite dodati: ", deliverers));
             }
 
-            restaurants.add(new Restaurant(restaurantName, restaurantAddress, mealsEntered, chefsEntered, waitersEntered, deliverersEntered));
+            restaurants.add(new Restaurant(1l, restaurantName, restaurantAddress, mealsEntered, chefsEntered, waitersEntered, deliverersEntered));
         }
 
         return restaurants;

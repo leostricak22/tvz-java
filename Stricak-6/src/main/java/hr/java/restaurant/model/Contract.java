@@ -6,20 +6,21 @@ import hr.java.service.Output;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 /**
  * Represents a contract of a person.
  */
-public class Contract {
+public class Contract implements Serializable {
     private static final Logger logger = LoggerFactory.getLogger(Contract.class);
     private final static BigDecimal MIN_SALARY = new BigDecimal(800);
 
-    private final BigDecimal salary;
-    private final LocalDate startDate;
-    private final LocalDate endDate;
-    private final ContractType contractType;
+    private BigDecimal salary;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private ContractType contractType;
 
     /**
      * Constructs a Contract object using the provided builder.
@@ -46,6 +47,19 @@ public class Contract {
     public LocalDate getStartDate() {
         return startDate;
     }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public ContractType getContractType() {
+        return contractType;
+    }
+
+    /**
+     * Reads the contract information from the console.
+     * @return the contract
+     */
 
 
     /**

@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.Set;
 /**
  * Represents a meal that is vegan.
  */
-public final class VeganMeal extends Meal implements Vegan {
+public final class VeganMeal extends Meal implements Vegan, Serializable {
     private final String proteinSource;
     private final boolean organic;
     private final boolean glutenFree;
@@ -34,46 +35,13 @@ public final class VeganMeal extends Meal implements Vegan {
      * @param organic if the meal is organic
      * @param glutenFree if the meal is gluten-free
      */
-    public VeganMeal(String name, Category category, Set<Ingredient> ingredients, BigDecimal price, String proteinSource, boolean organic, boolean glutenFree) {
-        super(name, category, ingredients, price);
+    public VeganMeal(Long id, String name, String mealType, Category category, Set<Ingredient> ingredients, BigDecimal price, String proteinSource, boolean organic, boolean glutenFree) {
+        super(id, name, mealType, category, ingredients, price);
         this.proteinSource = proteinSource;
         this.organic = organic;
         this.glutenFree = glutenFree;
     }
 
-    public static List<Meal> readVeganMealFromFile() {
-        List<Meal> veganMeals = new ArrayList<>();
-        int linesRead = 0;
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(Constants.FILENAME_MEALS))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                linesRead++;
-                if (linesRead > 24) {
-                    break;
-                }
-
-                int id = Integer.parseInt(line.trim());
-
-                String name = reader.readLine().trim();
-                long categoryId = Long.parseLong(reader.readLine().trim());
-                String ingredientsIdentifiers = reader.readLine().trim();
-                BigDecimal price = new BigDecimal(reader.readLine().trim());
-                String proteinSource = reader.readLine().trim();
-                boolean organic = Boolean.parseBoolean(reader.readLine().trim());
-                boolean glutenFree = Boolean.parseBoolean(reader.readLine().trim());
-
-                Category category = EntityFinder.categoryById(categoryId, Category.readCategoryFromFile());
-                Set<Ingredient> ingredients = Ingredient.getIngredientsByIdentifiers(ingredientsIdentifiers, Ingredient.readIngredientFromFile());
-
-                veganMeals.add(new VeganMeal(name, category, ingredients, price, proteinSource, organic, glutenFree));
-            }
-        } catch (IOException e) {
-            System.err.println("Greška pri čitanju datoteke: " + e.getMessage());
-        }
-
-        return veganMeals;
-    }
 
     @Override
     public boolean isOrganic() {
@@ -125,7 +93,11 @@ public final class VeganMeal extends Meal implements Vegan {
         boolean mealOrganic = Input.booleanValue(scanner, "Unesite je li vegansko jelo organsko: ");
         boolean mealGlutenFree = Input.booleanValue(scanner, "Unesite je li vegansko jelo bez glutena: ");
 
-        return new VeganMeal(mealName, mealCategory, ingredientsEntered, mealPrice, mealProteinSource, mealOrganic, mealGlutenFree);
+        return new VeganMeal(1l, mealName, "vegan", mealCategory, ingredientsEntered, mealPrice, mealProteinSource, mealOrganic, mealGlutenFree);
+    }
+
+    public String getProteinSource() {
+        return proteinSource;
     }
 
     /**

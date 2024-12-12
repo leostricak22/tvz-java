@@ -7,8 +7,7 @@ import hr.java.service.Output;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -16,7 +15,7 @@ import java.util.*;
 /**
  * Represents an order.
  */
-public class Order extends Entity {
+public class Order extends Entity implements Serializable {
     private static Long counter = 0L;
     private static final Logger logger = LoggerFactory.getLogger(Order.class);
 
@@ -32,37 +31,14 @@ public class Order extends Entity {
      * @param deliverer the deliverer
      * @param deliveryDateAndTime the delivery date and time
      */
-    public Order(Restaurant restaurant, List<Meal> meals, Deliverer deliverer, LocalDateTime deliveryDateAndTime) {
-        super(++counter);
+    public Order(Long id, Restaurant restaurant, List<Meal> meals, Deliverer deliverer, LocalDateTime deliveryDateAndTime) {
+        super(id);
         this.restaurant = restaurant;
         this.meals = meals;
         this.deliverer = deliverer;
         this.deliveryDateAndTime = deliveryDateAndTime;
     }
 
-    public static Set<Order> readOrdersFromFile(Set<Restaurant> restaurants) {
-        Set<Order> orders = new HashSet<>();
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(Constants.FILENAME_ORDERS))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String restaurantIdentifier = reader.readLine().trim();
-                String mealIdentifiers = reader.readLine().trim();
-                String delivererIdentifier = reader.readLine().trim();
-                LocalDateTime deliveryDateAndTime = LocalDateTime.parse(reader.readLine().trim());
-
-                Restaurant restaurant = new ArrayList<>(Restaurant.restaurantByIdentifier(restaurantIdentifier, restaurants)).getFirst();
-                Set<Meal> meals = Meal.getMealByIdentifiers(mealIdentifiers, restaurant.getMeals());
-                Deliverer deliverer = Deliverer.getDelivererByIdentifiers(delivererIdentifier, restaurant.getDeliverers());
-
-                orders.add(new Order(restaurant, new ArrayList<>(meals), deliverer, deliveryDateAndTime));
-            }
-        } catch (Exception e) {
-            logger.error("Error reading orders from file.", e);
-        }
-
-        return orders;
-    }
 
     public Restaurant getRestaurant() {
         return restaurant;
@@ -102,7 +78,7 @@ public class Order extends Entity {
             Deliverer orderDeliverer = EntityFinder.delivererName(scanner,"Unesite ime i prezime (odvojeno razmakom) dostavljača kojeg želite dodati: ", orderRestaurant.getDeliverers());
             LocalDateTime orderDeliveryDateAndTime = Input.localDateTime(scanner, "Unesite datum dostave narudžbe. (primjer formata: yyyy-MM-ddTHH:mm:ss)");
 
-            orders.add(new Order(orderRestaurant, mealsEntered, orderDeliverer, orderDeliveryDateAndTime));
+            orders.add(new Order(1l, orderRestaurant, mealsEntered, orderDeliverer, orderDeliveryDateAndTime));
         }
 
         return orders;
@@ -222,5 +198,37 @@ public class Order extends Entity {
         Output.tabulatorPrint(1);
         System.out.print("Datum dostave: ");
         System.out.println(this.deliveryDateAndTime);
+    }
+
+    public static void serializeToFile(Set<Order> orders) {
+        try {
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("dat/orders.dat"));
+            out.writeObject(orders);
+            out.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static Set<Order> deserializeFromFile() {
+        try {
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream("dat/orders.dat"));
+
+            System.out.println(1);
+
+            Set<Order> orders  = (Set<Order>) in.readObject();
+            System.out.println("Podaci o pročitanom objektu:");
+            for (Order order : orders) {
+                order.print();
+            }
+
+            in.close();
+
+            return orders;
+        } catch (IOException | ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
+
+        return null;
     }
 }

@@ -1,27 +1,31 @@
 package hr.java.restaurant.model;
 
-import hr.java.restaurant.sort.IngredientNameComparator;
+import hr.java.restaurant.repository.MealRepository;
 import hr.java.service.Constants;
 import hr.java.service.Output;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.*;
 
 /**
  * Represents a meal in a restaurant.
  */
-public class Meal extends Entity {
+public class Meal extends Entity implements Serializable {
     private static final BigDecimal unrealPrice = new BigDecimal(500);
     private static final Logger logger = LoggerFactory.getLogger(Meal.class);
 
     private static Long counter = 0L;
 
     private String name;
+    private String mealType;
     private final Category category;
     private Set<Ingredient> ingredients;
     private final BigDecimal price;
+
+    private final static MealRepository<Meal> mealRepository = new MealRepository<>();
 
     /**
      * Constructs a Meal object using the provided builder.
@@ -31,9 +35,10 @@ public class Meal extends Entity {
      * @param ingredients the ingredients.txt of the meal
      * @param price the price of the meal
      */
-    public Meal(String name, Category category, Set<Ingredient> ingredients, BigDecimal price) {
-        super(++counter);
+    public Meal(Long id, String name, String mealType, Category category, Set<Ingredient> ingredients, BigDecimal price) {
+        super(id);
         this.name = name;
+        this.mealType = mealType;
         this.category = category;
         this.ingredients = ingredients;
         this.price = price;
@@ -64,28 +69,25 @@ public class Meal extends Entity {
         return meals;
     }
 
-    public static Set<Meal> readMealsFromFile() {
-        Set<Meal> meals = new HashSet<>();
-
-        meals.addAll(VeganMeal.readVeganMealFromFile());
-        meals.addAll(VegetarianMeal.readVegetarianMealFromFile());
-        meals.addAll(MeatMeal.readMeatMealFromFile());
-
-        return meals;
-    }
-
-    public static Set<Meal> getMealByIdentifiers(String mealsInRestaurantIdentifiers, Set<Meal> meals) {
+    public static Set<Meal> getMealByIdentifiers(String mealsInRestaurantIdentifiers) {
         Set<Meal> mealsList = new HashSet<>();
         String[] identifiers = mealsInRestaurantIdentifiers.split(",");
         for (String identifier : identifiers) {
-            for (Meal meal : meals) {
-                if (meal.getId().equals(Long.parseLong(identifier))) {
-                    mealsList.add(meal);
-                }
-            }
+            mealsList.add(mealRepository.findById(Long.parseLong(identifier)));
         }
 
         return mealsList;
+    }
+
+    public String getIngredientsIdentifiers() {
+        StringBuilder ingredientIdentifiers = new StringBuilder();
+        for (Ingredient ingredient : ingredients) {
+            ingredientIdentifiers.append(ingredient.getId()).append(",");
+        }
+
+        ingredientIdentifiers.deleteCharAt(ingredientIdentifiers.length() - 1);
+
+        return ingredientIdentifiers.toString();
     }
 
     public String getName() {
@@ -145,6 +147,14 @@ public class Meal extends Entity {
         }
 
         return  mealCalories;
+    }
+
+    public String getMealType() {
+        return mealType;
+    }
+
+    public Category getCategory() {
+        return category;
     }
 
     /**

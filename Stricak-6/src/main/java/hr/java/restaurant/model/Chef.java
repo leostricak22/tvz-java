@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.*;
@@ -18,12 +19,12 @@ import java.util.*;
 /**
  * Represents a chef in a restaurant.
  */
-public class Chef extends Person {
+public class Chef extends Person  implements Serializable {
     private static final Logger logger = LoggerFactory.getLogger(Chef.class);
 
     private static Long counter = 0L;
     private Contract contract;
-    private final Bonus bonus;
+    private Bonus bonus;
 
     /**
      * Constructs a Chef object using the provided builder.
@@ -57,6 +58,10 @@ public class Chef extends Person {
         }
 
         return -1;
+    }
+
+    public Bonus getBonus() {
+        return bonus;
     }
 
     /**

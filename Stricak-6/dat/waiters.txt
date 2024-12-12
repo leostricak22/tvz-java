@@ -6,14 +6,6 @@ Janković
 2025-12-12
 PART_TIME
 500
-5
-Matija
-Trstenjak
-1400
-2022-12-12
-2025-12-12
-FULL_TIME
-0
 6
 Karlo
 Puklek
@@ -21,4 +13,12 @@ Puklek
 2024-01-01
 2025-12-12
 PART_TIME
+0
+5
+Matija
+Trstenjak
+1400
+2022-12-12
+2025-12-12
+FULL_TIME
 0

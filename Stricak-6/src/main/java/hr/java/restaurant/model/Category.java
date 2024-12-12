@@ -8,20 +8,18 @@ import hr.java.service.Validation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 /**
  * Represents a category of a meal.
  */
-public class Category extends Entity {
+public class Category extends Entity implements Serializable {
     private static Long counter = 0L;
     private static final Logger logger = LoggerFactory.getLogger(Category.class);
 
     private String name;
-    private final String description;
+    private String description;
 
     /**
      * Constructs a Category object using the provided builder.
@@ -39,6 +37,10 @@ public class Category extends Entity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     /**
@@ -165,5 +167,35 @@ public class Category extends Entity {
         logger.info("Printing category.");
         Output.tabulatorPrint(tabulators);
         System.out.println("Id: " + this.getId() + ", Naziv kategorije: " + this.name + ", Opis kategorije: "+ this.description);
+    }
+
+    public static void serializeToFile() {
+        try {
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("categories.dat"));
+            Category category = new Category.Builder()
+                    .id((long) 15)
+                    .name("Nez haha")
+                    .description("hmhmmh")
+                    .build();
+
+            out.writeObject(category);
+            out.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+
+    public static void deserializeFromFile() {
+        try {
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream("categories.dat"));
+            Category category  = (Category) in.readObject();
+            System.out.println("Podaci o pročitanom objektu:");
+            System.out.println("Naziv kategorije: " + category.getName() + ", Opis kategorije: " + category.description);
+
+            in.close();
+        } catch (IOException | ClassNotFoundException ex) {
+            ex.printStackTrace();
+        }
     }
 }
