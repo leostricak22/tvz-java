@@ -56,6 +56,7 @@ public class IngredientSearchController implements SearchController {
     @FXML
     private Label removeFilterLabel;
 
+    @Override
     public void initialize() {
         ComboBoxUtil.comboBoxStringConverter(ingredientCategoryComboBox);
 
@@ -78,6 +79,7 @@ public class IngredientSearchController implements SearchController {
         filter();
     }
 
+    @Override
     public void filter() {
         List<Ingredient> ingredients = new ArrayList<>(ingredientRepository.findAll());
         ingredients.sort((i1, i2) -> i1.getId().compareTo(i2.getId()));
@@ -119,6 +121,7 @@ public class IngredientSearchController implements SearchController {
         ingredientTableView.setItems(categoryObservableList);
     }
 
+    @Override
     public void removeFilter() {
         ingredientIdTextField.clear();
         ingredientNameTextField.clear();
