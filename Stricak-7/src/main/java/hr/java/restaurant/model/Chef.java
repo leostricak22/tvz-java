@@ -15,7 +15,6 @@ public class Chef extends Person  implements Serializable {
 
     private static Long counter = 0L;
     private Contract contract;
-    private Bonus bonus;
 
     /**
      * Constructs a Chef object using the provided builder.
@@ -23,9 +22,8 @@ public class Chef extends Person  implements Serializable {
      * @param builder the builder instance containing chef information
      */
     private Chef(Builder builder) {
-        super(builder.id, builder.firstName, builder.lastName);
+        super(builder.id, builder.firstName, builder.lastName, builder.bonus);
         this.contract = builder.contract;
-        this.bonus = builder.bonus;
     }
 
     public void setContract(Contract contract) {
@@ -49,10 +47,6 @@ public class Chef extends Person  implements Serializable {
         }
 
         return -1;
-    }
-
-    public Bonus getBonus() {
-        return bonus;
     }
 
     /**
@@ -125,12 +119,12 @@ public class Chef extends Person  implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Chef chef = (Chef) o;
-        return Objects.equals(contract, chef.contract) && Objects.equals(bonus, chef.bonus);
+        return Objects.equals(contract, chef.contract) && Objects.equals(getBonus(), chef.getBonus());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(contract, bonus);
+        return Objects.hash(contract, getBonus());
     }
 
     /**
@@ -140,6 +134,6 @@ public class Chef extends Person  implements Serializable {
     @Override
     public void print(Integer tabulators) {
         logger.info("Printing chef.");
-        Person.outputFullData(tabulators, getId(), getFirstName(), getLastName() , contract, bonus);
+        Person.outputFullData(tabulators, getId(), getFirstName(), getLastName() , contract, getBonus());
     }
 }

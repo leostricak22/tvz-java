@@ -18,6 +18,7 @@ import java.util.*;
 public abstract class Person extends Entity implements Serializable {
     private final String firstName;
     private final String lastName;
+    private Bonus bonus;
 
     /**
      * Constructs a Person object using the provided data.
@@ -25,10 +26,15 @@ public abstract class Person extends Entity implements Serializable {
      * @param firstName the first name of the person
      * @param lastName the last name of the person
      */
-    public Person(Long id, String firstName, String lastName) {
+    public Person(Long id, String firstName, String lastName, Bonus bonus) {
         super(id, firstName + " " + lastName);
         this.firstName = firstName;
         this.lastName = lastName;
+        this.bonus = bonus;
+    }
+
+    public Bonus getBonus() {
+        return bonus;
     }
 
     /**
