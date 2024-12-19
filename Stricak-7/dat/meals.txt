@@ -1,0 +1,81 @@
+9
+Zelena salata s mesom
+meat
+2
+5
+18
+Piletina
+Kokoš
+Pečeno
+4
+Juha od koprive
+vegetarian
+1
+1,4
+15
+tofu
+false
+false
+8
+Pužići sa saftom
+meat
+3
+3
+20
+Govedina
+Krava
+Kuhano
+1
+Juha od mrkve
+vegan
+1
+4,1
+15
+soja
+true
+false
+2
+Špagete bolonjez
+vegan
+3
+3,2
+20
+soja
+true
+true
+3
+Salata od krastavca
+vegan
+2
+5
+18
+tofu
+true
+true
+7
+Juha s piletinom
+meat
+1
+4,1
+15
+Piletina
+Kokoš
+Pečeno
+5
+Špagete karbonare
+vegetarian
+3
+3
+20
+soja
+false
+false
+6
+Zelena salata
+vegetarian
+2
+5
+18
+tofu
+false
+true

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="700.0" prefWidth="1065.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.java.restaurant.controller.CategorySearchController">
+    <fx:include source="menu.fxml" />
+   <GridPane prefHeight="700.0" prefWidth="1065.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+     <columnConstraints>
+       <ColumnConstraints hgrow="SOMETIMES" maxWidth="536.0" minWidth="10.0" prefWidth="311.0" />
+       <ColumnConstraints hgrow="SOMETIMES" maxWidth="642.0" minWidth="10.0" prefWidth="370.0" />
+         <ColumnConstraints hgrow="SOMETIMES" maxWidth="307.0" minWidth="10.0" prefWidth="307.0" />
+     </columnConstraints>
+     <rowConstraints>
+         <RowConstraints maxHeight="71.0" minHeight="0.0" prefHeight="27.0" valignment="CENTER" vgrow="SOMETIMES" />
+         <RowConstraints maxHeight="118.0" minHeight="10.0" prefHeight="43.0" valignment="CENTER" vgrow="SOMETIMES" />
+       <RowConstraints maxHeight="167.0" minHeight="10.0" prefHeight="32.0" valignment="CENTER" vgrow="SOMETIMES" />
+       <RowConstraints maxHeight="232.0" minHeight="10.0" prefHeight="29.0" valignment="CENTER" vgrow="SOMETIMES" />
+         <RowConstraints maxHeight="275.0" minHeight="10.0" prefHeight="29.0" valignment="CENTER" vgrow="SOMETIMES" />
+         <RowConstraints maxHeight="289.0" minHeight="10.0" prefHeight="72.0" valignment="CENTER" vgrow="SOMETIMES" />
+         <RowConstraints maxHeight="283.0" minHeight="10.0" prefHeight="264.0" valignment="CENTER" vgrow="SOMETIMES" />
+       <RowConstraints maxHeight="39.0" minHeight="10.0" prefHeight="70.0" valignment="CENTER" vgrow="SOMETIMES" />
+         <RowConstraints maxHeight="99.0" minHeight="10.0" prefHeight="70.0" valignment="CENTER" vgrow="SOMETIMES" />
+         <RowConstraints minHeight="10.0" prefHeight="70.0" valignment="CENTER" vgrow="SOMETIMES" />
+     </rowConstraints>
+      <children>
+         <Label text="ID: " GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+         <Label text="Name: " GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
+         <Label text="Description:" GridPane.halignment="RIGHT" GridPane.rowIndex="4" />
+         <TextField fx:id="categoryIdTextField" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <GridPane.margin>
+               <Insets left="15.0" right="15.0" />
+            </GridPane.margin>
+         </TextField>
+         <TextField fx:id="categoryNameTextField" GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <GridPane.margin>
+               <Insets left="15.0" right="15.0" />
+            </GridPane.margin>
+         </TextField>
+         <TextField fx:id="categoryDescriptionTextField" GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <GridPane.margin>
+               <Insets left="15.0" right="15.0" />
+            </GridPane.margin>
+         </TextField>
+         <TableView fx:id="categoryTableView" prefHeight="119.0" prefWidth="1065.0" GridPane.columnSpan="3" GridPane.rowIndex="6" GridPane.rowSpan="4">
+           <columns>
+             <TableColumn fx:id="categoryIdColumn" prefWidth="75.0" text="ID" />
+             <TableColumn fx:id="categoryNameColumn" prefWidth="264.0" text="Name" />
+               <TableColumn fx:id="categoryDescriptionColumn" prefWidth="725.0" text="Description" />
+           </columns>
+         </TableView>
+         <Label alignment="BOTTOM_CENTER" prefHeight="44.0" prefWidth="348.0" text="Category search" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+            <font>
+               <Font size="22.0" />
+            </font>
+         </Label>
+         <Button mnemonicParsing="false" onAction="#filterCategories" prefHeight="25.0" prefWidth="97.0" text="Search" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="TOP">
+            <GridPane.margin>
+               <Insets top="15.0" />
+            </GridPane.margin></Button>
+         <Label fx:id="removeFilterLabel" onMouseClicked="#handleRemoveFilterLabelClick" prefHeight="17.0" prefWidth="156.0" text="Remove filters" underline="true" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+      </children>
+   </GridPane>
+
+</AnchorPane>
