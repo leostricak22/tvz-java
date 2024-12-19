@@ -16,7 +16,7 @@ import javafx.scene.input.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class IngredientSearchController {
+public class IngredientSearchController implements SearchController {
     private static final CategoryRepository<Category> categoryRepository = new CategoryRepository<>();
     private static final IngredientRepository<Ingredient> ingredientRepository = new IngredientRepository<>();
 
@@ -75,10 +75,10 @@ public class IngredientSearchController {
                 new SimpleStringProperty(cellData.getValue().getPreparationMethod()));
 
         ingredientCategoryComboBox.setItems(FXCollections.observableArrayList(categoryRepository.findAll()));
-        filterIngredients();
+        filter();
     }
 
-    public void filterIngredients() {
+    public void filter() {
         List<Ingredient> ingredients = new ArrayList<>(ingredientRepository.findAll());
         ingredients.sort((i1, i2) -> i1.getId().compareTo(i2.getId()));
 
@@ -114,8 +114,7 @@ public class IngredientSearchController {
         ingredientTableView.setItems(categoryObservableList);
     }
 
-    @FXML
-    public void handleRemoveFilterLabelClick(MouseEvent event) {
+    public void removeFilter() {
         ingredientIdTextField.clear();
         ingredientNameTextField.clear();
         ingredientCategoryComboBox.setValue(null);
@@ -123,6 +122,6 @@ public class IngredientSearchController {
         ingredientPreparationMethodTextField.clear();
 
         removeFilterLabel.setVisible(false);
-        filterIngredients();
+        filter();
     }
 }

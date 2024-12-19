@@ -63,11 +63,11 @@
                     <Font size="22.0" />
                 </font>
             </Label>
-            <Button mnemonicParsing="false" onAction="#filterIngredients" prefHeight="25.0" prefWidth="97.0" text="Search" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="TOP">
+            <Button mnemonicParsing="false" onAction="#filter" prefHeight="25.0" prefWidth="97.0" text="Search" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="TOP">
                 <GridPane.margin>
                     <Insets top="15.0" />
                 </GridPane.margin></Button>
-            <Label fx:id="removeFilterLabel" onMouseClicked="#handleRemoveFilterLabelClick" prefHeight="17.0" prefWidth="156.0" text="Remove filters" underline="true" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <Label fx:id="removeFilterLabel" onMouseClicked="#removeFilter" prefHeight="17.0" prefWidth="156.0" text="Remove filters" underline="true" visible="false" GridPane.columnIndex="2" GridPane.rowIndex="2" />
          <Label text="Kcal:" GridPane.halignment="RIGHT" GridPane.rowIndex="5" />
          <Label text="Preparation method:" GridPane.halignment="RIGHT" GridPane.rowIndex="6" />
          <TextField fx:id="ingredientKcalTextField" GridPane.columnIndex="1" GridPane.rowIndex="5">

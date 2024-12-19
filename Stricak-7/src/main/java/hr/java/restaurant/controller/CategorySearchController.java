@@ -16,7 +16,7 @@ import javafx.scene.input.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CategorySearchController {
+public class CategorySearchController implements SearchController {
 
     private static final CategoryRepository<Category> categoryRepository = new CategoryRepository<>();
 
@@ -44,6 +44,11 @@ public class CategorySearchController {
     @FXML
     private Label removeFilterLabel;
 
+    @FXML
+    public void handleRemoveFilterLabelClick(MouseEvent event) {
+        removeFilter();
+    }
+
     public void initialize() {
         categoryIdColumn.setCellValueFactory(cellData ->
                 new SimpleLongProperty(cellData.getValue().getId()).asObject());
@@ -54,10 +59,10 @@ public class CategorySearchController {
         categoryDescriptionColumn.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getDescription()));
 
-        filterCategories();
+        filter();
     }
 
-    public void filterCategories() {
+    public void filter() {
         List<Category> categories = new ArrayList<>(categoryRepository.findAll());
         categories.sort((category1, category2) -> category1.getId().compareTo(category2.getId()));
 
@@ -77,12 +82,12 @@ public class CategorySearchController {
         categoryTableView.setItems(categoryObservableList);
     }
 
-    @FXML
-    public void handleRemoveFilterLabelClick(MouseEvent event) {
+    public void removeFilter() {
         categoryIdTextField.clear();
         categoryNameTextField.clear();
         categoryDescriptionTextField.clear();
         removeFilterLabel.setVisible(false);
-        filterCategories();
+        filter();
     }
+
 }

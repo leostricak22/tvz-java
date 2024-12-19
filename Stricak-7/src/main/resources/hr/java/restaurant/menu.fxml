@@ -8,12 +8,12 @@
     <menus>
         <Menu mnemonicParsing="false" text="Category">
             <items>
-                <MenuItem fx:id="categorySearchMenuItem" mnemonicParsing="false" onAction="#showCategorySearchScreen" text="Search" />
+                <MenuItem mnemonicParsing="false" onAction="#showSearchScreen" id="categorySearch" text="Search" />
             </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Ingredient">
             <items>
-                <MenuItem fx:id="ingredientSearchMenuItem" mnemonicParsing="false" onAction="#showIngredientSearchScreen" text="Search" />
+                <MenuItem mnemonicParsing="false" onAction="#showSearchScreen" id="ingredientSearch" text="Search" />
             </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Meal">
