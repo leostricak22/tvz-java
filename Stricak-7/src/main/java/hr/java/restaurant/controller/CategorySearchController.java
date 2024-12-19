@@ -44,11 +44,6 @@ public class CategorySearchController implements SearchController {
     @FXML
     private Label removeFilterLabel;
 
-    @FXML
-    public void handleRemoveFilterLabelClick(MouseEvent event) {
-        removeFilter();
-    }
-
     public void initialize() {
         categoryIdColumn.setCellValueFactory(cellData ->
                 new SimpleLongProperty(cellData.getValue().getId()).asObject());
@@ -71,12 +66,18 @@ public class CategorySearchController implements SearchController {
         String categoryDescriptionTextFieldValue = categoryDescriptionTextField.getText();
 
         categories = categories.stream()
-                .filter(category -> categoryIdTextFieldValue.isEmpty() || category.getId().toString().contains(categoryIdTextFieldValue))
-                .filter(category -> categoryNameTextFieldValue.isEmpty() || category.getName().contains(categoryNameTextFieldValue))
-                .filter(category -> categoryDescriptionTextFieldValue.isEmpty() || category.getDescription().contains(categoryDescriptionTextFieldValue))
+                .filter(category -> categoryIdTextFieldValue.isEmpty() ||
+                        category.getId().toString().contains(categoryIdTextFieldValue))
+                .filter(category -> categoryNameTextFieldValue.isEmpty() ||
+                        category.getName().contains(categoryNameTextFieldValue))
+                .filter(category -> categoryDescriptionTextFieldValue.isEmpty() ||
+                        category.getDescription().contains(categoryDescriptionTextFieldValue))
                 .toList();
 
-        removeFilterLabel.setVisible(!categoryIdTextFieldValue.isEmpty() || !categoryNameTextFieldValue.isEmpty() || !categoryDescriptionTextFieldValue.isEmpty());
+        removeFilterLabel.setVisible(
+                !categoryIdTextFieldValue.isEmpty() ||
+                !categoryNameTextFieldValue.isEmpty() ||
+                !categoryDescriptionTextFieldValue.isEmpty());
 
         ObservableList<Category> categoryObservableList =  FXCollections.observableList(categories);
         categoryTableView.setItems(categoryObservableList);

@@ -3,6 +3,7 @@ package hr.java.service;
 import hr.java.restaurant.exception.DuplicateEntryException;
 import hr.java.restaurant.exception.InvalidValueException;
 import hr.java.restaurant.model.Category;
+import hr.java.restaurant.model.Meal;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -53,5 +54,26 @@ public class Validation {
         }
     }
 
+    /**
+     * Checks if the given name is a duplicate.
+     * @param meals the meals
+     * @param name the name
+     * @throws DuplicateEntryException if the name is a duplicate
+     */
+    public static void checkDuplicateMeal(Set<Meal> meals, String name) throws DuplicateEntryException {
+        for (Meal meal : meals) {
+            if (meal != null && meal.getName().equals(name))
+                throw new DuplicateEntryException();
+        }
+    }
 
+    /**
+     * Checks if the given price is valid.
+     * @param price the price
+     * @throws InvalidValueException if the price is invalid
+     */
+    public static void checkMealPrice(BigDecimal price) throws InvalidValueException {
+        if(price.compareTo(Meal.getUnrealPrice()) >= 0 || price.compareTo(BigDecimal.ZERO) < 0)
+            throw new InvalidValueException();
+    }
 }

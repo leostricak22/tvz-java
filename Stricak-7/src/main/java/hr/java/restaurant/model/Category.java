@@ -18,7 +18,6 @@ public class Category extends Entity implements Serializable {
     private static Long counter = 0L;
     private static final Logger logger = LoggerFactory.getLogger(Category.class);
 
-    private String name;
     private String description;
 
     /**
@@ -26,17 +25,8 @@ public class Category extends Entity implements Serializable {
      * @param builder the builder instance containing category information
      */
     private Category(Builder builder) {
-        super(builder.id);
-        this.name = builder.name;
+        super(builder.id, builder.name);
         this.description = builder.description;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public String getDescription() {
@@ -166,7 +156,7 @@ public class Category extends Entity implements Serializable {
     public void print(Integer tabulators) {
         logger.info("Printing category.");
         Output.tabulatorPrint(tabulators);
-        System.out.println("Id: " + this.getId() + ", Naziv kategorije: " + this.name + ", Opis kategorije: "+ this.description);
+        System.out.println("Id: " + this.getId() + ", Naziv kategorije: " + super.getName() + ", Opis kategorije: "+ this.description);
     }
 
     public static void serializeToFile() {

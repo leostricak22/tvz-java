@@ -96,11 +96,16 @@ public class IngredientSearchController implements SearchController {
         String ingredientPreparationMethodTextFieldValue = ingredientPreparationMethodTextField.getText();
 
         ingredients = ingredients.stream()
-                .filter(ingredient -> ingredientIdTextFieldValue.isEmpty() || ingredient.getId().toString().contains(ingredientIdTextFieldValue))
-                .filter(ingredient -> ingredientNameTextFieldValue.isEmpty() || ingredient.getName().contains(ingredientNameTextFieldValue))
-                .filter(ingredient -> ingredientCategoryComboBoxValue == null || ingredient.getCategory().getName().contains(ingredientCategoryComboBoxValue))
-                .filter(ingredient -> ingredientKcalTextFieldValue.isEmpty() || ingredient.getKcal().toString().contains(ingredientKcalTextFieldValue))
-                .filter(ingredient -> ingredientPreparationMethodTextFieldValue.isEmpty() || ingredient.getPreparationMethod().contains(ingredientPreparationMethodTextFieldValue))
+                .filter(ingredient -> ingredientIdTextFieldValue.isEmpty() ||
+                        ingredient.getId().toString().contains(ingredientIdTextFieldValue))
+                .filter(ingredient -> ingredientNameTextFieldValue.isEmpty() ||
+                        ingredient.getName().contains(ingredientNameTextFieldValue))
+                .filter(ingredient -> ingredientCategoryComboBoxValue == null ||
+                        ingredient.getCategory().getName().contains(ingredientCategoryComboBoxValue))
+                .filter(ingredient -> ingredientKcalTextFieldValue.isEmpty() ||
+                        ingredient.getKcal().toString().contains(ingredientKcalTextFieldValue))
+                .filter(ingredient -> ingredientPreparationMethodTextFieldValue.isEmpty() ||
+                        ingredient.getPreparationMethod().contains(ingredientPreparationMethodTextFieldValue))
                 .toList();
 
         removeFilterLabel.setVisible(

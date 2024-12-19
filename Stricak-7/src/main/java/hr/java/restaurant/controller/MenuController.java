@@ -19,7 +19,7 @@ public class MenuController {
 
         Scene scene = new Scene(fxmlLoader.load(), Constants.SCENE_WIDTH, Constants.SCENE_HEIGHT);
 
-        RestaurantApplication.getMainStage().setTitle("Category search");
+        RestaurantApplication.getMainStage().setTitle("Search");
         RestaurantApplication.getMainStage().setScene(scene);
         RestaurantApplication.getMainStage().show();
     }

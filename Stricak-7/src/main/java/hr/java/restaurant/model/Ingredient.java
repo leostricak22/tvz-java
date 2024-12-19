@@ -19,7 +19,6 @@ import java.util.*;
 public class Ingredient extends Entity implements Serializable {
     private static final Logger logger = LoggerFactory.getLogger(Ingredient.class);
 
-    private String name;
     private final Category category;
     private final BigDecimal kcal;
     private final String preparationMethod;
@@ -34,8 +33,7 @@ public class Ingredient extends Entity implements Serializable {
      * @param preparationMethod the preparation method of the ingredient
      */
     public Ingredient(Long id, String name, Category category, BigDecimal kcal, String preparationMethod) {
-        super(id);
-        this.name = name;
+        super(id, name);
         this.category = category;
         this.kcal = kcal;
         this.preparationMethod = preparationMethod;
@@ -57,14 +55,6 @@ public class Ingredient extends Entity implements Serializable {
         }
 
         return ingredientsList;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public BigDecimal getKcal() {
@@ -114,19 +104,6 @@ public class Ingredient extends Entity implements Serializable {
         return ingredientsEntered;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Ingredient that = (Ingredient) o;
-        return Objects.equals(name, that.name) && Objects.equals(category, that.category) && Objects.equals(kcal, that.kcal) && Objects.equals(preparationMethod, that.preparationMethod);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, category, kcal, preparationMethod);
-    }
-
     /**
      * Prints the ingredient information.
      * @param tabulators the number of tabulators to be printed before the ingredient information
@@ -134,7 +111,7 @@ public class Ingredient extends Entity implements Serializable {
     public void print(Integer tabulators) {
         logger.info("Ingredient print");
         Output.tabulatorPrint(tabulators);
-        System.out.println("Id: " + this.getId() + ", Naziv: " + this.name + ", Kalorije: " + this.kcal + ", Metoda pripreme: " + this.preparationMethod);
+        System.out.println("Id: " + this.getId() + ", Naziv: " + super.getName() + ", Kalorije: " + this.kcal + ", Metoda pripreme: " + this.preparationMethod);
 
         Output.tabulatorPrint(tabulators);
         System.out.println("Kategorija:");
