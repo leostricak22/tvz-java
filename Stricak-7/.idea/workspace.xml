@@ -4,48 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4f528465-ba8d-46d2-beb3-c46214f220ac" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dat/categories.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dat/chefs.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dat/deliverers.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dat/ingredients.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dat/meals.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dat/orders.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dat/restaurants.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dat/waiters.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mvnw" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mvnw.cmd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/CategorySearchController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/FirstScreenController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/MenuController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/exception/DuplicateEntryException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/exception/InvalidValueException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/main/RestaurantApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Category.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Entity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/AbstractRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/CategoryRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/FXMLLoaderHelper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/service/Constants.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/service/EntityFinder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/service/Input.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/service/Output.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/service/Validation.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/categorySearch.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/firstScreen.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/menu.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/logback.xml" afterDir="false" />
-    </list>
+    <list default="true" id="4f528465-ba8d-46d2-beb3-c46214f220ac" name="Changes" comment="feat: Add JavaFX project and add category searching and filtering" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -168,11 +127,23 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1734616963811</updated>
-      <workItem from="1734616964822" duration="6472000" />
+      <workItem from="1734616964822" duration="6809000" />
     </task>
+    <task id="LOCAL−00001" summary="feat: Add JavaFX project and add category searching and filtering">
+      <option name="closed" value="true" />
+      <created>1734624501771</created>
+      <option name="number" value="LOCAL−00001" />
+      <option name="presentableId" value="LOCAL−00001" />
+      <updated>1734624501771</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="feat: Add JavaFX project and add category searching and filtering" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: Add JavaFX project and add category searching and filtering" />
   </component>
 </project>
