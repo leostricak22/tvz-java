@@ -90,64 +90,6 @@ public class Ingredient extends Entity implements Serializable {
     }
 
     /**
-     * Inputs the ingredient information.
-     * @param numOfElements number of elements
-     * @param categories the categories
-     * @param scanner the scanner object used for input
-     */
-    public static Set<Ingredient> inputIngredientSet(int numOfElements, List<Category> categories, Scanner scanner) {
-        Set<Ingredient> ingredients = new java.util.HashSet<>(Set.of());
-        for(int i = 0; i < numOfElements; i++) {
-            logger.info("Ingredient input");
-
-            String ingredientName;
-
-            while(true) {
-                ingredientName = Input.string(scanner, "Unesite naziv "+ (i+1) +". sastojka: ");
-
-                try {
-                    Validation.checkDuplicateIngredient(ingredients, ingredientName);
-                    break;
-                } catch (DuplicateEntryException e) {
-                    System.out.println("Sastojak s tim nazivom već postoji. Molimo unesite drugi naziv.");
-                }
-            }
-
-            Category ingredientCategory = EntityFinder.categoryName(scanner, "Unesite naziv kategorije "+ (i+1) +". sastojka", categories);
-            BigDecimal ingredientKcal = Input.bigDecimal(scanner, "Unesite kalorije " + (i+1) + ". sastojka.");
-            String ingredientPreparationMethod = Input.string(scanner, "Unesite metodu pripremanja " + (i+1) + ". sastojka: ");
-
-            ingredients.add(new Ingredient((long) 0 ,ingredientName, ingredientCategory, ingredientKcal, ingredientPreparationMethod));
-        }
-
-        return ingredients;
-    }
-
-    public static Set<Ingredient> readIngredientFromFile() {
-        Set<Ingredient> ingredients = new HashSet<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader(Constants.FILENAME_INGREDIENTS))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                int id = Integer.parseInt(line.trim());
-
-                String name = reader.readLine().trim();
-                Long categoryId = Long.parseLong(reader.readLine().trim());
-                BigDecimal kcal = new BigDecimal(reader.readLine().trim());
-                String preparationMethod = reader.readLine().trim();
-
-                Category category = EntityFinder.categoryById(categoryId, Category.readCategoryFromFile());
-
-
-                ingredients.add(new Ingredient((long) id, name, category, kcal, preparationMethod));
-            }
-        } catch (IOException e) {
-            System.err.println("Greška pri čitanju datoteke: " + e.getMessage());
-        }
-
-        return ingredients;
-    }
-
-    /**
      * Returns an array of ingredient names.
      * @param ingredients the ingredients.txt
      * @return the string list of ingredient names

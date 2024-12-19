@@ -4,7 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4f528465-ba8d-46d2-beb3-c46214f220ac" name="Changes" comment="feat: Add JavaFX project and add category searching and filtering" />
+    <list default="true" id="4f528465-ba8d-46d2-beb3-c46214f220ac" name="Changes" comment="feat: Remove unnecessary files">
+      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/IngredientSearchController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/IngredientRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/ComboBoxUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/ingredientSearch.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Stricak-6/src/main/java/hr/java/restaurant/model/Ingredient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Ingredient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/FirstScreenController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/MenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/MenuController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/service/EntityFinder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/service/EntityFinder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/categorySearch.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/categorySearch.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/firstScreen.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/firstScreen.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/menu.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/menu.fxml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -58,7 +71,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/LeoHP/Documents/GitHub/tvz-programiranje-java/Stricak-7/src/main/java/hr/java",
+    "last_opened_file_path": "C:/Users/LeoHP/Documents/GitHub/tvz-programiranje-java/Stricak-7/src/main/java/hr/java/restaurant/repository",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -69,11 +82,13 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\LeoHP\Documents\GitHub\tvz-programiranje-java\Stricak-7\src\main\java\hr\java\restaurant\repository" />
       <recent name="C:\Users\LeoHP\Documents\GitHub\tvz-programiranje-java\Stricak-7\src\main\java\hr\java" />
       <recent name="C:\Users\LeoHP\Documents\GitHub\tvz-programiranje-java\Stricak-7\src\main\resources" />
       <recent name="C:\Users\LeoHP\Documents\GitHub\tvz-programiranje-java\Stricak-7" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\LeoHP\Documents\GitHub\tvz-programiranje-java\Stricak-7\src\main\java\hr\java\restaurant\model" />
       <recent name="C:\Users\LeoHP\Documents\GitHub\tvz-programiranje-java\Stricak-7\src\main\java\hr\java\restaurant" />
     </key>
   </component>
@@ -127,7 +142,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1734616963811</updated>
-      <workItem from="1734616964822" duration="6809000" />
+      <workItem from="1734616964822" duration="11417000" />
     </task>
     <task id="LOCAL−00001" summary="feat: Add JavaFX project and add category searching and filtering">
       <option name="closed" value="true" />
@@ -136,7 +151,14 @@
       <option name="presentableId" value="LOCAL−00001" />
       <updated>1734624501771</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL−00002" summary="feat: Remove unnecessary files">
+      <option name="closed" value="true" />
+      <created>1734624592381</created>
+      <option name="number" value="LOCAL−00002" />
+      <option name="presentableId" value="LOCAL−00002" />
+      <updated>1734624592381</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -144,6 +166,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="feat: Add JavaFX project and add category searching and filtering" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: Add JavaFX project and add category searching and filtering" />
+    <MESSAGE value="feat: Remove unnecessary files" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: Remove unnecessary files" />
   </component>
 </project>

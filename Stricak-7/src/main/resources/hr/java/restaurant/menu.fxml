@@ -13,7 +13,7 @@
         </Menu>
         <Menu mnemonicParsing="false" text="Ingredient">
             <items>
-                <MenuItem mnemonicParsing="false" text="Search" />
+                <MenuItem fx:id="ingredientSearchMenuItem" mnemonicParsing="false" onAction="#showIngredientSearchScreen" text="Search" />
             </items>
         </Menu>
         <Menu mnemonicParsing="false" text="Meal">
