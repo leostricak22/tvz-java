@@ -13,7 +13,6 @@ import java.util.stream.Stream;
 public class RestaurantRepository<T extends Restaurant> extends AbstractRepository<T> {
     public final static String FILE_PATH = "dat/restaurants.txt";
 
-    private final MealRepository<Meal> mealRepository = new MealRepository<>();
     private final ChefRepository<Chef> chefRepository = new ChefRepository<>();
     private final WaiterRepository<Waiter> waiterRepository = new WaiterRepository<>();
     private final DelivererRepository<Deliverer> delivererRepository = new DelivererRepository<>();
@@ -24,6 +23,13 @@ public class RestaurantRepository<T extends Restaurant> extends AbstractReposito
                 .filter(restaurant -> restaurant.getId().equals(id))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("Nepostojeći identifikator"));
+    }
+
+    public T findByName(String name) {
+        return findAll().stream()
+                .filter(restaurant -> restaurant.getName().equals(name))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Nepostojeći restoran"));
     }
 
     @Override

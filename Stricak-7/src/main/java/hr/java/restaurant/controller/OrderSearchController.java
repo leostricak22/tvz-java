@@ -64,6 +64,12 @@ public class OrderSearchController implements SearchController {
     private static final MealRepository<Meal> mealRepository = new MealRepository<>();
     private static final DelivererRepository<Deliverer> delivererRepository = new DelivererRepository<>();
 
+    public void setRestaurantNameParameter(String restaurantNameParameter) {
+        orderRestaurantComboBox.setValue(restaurantRepository.findByName(restaurantNameParameter));
+
+        filter();
+    }
+
     @Override
     public void initialize() {
         ComboBoxUtil.comboBoxStringConverter(orderRestaurantComboBox);

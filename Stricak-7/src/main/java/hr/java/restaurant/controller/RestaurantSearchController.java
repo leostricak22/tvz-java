@@ -1,13 +1,21 @@
 package hr.java.restaurant.controller;
 
+import hr.java.restaurant.main.RestaurantApplication;
 import hr.java.restaurant.model.*;
 import hr.java.restaurant.repository.*;
 import hr.java.restaurant.util.ComboBoxUtil;
+import hr.java.restaurant.util.FXMLLoaderHelper;
+import hr.java.service.Constants;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -80,6 +88,12 @@ public class RestaurantSearchController implements SearchController {
     @FXML
     private Label removeFilterLabel;
 
+    @FXML
+    private Label selectedRestaurantLabel;
+
+    @FXML
+    private Button getOrdersButton;
+
     private final RestaurantRepository<Restaurant> restaurantRepository = new RestaurantRepository<>();
     private final MealRepository<Meal> mealRepository = new MealRepository<>();
     private final ChefRepository<Chef> chefRepository = new ChefRepository<>();
@@ -135,6 +149,16 @@ public class RestaurantSearchController implements SearchController {
         restaurantWaiterComboBox.getItems().setAll(waiterRepository.findAll());
         restaurantDelivererComboBox.getItems().setAll(delivererRepository.findAll());
         restaurantMealComboBox.getItems().setAll(mealRepository.findAll());
+
+        restaurantTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                selectedRestaurantLabel.setText(newSelection.getName());
+                getOrdersButton.setVisible(true);
+            } else {
+                selectedRestaurantLabel.setText("-");
+                getOrdersButton.setVisible(false);
+            }
+        });
 
         filter();
     }
@@ -225,5 +249,17 @@ public class RestaurantSearchController implements SearchController {
         removeFilterLabel.setVisible(false);
 
         filter();
+    }
+
+    public void getOrders() throws IOException {
+        FXMLLoader fxmlLoader = FXMLLoaderHelper.fxmlFilePath("orderSearch.fxml");
+        Scene scene = new Scene(fxmlLoader.load(), Constants.SCENE_WIDTH, Constants.SCENE_HEIGHT);
+
+        OrderSearchController orderSearchController = fxmlLoader.getController();
+        orderSearchController.setRestaurantNameParameter(selectedRestaurantLabel.getText());
+
+        RestaurantApplication.getMainStage().setTitle("Search");
+        RestaurantApplication.getMainStage().setScene(scene);
+        RestaurantApplication.getMainStage().show();
     }
 }
