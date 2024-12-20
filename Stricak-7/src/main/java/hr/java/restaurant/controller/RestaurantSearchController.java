@@ -1,9 +1,7 @@
 package hr.java.restaurant.controller;
 
-import hr.java.restaurant.model.Entity;
-import hr.java.restaurant.model.Meal;
-import hr.java.restaurant.model.Restaurant;
-import hr.java.restaurant.repository.RestaurantRepository;
+import hr.java.restaurant.model.*;
+import hr.java.restaurant.repository.*;
 import hr.java.restaurant.util.ComboBoxUtil;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -17,75 +15,84 @@ import java.util.stream.Collectors;
 public class RestaurantSearchController implements SearchController {
 
     @FXML
-    TextField restaurantIdTextField;
+    private TextField restaurantIdTextField;
 
     @FXML
-    TextField restaurantNameTextField;
+    private TextField restaurantNameTextField;
 
     @FXML
-    TextField restaurantAddressStreetTextField;
+    private TextField restaurantAddressStreetTextField;
 
     @FXML
-    TextField restaurantAddressHouseNumberTextField;
+    private TextField restaurantAddressHouseNumberTextField;
 
     @FXML
-    TextField restaurantAddressCityTextField;
+    private TextField restaurantAddressCityTextField;
 
     @FXML
-    TextField restaurantAddressPostalCodeTextField;
+    private TextField restaurantAddressPostalCodeTextField;
 
     @FXML
-    ComboBox<Meal> restaurantMealComboBox;
+    private ComboBox<Meal> restaurantMealComboBox;
 
     @FXML
-    ComboBox<Meal> restaurantChefComboBox;
+    private ComboBox<Chef> restaurantChefComboBox;
 
     @FXML
-    ComboBox<Meal> restaurantWaiterComboBox;
+    private ComboBox<Waiter> restaurantWaiterComboBox;
 
     @FXML
-    ComboBox<Meal> restaurantDelivererComboBox;
+    private ComboBox<Deliverer> restaurantDelivererComboBox;
 
     @FXML
-    TableView<Restaurant> restaurantTableView;
+    private TableView<Restaurant> restaurantTableView;
 
     @FXML
-    TableColumn<Restaurant, Long> restaurantIdColumn;
+    private TableColumn<Restaurant, Long> restaurantIdColumn;
 
     @FXML
-    TableColumn<Restaurant, String> restaurantNameColumn;
+    private TableColumn<Restaurant, String> restaurantNameColumn;
 
     @FXML
-    TableColumn<Restaurant, String> restaurantAddressStreetColumn;
+    private TableColumn<Restaurant, String> restaurantAddressStreetColumn;
 
     @FXML
-    TableColumn<Restaurant, String> restaurantAddressHouseNumberColumn;
+    private TableColumn<Restaurant, String> restaurantAddressHouseNumberColumn;
 
     @FXML
-    TableColumn<Restaurant, String> restaurantAddressCityColumn;
+    private TableColumn<Restaurant, String> restaurantAddressCityColumn;
 
     @FXML
-    TableColumn<Restaurant, String> restaurantAddressPostalCodeColumn;
+    private TableColumn<Restaurant, String> restaurantAddressPostalCodeColumn;
 
     @FXML
-    TableColumn<Restaurant, String> restaurantMealsColumn;
+    private TableColumn<Restaurant, String> restaurantMealsColumn;
 
     @FXML
-    TableColumn<Restaurant, String> restaurantChefsColumn;
+    private TableColumn<Restaurant, String> restaurantChefsColumn;
 
     @FXML
-    TableColumn<Restaurant, String> restaurantWaitersColumn;
+    private TableColumn<Restaurant, String> restaurantWaitersColumn;
 
     @FXML
-    TableColumn<Restaurant, String> restaurantDeliverersColumn;
+    private TableColumn<Restaurant, String> restaurantDeliverersColumn;
 
     @FXML
-    Label removeFilterLabel;
+    private Label removeFilterLabel;
 
     private final RestaurantRepository<Restaurant> restaurantRepository = new RestaurantRepository<>();
+    private final MealRepository<Meal> mealRepository = new MealRepository<>();
+    private final ChefRepository<Chef> chefRepository = new ChefRepository<>();
+    private final WaiterRepository<Waiter> waiterRepository = new WaiterRepository<>();
+    private final DelivererRepository<Deliverer> delivererRepository = new DelivererRepository<>();
 
     @Override
     public void initialize() {
+        ComboBoxUtil.comboBoxStringConverter(restaurantMealComboBox);
+        ComboBoxUtil.comboBoxStringConverter(restaurantChefComboBox);
+        ComboBoxUtil.comboBoxStringConverter(restaurantWaiterComboBox);
+        ComboBoxUtil.comboBoxStringConverter(restaurantDelivererComboBox);
+
         restaurantIdColumn.setCellValueFactory(cellData ->
                 new SimpleLongProperty(cellData.getValue().getId()).asObject());
 
@@ -124,6 +131,11 @@ public class RestaurantSearchController implements SearchController {
                         .map(chef -> chef.getFirstName() + " " + chef.getLastName())
                         .collect(Collectors.joining("\n"))));
 
+        restaurantChefComboBox.getItems().setAll(chefRepository.findAll());
+        restaurantWaiterComboBox.getItems().setAll(waiterRepository.findAll());
+        restaurantDelivererComboBox.getItems().setAll(delivererRepository.findAll());
+        restaurantMealComboBox.getItems().setAll(mealRepository.findAll());
+
         filter();
     }
 
@@ -142,11 +154,11 @@ public class RestaurantSearchController implements SearchController {
         String restaurantMealComboBoxValue = ComboBoxUtil.getComboBoxValue(restaurantMealComboBox)
                 .map(Meal::getName).orElse("");
         String restaurantChefComboBoxValue = ComboBoxUtil.getComboBoxValue(restaurantChefComboBox)
-                .map(Meal::getName).orElse("");
+                .map(Chef::getName).orElse("");
         String restaurantWaiterComboBoxValue = ComboBoxUtil.getComboBoxValue(restaurantWaiterComboBox)
-                .map(Meal::getName).orElse("");
+                .map(Waiter::getName).orElse("");
         String restaurantDelivererComboBoxValue = ComboBoxUtil.getComboBoxValue(restaurantDelivererComboBox)
-                .map(Meal::getName).orElse("");
+                .map(Deliverer::getName).orElse("");
 
         restaurants = restaurants.stream()
                 .filter(restaurant -> restaurantIdTextFieldValue.isBlank() ||

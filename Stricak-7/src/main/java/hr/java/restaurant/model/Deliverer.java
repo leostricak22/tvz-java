@@ -64,7 +64,6 @@ public class Deliverer extends Person implements Serializable {
         return delivererNames;
     }
 
-
     /**
      * Builder class for creating instances of {@link Deliverer}.
      */

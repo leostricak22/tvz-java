@@ -24,49 +24,49 @@ public class MealSearchController implements SearchController {
     private static final IngredientRepository<Ingredient> ingredientRepository = new IngredientRepository<>();
 
     @FXML
-    TextField mealIdTextField;
+    private TextField mealIdTextField;
 
     @FXML
-    TextField mealNameTextField;
+    private TextField mealNameTextField;
 
     @FXML
-    ComboBox<MealTypeEnum> mealTypeComboBox;
+    private ComboBox<MealTypeEnum> mealTypeComboBox;
 
     @FXML
-    ComboBox<Category> mealCategoryComboBox;
+    private ComboBox<Category> mealCategoryComboBox;
 
     @FXML
-    ComboBox<Ingredient> mealIngredientComboBox;
+    private ComboBox<Ingredient> mealIngredientComboBox;
 
     @FXML
-    TextField mealPriceFromTextField;
+    private TextField mealPriceFromTextField;
 
     @FXML
-    TextField mealPriceToTextField;
+    private TextField mealPriceToTextField;
 
     @FXML
-    TableView<Meal> mealTableView;
+    private TableView<Meal> mealTableView;
 
     @FXML
-    TableColumn<Meal, Long> mealIdColumn;
+    private TableColumn<Meal, Long> mealIdColumn;
 
     @FXML
-    TableColumn<Meal, String> mealNameColumn;
+    private TableColumn<Meal, String> mealNameColumn;
 
     @FXML
-    TableColumn<Meal, String> mealTypeColumn;
+    private TableColumn<Meal, String> mealTypeColumn;
 
     @FXML
-    TableColumn<Meal, String> mealCategoryNameColumn;
+    private TableColumn<Meal, String> mealCategoryNameColumn;
 
     @FXML
-    TableColumn<Meal, String> mealIngredientsColumn;
+    private TableColumn<Meal, String> mealIngredientsColumn;
 
     @FXML
-    TableColumn<Meal, String> mealPriceColumn;
+    private TableColumn<Meal, String> mealPriceColumn;
 
     @FXML
-    Label removeFilterLabel;
+    private Label removeFilterLabel;
 
 
     public void initialize() {
