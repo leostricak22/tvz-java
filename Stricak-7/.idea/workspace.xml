@@ -4,21 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4f528465-ba8d-46d2-beb3-c46214f220ac" name="Changes" comment="feat: Add Chef search and filtering">
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/DelivererSearchController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/PersonSearchController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/WaiterSearchController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Deliverer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Waiter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/DelivererRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/WaiterRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/delivererSearch.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/waiterSearch.fxml" afterDir="false" />
+    <list default="true" id="4f528465-ba8d-46d2-beb3-c46214f220ac" name="Changes" comment="feat: Add Abstract PersonSearchController and Deliverer and Waiter search and filtering">
+      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/RestaurantSearchController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Address.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Restaurant.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/RestaurantRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/restaurantSearch.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/ChefSearchController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/ChefSearchController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Chef.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Chef.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Person.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Person.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/chefSearch.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/chefSearch.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/CategorySearchController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/CategorySearchController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/IngredientSearchController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/IngredientSearchController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/MealSearchController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/MealSearchController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/PersonSearchController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/PersonSearchController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/menu.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/menu.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -75,7 +71,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/LeoHP/Documents/GitHub/tvz-programiranje-java/Stricak-7/src/main/resources/hr/java/restaurant",
+    "last_opened_file_path": "C:/Users/LeoHP/Documents/GitHub/tvz-programiranje-java/Stricak-7/src/main/java/hr/java/restaurant/model",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -86,9 +82,9 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\LeoHP\Documents\GitHub\tvz-programiranje-java\Stricak-7\src\main\java\hr\java\restaurant\model" />
       <recent name="C:\Users\LeoHP\Documents\GitHub\tvz-programiranje-java\Stricak-7\src\main\resources\hr\java\restaurant" />
       <recent name="C:\Users\LeoHP\Documents\GitHub\tvz-programiranje-java\Stricak-7\src\main\java\hr\java\restaurant\repository" />
-      <recent name="C:\Users\LeoHP\Documents\GitHub\tvz-programiranje-java\Stricak-7\src\main\java\hr\java\restaurant\model" />
       <recent name="C:\Users\LeoHP\Documents\GitHub\tvz-programiranje-java\Stricak-7\src\main\java\hr\java" />
       <recent name="C:\Users\LeoHP\Documents\GitHub\tvz-programiranje-java\Stricak-7\src\main\resources" />
     </key>
@@ -150,7 +146,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1734616963811</updated>
-      <workItem from="1734616964822" duration="29513000" />
+      <workItem from="1734616964822" duration="34819000" />
     </task>
     <task id="LOCAL−00001" summary="feat: Add JavaFX project and add category searching and filtering">
       <option name="closed" value="true" />
@@ -194,7 +190,14 @@
       <option name="presentableId" value="LOCAL−00006" />
       <updated>1734648688368</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL−00007" summary="feat: Add Abstract PersonSearchController and Deliverer and Waiter search and filtering">
+      <option name="closed" value="true" />
+      <created>1734650436974</created>
+      <option name="number" value="LOCAL−00007" />
+      <option name="presentableId" value="LOCAL−00007" />
+      <updated>1734650436974</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -207,6 +210,7 @@
     <MESSAGE value="refactor: Add SearchController interface" />
     <MESSAGE value="feat: Add Meal search and filtering" />
     <MESSAGE value="feat: Add Chef search and filtering" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: Add Chef search and filtering" />
+    <MESSAGE value="feat: Add Abstract PersonSearchController and Deliverer and Waiter search and filtering" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: Add Abstract PersonSearchController and Deliverer and Waiter search and filtering" />
   </component>
 </project>

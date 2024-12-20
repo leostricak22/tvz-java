@@ -120,7 +120,7 @@ public abstract class PersonSearchController<T extends Person> implements Search
         String personContractBonusToTextFieldValue = personContractBonusToTextField.getText();
 
         people = people.stream()
-                .filter(person -> person.getId().toString().contains(personIdTextFieldValue))
+                .filter(person -> person.getId().toString().equals(personIdTextFieldValue) || personIdTextFieldValue.isBlank())
                 .filter(person -> person.getFirstName().contains(personFirstNameTextFieldValue))
                 .filter(person -> person.getLastName().contains(personLastNameTextFieldValue))
                 .filter(person -> person.getContract().getContractType().getName().contains(personContractTypeComboBoxValue))

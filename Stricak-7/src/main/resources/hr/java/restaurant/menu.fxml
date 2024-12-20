@@ -36,7 +36,7 @@
                 <MenuItem mnemonicParsing="false" text="Search" onAction="#showSearchScreen" id="delivererSearch" />
             </items>
         </Menu>
-        <Menu mnemonicParsing="false" text="Restaurant">
+        <Menu mnemonicParsing="false" text="Restaurant" onAction="#showSearchScreen" id="restaurantSearch">
             <items>
                 <MenuItem mnemonicParsing="false" text="Search" />
             </items>

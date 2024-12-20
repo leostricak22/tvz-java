@@ -99,7 +99,7 @@ public class IngredientSearchController implements SearchController {
 
         ingredients = ingredients.stream()
                 .filter(ingredient -> ingredientIdTextFieldValue.isEmpty() ||
-                        ingredient.getId().toString().contains(ingredientIdTextFieldValue))
+                        ingredient.getId().toString().equals(ingredientIdTextFieldValue))
                 .filter(ingredient -> ingredientNameTextFieldValue.isEmpty() ||
                         ingredient.getName().contains(ingredientNameTextFieldValue))
                 .filter(ingredient -> ingredientCategoryComboBoxValue == null ||

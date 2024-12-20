@@ -87,7 +87,7 @@ public class MealSearchController implements SearchController {
                 new SimpleStringProperty(cellData.getValue().getCategory().getName()));
 
         mealIngredientsColumn.setCellValueFactory(cellData ->
-            new SimpleStringProperty(String.join(", ",
+            new SimpleStringProperty(String.join("\n",
                     cellData.getValue().getIngredients().stream().map(Ingredient::getName).toList()))
         );
 
@@ -120,7 +120,7 @@ public class MealSearchController implements SearchController {
 
         meals = meals.stream()
                 .filter(meal -> mealIdTextFieldValue.isBlank() ||
-                        meal.getId().toString().contains(mealIdTextFieldValue))
+                        meal.getId().toString().equals(mealIdTextFieldValue))
                 .filter(meal -> mealNameTextFieldValue.isBlank() ||
                         meal.getName().contains(mealNameTextFieldValue))
                 .filter(meal -> mealPriceToTextFieldValue.isBlank() ||

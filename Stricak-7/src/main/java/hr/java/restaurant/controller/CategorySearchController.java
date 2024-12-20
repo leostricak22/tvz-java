@@ -67,7 +67,7 @@ public class CategorySearchController implements SearchController {
 
         categories = categories.stream()
                 .filter(category -> categoryIdTextFieldValue.isEmpty() ||
-                        category.getId().toString().contains(categoryIdTextFieldValue))
+                        category.getId().toString().equals(categoryIdTextFieldValue))
                 .filter(category -> categoryNameTextFieldValue.isEmpty() ||
                         category.getName().contains(categoryNameTextFieldValue))
                 .filter(category -> categoryDescriptionTextFieldValue.isEmpty() ||
