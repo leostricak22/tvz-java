@@ -1,15 +1,9 @@
 package hr.java.restaurant.model;
 
-import hr.java.restaurant.enumeration.ContractType;
-import hr.java.service.Constants;
-import hr.java.service.Output;
+import hr.java.restaurant.util.Output;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.*;
 
 /**

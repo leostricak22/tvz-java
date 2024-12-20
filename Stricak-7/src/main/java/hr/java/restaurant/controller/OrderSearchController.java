@@ -139,7 +139,7 @@ public class OrderSearchController implements SearchController {
     @Override
     public void removeFilter() {
         orderIdTextField.clear();
-        orderRestaurantComboBox.getSelectionModel().clearSelection();
+        orderRestaurantComboBox.getSelectionModel().select(null);
         orderMealComboBox.getSelectionModel().clearSelection();
         orderDelivererComboBox.getSelectionModel().clearSelection();
         orderDeliveryDateFromDatePicker.setValue(null);

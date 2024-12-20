@@ -1,4 +1,4 @@
-package hr.java.service;
+package hr.java.restaurant.util;
 
 import java.util.List;
 

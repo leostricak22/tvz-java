@@ -1,8 +1,7 @@
 package hr.java.restaurant.model;
 
 import hr.java.restaurant.enumeration.ContractType;
-import hr.java.service.Input;
-import hr.java.service.Output;
+import hr.java.restaurant.util.Output;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

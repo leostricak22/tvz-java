@@ -1,4 +1,4 @@
-package hr.java.service;
+package hr.java.restaurant.util;
 
 public class Constants {
     public static final String FILENAME_CATEGORIES = "dat/categories.txt";

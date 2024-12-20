@@ -1,7 +1,6 @@
 package hr.java.restaurant.repository;
 
 import hr.java.restaurant.model.*;
-import hr.java.service.EntityFinder;
 
 import java.io.IOException;
 import java.io.PrintWriter;

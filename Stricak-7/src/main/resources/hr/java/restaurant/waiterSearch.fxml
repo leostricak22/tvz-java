@@ -48,7 +48,7 @@
                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 </rowConstraints>
                 <children>
-                    <Label text="Contract type:">
+                    <Label text="Contract type">
                         <GridPane.margin>
                             <Insets left="15.0" />
                         </GridPane.margin>
@@ -69,7 +69,7 @@
                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 </rowConstraints>
                 <children>
-                    <Label text="First name:">
+                    <Label text="First name">
                         <GridPane.margin>
                             <Insets left="15.0" />
                         </GridPane.margin>
@@ -90,7 +90,7 @@
                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 </rowConstraints>
                 <children>
-                    <Label text="Last name:">
+                    <Label text="Last name">
                         <GridPane.margin>
                             <Insets left="15.0" />
                         </GridPane.margin>
@@ -111,7 +111,7 @@
                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 </rowConstraints>
                 <children>
-                    <Label text="Contract start date (from-to):">
+                    <Label text="Contract start date (from-to)">
                         <GridPane.margin>
                             <Insets left="15.0" />
                         </GridPane.margin>
@@ -148,7 +148,7 @@
                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 </rowConstraints>
                 <children>
-                    <Label text="Contract end date  (from-to):">
+                    <Label text="Contract end date  (from-to)">
                         <GridPane.margin>
                             <Insets left="15.0" />
                         </GridPane.margin>
@@ -185,7 +185,7 @@
                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 </rowConstraints>
                 <children>
-                    <Label text="Bonus (from-to):">
+                    <Label text="Bonus (from-to)">
                         <GridPane.margin>
                             <Insets left="15.0" />
                         </GridPane.margin>
@@ -222,7 +222,7 @@
                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 </rowConstraints>
                 <children>
-                    <Label text="Salary (from-to):">
+                    <Label text="Salary (from-to)">
                         <GridPane.margin>
                             <Insets left="15.0" />
                         </GridPane.margin>
@@ -259,7 +259,7 @@
                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 </rowConstraints>
                 <children>
-                    <Label text="ID:">
+                    <Label text="ID">
                         <GridPane.margin>
                             <Insets left="15.0" />
                         </GridPane.margin>

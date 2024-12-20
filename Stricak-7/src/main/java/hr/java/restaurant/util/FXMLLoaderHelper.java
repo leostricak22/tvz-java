@@ -4,7 +4,7 @@ import javafx.fxml.FXMLLoader;
 
 import java.net.URL;
 
-import static hr.java.service.Constants.RELATIVE_FXML_PATH;
+import static hr.java.restaurant.util.Constants.RELATIVE_FXML_PATH;
 
 public class FXMLLoaderHelper {
 

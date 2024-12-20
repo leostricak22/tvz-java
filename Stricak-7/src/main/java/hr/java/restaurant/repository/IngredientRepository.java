@@ -2,7 +2,7 @@ package hr.java.restaurant.repository;
 
 import hr.java.restaurant.model.Category;
 import hr.java.restaurant.model.Ingredient;
-import hr.java.service.EntityFinder;
+import hr.java.restaurant.util.EntityFinder;
 
 import java.io.IOException;
 import java.io.PrintWriter;

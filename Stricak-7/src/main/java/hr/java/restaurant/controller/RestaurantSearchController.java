@@ -5,15 +5,13 @@ import hr.java.restaurant.model.*;
 import hr.java.restaurant.repository.*;
 import hr.java.restaurant.util.ComboBoxUtil;
 import hr.java.restaurant.util.FXMLLoaderHelper;
-import hr.java.service.Constants;
+import hr.java.restaurant.util.Constants;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;

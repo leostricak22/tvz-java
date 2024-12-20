@@ -2,16 +2,15 @@ package hr.java.restaurant.model;
 
 import hr.java.restaurant.exception.DuplicateEntryException;
 import hr.java.restaurant.exception.InvalidValueException;
-import hr.java.service.*;
+import hr.java.restaurant.util.EntityFinder;
+import hr.java.restaurant.util.Input;
+import hr.java.restaurant.util.Output;
+import hr.java.restaurant.util.Validation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
