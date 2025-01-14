@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="700.0" prefWidth="1065.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.java.restaurant.controller.RestaurantSearchController">
+   <GridPane prefHeight="700.0" prefWidth="1065.0">
+     <columnConstraints>
+       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+       <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+     </columnConstraints>
+     <rowConstraints>
+         <RowConstraints maxHeight="71.0" minHeight="10.0" prefHeight="71.0" vgrow="SOMETIMES" />
+         <RowConstraints maxHeight="57.0" minHeight="10.0" prefHeight="53.0" vgrow="SOMETIMES" />
+         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+     </rowConstraints>
+      <children>
+         <Label text="Restaurant search" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.valignment="BOTTOM">
+            <font>
+               <Font size="22.0" />
+            </font>
+         </Label>
+         <GridPane GridPane.columnIndex="1" GridPane.rowIndex="1">
+           <columnConstraints>
+             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+           </columnConstraints>
+           <rowConstraints>
+             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+           </rowConstraints>
+            <children>
+               <Label text="ID">
+                  <GridPane.margin>
+                     <Insets left="15.0" right="5.0" />
+                  </GridPane.margin>
+               </Label>
+               <TextField fx:id="restaurantIdTextField" GridPane.rowIndex="1">
+                  <GridPane.margin>
+                     <Insets left="15.0" right="5.0" />
+                  </GridPane.margin>
+               </TextField>
+            </children>
+         </GridPane>
+         <GridPane GridPane.columnIndex="2" GridPane.rowIndex="1">
+            <columnConstraints>
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+               <Label text="Name">
+                  <GridPane.margin>
+                     <Insets left="10.0" right="10.0" />
+                  </GridPane.margin>
+               </Label>
+               <TextField fx:id="restaurantNameTextField" GridPane.rowIndex="1">
+                  <GridPane.margin>
+                     <Insets left="10.0" right="10.0" />
+                  </GridPane.margin>
+               </TextField>
+            </children>
+         </GridPane>
+         <GridPane GridPane.columnIndex="3" GridPane.rowIndex="1">
+            <columnConstraints>
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+               <Label text="City">
+                  <GridPane.margin>
+                     <Insets left="5.0" right="15.0" />
+                  </GridPane.margin>
+               </Label>
+               <TextField fx:id="restaurantAddressCityTextField" GridPane.rowIndex="1">
+                  <GridPane.margin>
+                     <Insets left="5.0" right="15.0" />
+                  </GridPane.margin>
+               </TextField>
+            </children>
+         </GridPane>
+         <GridPane GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <columnConstraints>
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+               <Label text="Street">
+                  <GridPane.margin>
+                     <Insets left="15.0" right="5.0" />
+                  </GridPane.margin>
+               </Label>
+               <TextField fx:id="restaurantAddressStreetTextField" GridPane.rowIndex="1">
+                  <GridPane.margin>
+                     <Insets left="15.0" right="5.0" />
+                  </GridPane.margin>
+               </TextField>
+            </children>
+         </GridPane>
+         <GridPane GridPane.columnIndex="2" GridPane.rowIndex="2">
+            <columnConstraints>
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+               <Label text="House number">
+                  <GridPane.margin>
+                     <Insets left="10.0" />
+                  </GridPane.margin>
+               </Label>
+               <TextField fx:id="restaurantAddressHouseNumberTextField" GridPane.rowIndex="1">
+                  <GridPane.margin>
+                     <Insets left="10.0" right="10.0" />
+                  </GridPane.margin>
+               </TextField>
+            </children>
+         </GridPane>
+         <GridPane GridPane.columnIndex="3" GridPane.rowIndex="2">
+            <columnConstraints>
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+               <Label text="Postal code">
+                  <GridPane.margin>
+                     <Insets left="5.0" right="15.0" />
+                  </GridPane.margin>
+               </Label>
+               <TextField fx:id="restaurantAddressPostalCodeTextField" GridPane.rowIndex="1">
+                  <GridPane.margin>
+                     <Insets left="5.0" right="15.0" />
+                  </GridPane.margin>
+               </TextField>
+            </children>
+         </GridPane>
+         <GridPane GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <columnConstraints>
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+               <Label />
+               <Label text="Chef">
+                  <GridPane.margin>
+                     <Insets left="15.0" right="5.0" />
+                  </GridPane.margin>
+               </Label>
+               <ComboBox fx:id="restaurantChefComboBox" prefHeight="25.0" prefWidth="237.0" GridPane.rowIndex="1">
+                  <GridPane.margin>
+                     <Insets left="15.0" right="5.0" />
+                  </GridPane.margin>
+               </ComboBox>
+            </children>
+         </GridPane>
+         <GridPane GridPane.columnIndex="2" GridPane.rowIndex="3">
+            <columnConstraints>
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+               <Label text="Waiter">
+                  <GridPane.margin>
+                     <Insets left="10.0" right="10.0" />
+                  </GridPane.margin>
+               </Label>
+               <ComboBox fx:id="restaurantWaiterComboBox" prefHeight="25.0" prefWidth="215.0" GridPane.rowIndex="1">
+                  <GridPane.margin>
+                     <Insets left="10.0" right="10.0" />
+                  </GridPane.margin>
+               </ComboBox>
+            </children>
+         </GridPane>
+         <GridPane GridPane.columnIndex="3" GridPane.rowIndex="3">
+            <columnConstraints>
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+               <Label text="Deliverer">
+                  <GridPane.margin>
+                     <Insets left="5.0" right="15.0" />
+                  </GridPane.margin>
+               </Label>
+               <ComboBox fx:id="restaurantDelivererComboBox" prefHeight="25.0" prefWidth="217.0" GridPane.rowIndex="1">
+                  <GridPane.margin>
+                     <Insets left="5.0" right="15.0" />
+                  </GridPane.margin>
+               </ComboBox>
+            </children>
+         </GridPane>
+         <TableView fx:id="restaurantTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="5" GridPane.rowIndex="6" GridPane.rowSpan="4">
+           <columns>
+             <TableColumn fx:id="restaurantIdColumn" prefWidth="37.0" text="ID" />
+             <TableColumn fx:id="restaurantNameColumn" prefWidth="101.0" text="Name" />
+               <TableColumn fx:id="restaurantAddressStreetColumn" prefWidth="92.0" text="Street" />
+               <TableColumn fx:id="restaurantAddressHouseNumberColumn" prefWidth="101.0" text="House number" />
+               <TableColumn fx:id="restaurantAddressCityColumn" prefWidth="101.0" text="City" />
+               <TableColumn fx:id="restaurantAddressPostalCodeColumn" prefWidth="91.0" text="Postal code" />
+               <TableColumn fx:id="restaurantMealsColumn" prefWidth="148.0" text="Meals" />
+               <TableColumn fx:id="restaurantChefsColumn" prefWidth="148.0" text="Chefs" />
+               <TableColumn fx:id="restaurantWaitersColumn" prefWidth="125.0" text="Waiters" />
+               <TableColumn fx:id="restaurantDeliverersColumn" prefWidth="120.0" text="Deliverers" />
+           </columns>
+         </TableView>
+         <GridPane GridPane.columnIndex="2" GridPane.rowIndex="4">
+            <columnConstraints>
+               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            </columnConstraints>
+            <rowConstraints>
+               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+               <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+               <Label text="Meal">
+                  <GridPane.margin>
+                     <Insets left="10.0" right="10.0" />
+                  </GridPane.margin>
+               </Label>
+               <ComboBox fx:id="restaurantMealComboBox" prefHeight="25.0" prefWidth="217.0" GridPane.rowIndex="1">
+                  <GridPane.margin>
+                     <Insets left="10.0" right="10.0" />
+                  </GridPane.margin>
+               </ComboBox>
+            </children>
+         </GridPane>
+         <Button mnemonicParsing="false" onAction="#filter" text="Search" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
+         <Label fx:id="removeFilterLabel" onMouseClicked="#removeFilter" text="Remove filter" underline="true" GridPane.columnIndex="4" GridPane.rowIndex="1" GridPane.valignment="BOTTOM">
+            <GridPane.margin>
+               <Insets bottom="8.0" />
+            </GridPane.margin>
+         </Label>
+         <GridPane GridPane.rowIndex="5">
+           <columnConstraints>
+             <ColumnConstraints hgrow="SOMETIMES" maxWidth="118.0" minWidth="10.0" prefWidth="114.0" />
+             <ColumnConstraints hgrow="SOMETIMES" maxWidth="104.0" minWidth="10.0" prefWidth="99.0" />
+           </columnConstraints>
+           <rowConstraints>
+             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+           </rowConstraints>
+            <children>
+               <Label text="Selected restaurant:">
+                  <GridPane.margin>
+                     <Insets left="5.0" />
+                  </GridPane.margin>
+               </Label>
+               <Label fx:id="selectedRestaurantLabel" text="-" GridPane.columnIndex="1">
+                  <font>
+                     <Font name="System Bold Italic" size="12.0" />
+                  </font>
+               </Label>
+               <Button fx:id="getOrdersButton" mnemonicParsing="false" onAction="#getOrders" prefHeight="25.0" prefWidth="86.0" text="Get orders" visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            </children>
+            <opaqueInsets>
+               <Insets left="5.0" />
+            </opaqueInsets>
+         </GridPane>
+      </children>
+   </GridPane>
+    <fx:include source="menu.fxml" />
+</AnchorPane>

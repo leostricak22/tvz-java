@@ -46,5 +46,10 @@
                 <MenuItem mnemonicParsing="false" text="Search" onAction="#showSearchScreen" id="orderSearch" />
             </items>
         </Menu>
+        <Menu mnemonicParsing="false" text="Contract">
+            <items>
+                <MenuItem mnemonicParsing="false" text="Search" onAction="#showSearchScreen" id="contract" />
+            </items>
+        </Menu>
     </menus>
 </MenuBar>
