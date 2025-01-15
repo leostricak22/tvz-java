@@ -1,6 +1,7 @@
 package hr.java.restaurant.repository;
 
 import hr.java.restaurant.model.*;
+import hr.java.restaurant.util.EntityFinder;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -45,7 +46,7 @@ public class MealRepository<T extends Meal> extends AbstractRepository<T> {
                 String price = fileRows.get(5);
 
                 Category category = categoryRepository.findById(categoryId);
-                Set<Ingredient> ingredients = Ingredient.getIngredientsByIdentifiers(ingredientsIdentifiers);
+                Set<Ingredient> ingredients = EntityFinder.ingredientsByIdentifiers(ingredientsIdentifiers);
 
                 if(mealType.equals("vegan")) {
                     String proteinSource = fileRows.get(6);

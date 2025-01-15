@@ -52,67 +52,7 @@ public final class VeganMeal extends Meal implements Vegan, Serializable {
         return this.glutenFree;
     }
 
-    /**
-     * Inputs a vegan meal.
-     * @param categories the categories
-     * @param ingredients the ingredients.txt
-     * @param meals the meals
-     * @param scanner the scanner object used for input
-     * @return the vegan meal
-     */
-    public static VeganMeal inputVeganMeal(List<Category> categories, Set<Ingredient> ingredients, Set<Meal> meals, Scanner scanner) {
-        String mealName;
-
-        logger.info("Vegan meal input");
-        while (true) {
-            mealName = Input.string(scanner, "Unesite naziv veganskog jela: ");
-            try {
-                Validation.checkDuplicateMeal(meals, mealName);
-                break;
-            } catch (DuplicateEntryException e) {
-                System.out.println("Jelo s tim nazivom već postoji!");
-            }
-        }
-
-        Category mealCategory = EntityFinder.categoryName(scanner, "Unesite kategoriju veganskog jela: ", categories);
-
-        BigDecimal mealPrice;
-        Set<Ingredient> ingredientsEntered = Ingredient.enterArrayOfIngredients(ingredients, scanner);
-        while (true) {
-            mealPrice = Input.bigDecimal(scanner, "Unesite cijenu veganskog jela: ");
-
-            try {
-                Validation.checkMealPrice(mealPrice);
-                break;
-            } catch (InvalidValueException e) {
-                System.out.println("Cijena mora biti veća od 0 i treba biti realna. Pokušajte ponovno:");
-            }
-        }
-        String mealProteinSource = Input.string(scanner, "Unesite izvor proteina veganskog jela: ");
-        boolean mealOrganic = Input.booleanValue(scanner, "Unesite je li vegansko jelo organsko: ");
-        boolean mealGlutenFree = Input.booleanValue(scanner, "Unesite je li vegansko jelo bez glutena: ");
-
-        return new VeganMeal(1l, mealName, "vegan", mealCategory, ingredientsEntered, mealPrice, mealProteinSource, mealOrganic, mealGlutenFree);
-    }
-
     public String getProteinSource() {
         return proteinSource;
-    }
-
-    /**
-     * Prints the vegan meal.
-     * @param tabulators the number of tabulators
-     */
-    @Override
-    public void print(Integer tabulators) {
-        logger.info("Printing vegan meal.");
-
-        super.print(tabulators);
-        Output.tabulatorPrint(tabulators);
-        System.out.println("Izvor proteina: " + this.proteinSource);
-        Output.tabulatorPrint(tabulators);
-        System.out.println("Bez glutena: " + (this.glutenFree ? "Da" : "Ne"));
-        Output.tabulatorPrint(tabulators);
-        System.out.println("Organsko: " + (this.organic ? "Da" : "Ne"));
     }
 }

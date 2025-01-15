@@ -46,27 +46,6 @@ public class Meal extends Entity implements Serializable {
         return unrealPrice;
     }
 
-    public static Set<Meal> inputMealSet(List<Category> categories, Set<Ingredient> ingredients, Scanner scanner) {
-        Set<Meal> meals = new HashSet<>();
-
-        System.out.println("Unos veganskih jela: ");
-        for (int i = 0; i < Constants.NUM_OF_VEGAN_MEALS; i++) {
-            meals.add(VeganMeal.inputVeganMeal(categories, ingredients, meals, scanner));
-        }
-
-        System.out.println("Unos vegetarijanskih jela: ");
-        for (int i = 0; i < Constants.NUM_OF_VEGETARIAN_MEALS; i++) {
-            meals.add(VegetarianMeal.inputVegetarianMeal(categories, ingredients, meals, scanner));
-        }
-
-        System.out.println("Unos mesnih jela: ");
-        for (int i = 0; i < Constants.NUM_OF_MEAT_MEALS; i++) {
-            meals.add(MeatMeal.inputMeatMeal(categories, ingredients, meals, scanner));
-        }
-
-        return meals;
-    }
-
     public static Set<Meal> getMealByIdentifiers(String mealsInRestaurantIdentifiers) {
         Set<Meal> mealsList = new HashSet<>();
         String[] identifiers = mealsInRestaurantIdentifiers.split(",");
@@ -149,76 +128,4 @@ public class Meal extends Entity implements Serializable {
         return category;
     }
 
-    /**
-     * Finds the most caloric meal
-     * @param meals the meals
-     * @return the most caloric meal
-     */
-    public static Meal findMostCaloricMeal(List<Meal> meals) {
-        Meal mostCaloricMeal = meals.getFirst();
-        BigDecimal mostMealCalories = BigDecimal.valueOf(-1);
-        BigDecimal mealCalories;
-
-        for (Meal meal : meals) {
-            mealCalories = meal.getTotalCalories();
-
-            if (mealCalories.compareTo(mostMealCalories) > 0) {
-                mostCaloricMeal = meal;
-                mostMealCalories = mealCalories;
-            }
-        }
-
-        return mostCaloricMeal;
-    }
-
-    /**
-     * Finds the least caloric meal.
-     * @param meals the meals
-     * @return the least caloric meal
-     */
-    public static Meal findLeastCaloricMeal(List<Meal> meals) {
-        Meal mostCaloricMeal = meals.getFirst();
-        BigDecimal mostMealCalories = BigDecimal.valueOf(Double.MAX_VALUE);
-        BigDecimal mealCalories;
-
-        for (Meal meal : meals) {
-            mealCalories = meal.getTotalCalories();
-
-            if (mealCalories.compareTo(mostMealCalories) < 0) {
-                mostCaloricMeal = meal;
-                mostMealCalories = mealCalories;
-            }
-        }
-
-        return mostCaloricMeal;
-    }
-
-    /**
-     * print meal
-     * @param tabulators number of tabulators
-     */
-    public void print(Integer tabulators) {
-        logger.info("Printing meal.");
-
-        Output.tabulatorPrint(tabulators);
-        System.out.println("Id: " + this.getId() + ", Naziv: " + super.getName() + ", Cijena: " + this.price);
-
-        Output.tabulatorPrint(tabulators);
-        System.out.println("Kategorija:");
-        category.print(tabulators + 1);
-
-        Output.tabulatorPrint(tabulators);
-        System.out.println("Sastojci: ");
-        int index = 1;
-
-
-        List<Ingredient> sortedIngredients = new ArrayList<>(this.ingredients);
-        sortedIngredients.sort((i1, i2) -> i1.getName().compareTo(i2.getName()));
-        for (Ingredient ingredient : sortedIngredients) {
-            Output.tabulatorPrint(tabulators + 1);
-            System.out.println("Sastojak " + index + ":");
-            ingredient.print(tabulators + 2);
-            index++;
-        }
-    }
 }

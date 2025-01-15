@@ -42,7 +42,8 @@ public class IngredientRepository<T extends Ingredient> extends AbstractReposito
                 BigDecimal kcal = new BigDecimal(fileRows.get(3));
                 String preparationMethod = fileRows.get(4);
 
-                Category category = EntityFinder.categoryById(categoryId, categoryRepository.findAll());
+                Category category = EntityFinder.categoryById(categoryId, categoryRepository.findAll())
+                        .orElseThrow(() -> new RuntimeException("Nepostojeća kategorija"));
 
                 ingredients.add((T) new Ingredient.Builder(id, name)
                         .setCategory(category)

@@ -4,19 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4f528465-ba8d-46d2-beb3-c46214f220ac" name="Changes" comment="feat: Add Category Add scene">
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/IngredientAddController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/ingredientAdd.fxml" afterDir="false" />
+    <list default="true" id="4f528465-ba8d-46d2-beb3-c46214f220ac" name="Changes" comment="feat: Add Ingredient Add scene">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dat/ingredients.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dat/ingredients.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/AddController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/AddController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/CategoryAddController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/CategoryAddController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/application.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/application.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/IngredientAddController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/IngredientAddController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Category.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Ingredient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Ingredient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Meal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Meal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/MeatMeal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/MeatMeal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Order.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Restaurant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Restaurant.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/VeganMeal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/VeganMeal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/VegetarianMeal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/VegetarianMeal.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/IngredientRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/IngredientRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/Validation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/Validation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/categoryAdd.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/categoryAdd.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/menu.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/menu.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/MealRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/MealRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/EntityFinder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/EntityFinder.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,6 +95,9 @@
       <recent name="C:\Users\LeoHP\Documents\GitHub\tvz-programiranje-java\Stricak-7\src\main\java\hr\java\restaurant\model" />
       <recent name="C:\Users\LeoHP\Documents\GitHub\tvz-programiranje-java\Stricak-7\src\main\java\hr\java\restaurant" />
     </key>
+    <key name="MoveMembersDialog.RECENTS_KEY">
+      <recent name="hr.java.restaurant.util.EntityFinder" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="hr.java.restaurant.controller" />
     </key>
@@ -167,7 +172,7 @@
       <workItem from="1734708765234" duration="4005000" />
       <workItem from="1734739457932" duration="87000" />
       <workItem from="1736810935376" duration="243000" />
-      <workItem from="1736890422027" duration="11437000" />
+      <workItem from="1736890422027" duration="12742000" />
     </task>
     <task id="LOCAL−00001" summary="feat: Add JavaFX project and add category searching and filtering">
       <option name="closed" value="true" />
@@ -253,7 +258,14 @@
       <option name="presentableId" value="LOCAL−00012" />
       <updated>1736897210049</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL−00013" summary="feat: Add Ingredient Add scene">
+      <option name="closed" value="true" />
+      <created>1736901960684</created>
+      <option name="number" value="LOCAL−00013" />
+      <option name="presentableId" value="LOCAL−00013" />
+      <updated>1736901960684</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -272,6 +284,7 @@
     <MESSAGE value="feat: Filter orders for selected restaurant" />
     <MESSAGE value="refactor: Code cleanup" />
     <MESSAGE value="feat: Add Category Add scene" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: Add Category Add scene" />
+    <MESSAGE value="feat: Add Ingredient Add scene" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: Add Ingredient Add scene" />
   </component>
 </project>
