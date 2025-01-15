@@ -50,10 +50,9 @@ public class CategoryRepository<T extends Category> extends AbstractRepository<T
                 String name = fileRows.get(1);
                 String description = fileRows.get(2);
 
-                categories.add((T) new Category.Builder()
-                        .id(id)
-                        .name(name)
-                        .description(description)
+                categories.add((T) new Category.Builder(id)
+                        .setName(name)
+                        .setDescription(description)
                         .build());
 
                 fileRows = fileRows.subList(3, fileRows.size());

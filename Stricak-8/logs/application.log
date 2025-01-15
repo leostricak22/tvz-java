@@ -150,3 +150,10 @@
 2025-01-15 02:06:24 INFO [JavaFX Application Thread] h.j.r.m.Category [Category.java:29] Category created: hr.java.restaurant.model.Category@18994db8
 2025-01-15 02:06:24 INFO [JavaFX Application Thread] h.j.r.m.Category [Category.java:29] Category created: hr.java.restaurant.model.Category@1edd2ab9
 2025-01-15 02:06:24 INFO [JavaFX Application Thread] h.j.r.m.Ingredient [Ingredient.java:27] Ingredient created: hr.java.restaurant.model.Ingredient@267ed7a6
+2025-01-15 02:13:31 ERROR [JavaFX Application Thread] h.j.r.c.CategoryAddController [CategoryAddController.java:37] Category add error: Invalid category name.
+2025-01-15 02:13:46 ERROR [JavaFX Application Thread] h.j.r.c.CategoryAddController [CategoryAddController.java:37] Category add error: Invalid category description.
+2025-01-15 02:13:50 ERROR [JavaFX Application Thread] h.j.r.c.CategoryAddController [CategoryAddController.java:37] Category add error: Category with that name already exists.
+2025-01-15 02:13:56 INFO [JavaFX Application Thread] h.j.r.c.CategoryAddController [CategoryAddController.java:48] Category "1123" added.
+2025-01-15 02:14:02 ERROR [JavaFX Application Thread] h.j.r.c.IngredientAddController [IngredientAddController.java:52] Ingredient add error: Invalid ingredient name.
+2025-01-15 02:14:10 ERROR [JavaFX Application Thread] h.j.r.c.IngredientAddController [IngredientAddController.java:52] Ingredient add error: Invalid kCal.
+2025-01-15 02:14:16 INFO [JavaFX Application Thread] h.j.r.c.IngredientAddController [IngredientAddController.java:65] Ingredient "hm" added.

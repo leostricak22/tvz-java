@@ -1,9 +1,5 @@
 package hr.java.restaurant.model;
 
-import hr.java.restaurant.repository.IngredientRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 
@@ -11,20 +7,16 @@ import java.math.BigDecimal;
  * Represents an ingredient of a meal.
  */
 public class Ingredient extends Entity implements Serializable {
-    private static final Logger logger = LoggerFactory.getLogger(Ingredient.class);
 
     private Category category;
     private BigDecimal kcal;
     private String preparationMethod;
-
-    private static final IngredientRepository<Ingredient> ingredientRepository = new IngredientRepository<>();
 
     private Ingredient(Builder builder) {
         super(builder.id, builder.name);
         this.category = builder.category;
         this.kcal = builder.kcal;
         this.preparationMethod = builder.preparationMethod;
-        logger.info("Ingredient created: {}", this);
     }
 
     public Category getCategory() {

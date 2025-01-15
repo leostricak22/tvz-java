@@ -1,12 +1,15 @@
 package hr.java.restaurant.controller;
 
 import hr.java.restaurant.model.Category;
+import hr.java.restaurant.model.Meal;
 import hr.java.restaurant.repository.CategoryRepository;
 import hr.java.restaurant.util.AlertDialog;
 import hr.java.restaurant.util.SceneLoader;
 import hr.java.restaurant.util.Validation;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -16,6 +19,7 @@ public class CategoryAddController implements AddController {
     @FXML private TextField descriptionTextField;
 
     private final CategoryRepository<Category> categoryRepository = new CategoryRepository<>();
+    private static final Logger logger = LoggerFactory.getLogger(CategoryAddController.class);
 
     @Override
     public void initialize() {}
@@ -30,16 +34,18 @@ public class CategoryAddController implements AddController {
         String error = validateInput(categoryName, categoryDescription, categories);
         if (!error.isEmpty()) {
             AlertDialog.showErrorDialog("Category add error", error);
+            logger.error("Category add error: {}", error);
             return;
         }
 
-        Category newCategory = new Category.Builder()
-                .id(categoryRepository.getNextId())
-                .name(categoryName)
-                .description(categoryDescription).build();
+        Category newCategory = new Category.Builder(categoryRepository.getNextId())
+                .setName(categoryName)
+                .setDescription(categoryDescription)
+                .build();
 
         categoryRepository.add(newCategory);
         AlertDialog.showInformationDialog("Category added", "Category successfully added.");
+        logger.info("Category \"{}\" added.", newCategory.getName());
 
         SceneLoader.loadScene("categorySearch", "Category search");
     }

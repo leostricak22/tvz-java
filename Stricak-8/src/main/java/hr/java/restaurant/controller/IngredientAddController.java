@@ -2,6 +2,7 @@ package hr.java.restaurant.controller;
 
 import hr.java.restaurant.model.Category;
 import hr.java.restaurant.model.Ingredient;
+import hr.java.restaurant.model.Meal;
 import hr.java.restaurant.repository.CategoryRepository;
 import hr.java.restaurant.repository.IngredientRepository;
 import hr.java.restaurant.util.AlertDialog;
@@ -11,6 +12,8 @@ import hr.java.restaurant.util.Validation;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -25,6 +28,7 @@ public class IngredientAddController implements AddController {
 
     private final IngredientRepository<Ingredient> ingredientRepository = new IngredientRepository<>();
     private final CategoryRepository<Category> categoryRepository = new CategoryRepository<>();
+    private static final Logger logger = LoggerFactory.getLogger(IngredientAddController.class);
 
     @Override
     public void initialize() {
@@ -45,6 +49,7 @@ public class IngredientAddController implements AddController {
 
         if (!error.isEmpty()) {
             AlertDialog.showErrorDialog("Ingredient add error", error);
+            logger.error("Ingredient add error: {}", error);
             return;
         }
 
@@ -57,6 +62,7 @@ public class IngredientAddController implements AddController {
 
         ingredientRepository.add(newIngredient);
         AlertDialog.showInformationDialog("Ingredient added", "Ingredient successfully added.");
+        logger.info("Ingredient \"{}\" added.", newIngredient.getName());
 
         SceneLoader.loadScene("ingredientSearch", "Ingredient search");
     }
