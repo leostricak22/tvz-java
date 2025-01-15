@@ -157,3 +157,14 @@
 2025-01-15 02:14:02 ERROR [JavaFX Application Thread] h.j.r.c.IngredientAddController [IngredientAddController.java:52] Ingredient add error: Invalid ingredient name.
 2025-01-15 02:14:10 ERROR [JavaFX Application Thread] h.j.r.c.IngredientAddController [IngredientAddController.java:52] Ingredient add error: Invalid kCal.
 2025-01-15 02:14:16 INFO [JavaFX Application Thread] h.j.r.c.IngredientAddController [IngredientAddController.java:65] Ingredient "hm" added.
+2025-01-15 23:20:54 ERROR [JavaFX Application Thread] h.j.r.c.MealAddController [MealAddController.java:71] Meal add error: Invalid price format.
+2025-01-15 23:20:58 ERROR [JavaFX Application Thread] h.j.r.c.MealAddController [MealAddController.java:71] Meal add error: Ingredients are not selected.
+2025-01-15 23:31:12 INFO [JavaFX Application Thread] h.j.r.c.MealAddController [MealAddController.java:99] Meal added: hr.java.restaurant.model.VegetarianMeal@2a
+2025-01-15 23:31:29 INFO [JavaFX Application Thread] h.j.r.c.MealAddController [MealAddController.java:99] Meal added: hr.java.restaurant.model.VegetarianMeal@2b
+2025-01-16 00:22:15 ERROR [JavaFX Application Thread] h.j.r.c.MealAddController [MealAddController.java:67] Meal add error: Ingredients are not selected.
+2025-01-16 00:22:29 INFO [JavaFX Application Thread] h.j.r.c.MealAddController [MealAddController.java:77] Meal added: hr.java.restaurant.model.VegetarianMeal@2c
+2025-01-16 00:25:06 ERROR [JavaFX Application Thread] h.j.r.c.MealAddController [MealAddController.java:67] Meal add error: Meal name is empty.
+2025-01-16 00:25:32 ERROR [JavaFX Application Thread] h.j.r.c.MealAddController [MealAddController.java:67] Meal add error: Additional attribute 3 is empty.
+2025-01-16 00:29:01 ERROR [JavaFX Application Thread] h.j.r.c.MealAddController [MealAddController.java:67] Meal add error: Invalid meal name.
+2025-01-16 00:29:16 ERROR [JavaFX Application Thread] h.j.r.c.MealAddController [MealAddController.java:67] Meal add error: Invalid price format.
+2025-01-16 00:29:20 INFO [JavaFX Application Thread] h.j.r.c.MealAddController [MealAddController.java:83] Meal added: hr.java.restaurant.model.MeatMeal@2d

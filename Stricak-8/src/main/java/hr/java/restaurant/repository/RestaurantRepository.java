@@ -1,6 +1,7 @@
 package hr.java.restaurant.repository;
 
 import hr.java.restaurant.model.*;
+import hr.java.restaurant.util.EntityFinder;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -54,7 +55,7 @@ public class RestaurantRepository<T extends Restaurant> extends AbstractReposito
                 String waitersInRestaurantIdentifiers = fileRows.get(8);
                 String deliverersInRestaurantIdentifiers = fileRows.get(9);
 
-                Set<Meal> mealsInRestaurant = Meal.getMealByIdentifiers(mealsInRestaurantIdentifiers);
+                Set<Meal> mealsInRestaurant = EntityFinder.getMealByIdentifiers(mealsInRestaurantIdentifiers);
                 Set<Chef> chefsInRestaurant = Person.getPersonByIdentifiers(chefsInRestaurantIdentifiers, chefRepository.findAll());
                 Set<Waiter> waitersInRestaurant = Person.getPersonByIdentifiers(waitersInRestaurantIdentifiers, waiterRepository.findAll());
                 Set<Deliverer> deliverersInRestaurant = Person.getPersonByIdentifiers(deliverersInRestaurantIdentifiers, delivererRepository.findAll());

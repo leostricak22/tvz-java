@@ -158,14 +158,4 @@ public class Validation {
         if (salary.compareTo(Contract.getMinSalary()) <= 0)
             throw new InvalidValueException();
     }
-
-    /**
-     * Checks if the given price is valid.
-     * @param price the price
-     * @throws InvalidValueException if the price is invalid
-     */
-    public static void checkMealPrice(BigDecimal price) throws InvalidValueException {
-        if(price.compareTo(Meal.getUnrealPrice()) >= 0 || price.compareTo(BigDecimal.ZERO) < 0)
-            throw new InvalidValueException();
-    }
 }

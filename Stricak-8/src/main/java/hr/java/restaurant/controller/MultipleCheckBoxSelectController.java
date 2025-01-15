@@ -17,9 +17,14 @@ public class MultipleCheckBoxSelectController<T extends Entity> {
     private Consumer<List<T>> onConfirmCallback;
     private final Map<CheckBox, T> checkBoxToEntityMap = new HashMap<>();
 
-    public void initialize(List<T> entities) {
+    public void initialize(List<T> entities, List<T> previouslySelectedItems) {
         for (T entity : entities) {
             CheckBox checkBox = new CheckBox(entity.getName());
+
+            if (previouslySelectedItems.contains(entity)) {
+                checkBox.setSelected(true);
+            }
+
             checkBoxToEntityMap.put(checkBox, entity);
             listView.getItems().add(checkBox);
         }

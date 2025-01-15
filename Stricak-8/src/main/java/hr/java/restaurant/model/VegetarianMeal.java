@@ -1,13 +1,6 @@
 package hr.java.restaurant.model;
 
-import hr.java.restaurant.exception.DuplicateEntryException;
-import hr.java.restaurant.exception.InvalidValueException;
-import hr.java.restaurant.util.EntityFinder;
-import hr.java.restaurant.util.Input;
-import hr.java.restaurant.util.Output;
-import hr.java.restaurant.util.Validation;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import hr.java.restaurant.enumeration.MealTypeEnum;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -21,23 +14,11 @@ public final class VegetarianMeal extends Meal implements Vegetarian, Serializab
     private final boolean containsEggs;
     private final String proteinSource;
 
-    private static final Logger logger = LoggerFactory.getLogger(VegetarianMeal.class);
-
-    /**
-     * Constructs a VegetarianMeal object.
-     * @param name the name of the meal
-     * @param category the category of the meal
-     * @param ingredients the ingredients.txt of the meal
-     * @param price the price of the meal
-     * @param proteinSource the source of protein
-     * @param containsDairy if the meal contains dairy
-     * @param containsEggs if the meal contains eggs
-     */
-    public VegetarianMeal(Long id, String name, String mealType, Category category, Set<Ingredient> ingredients, BigDecimal price, String proteinSource, boolean containsDairy, boolean containsEggs) {
-        super(id, name, mealType, category, ingredients, price);
-        this.containsDairy = containsDairy;
-        this.containsEggs = containsEggs;
-        this.proteinSource = proteinSource;
+    public VegetarianMeal(Builder builder) {
+        super(builder.id, builder.name, builder.mealType, builder.category, builder.ingredients, builder.price);
+        this.containsDairy = builder.containsDairy;
+        this.containsEggs = builder.containsEggs;
+        this.proteinSource = builder.proteinSource;
     }
 
     public boolean containsDairy() {
@@ -58,5 +39,61 @@ public final class VegetarianMeal extends Meal implements Vegetarian, Serializab
 
     public String getProteinSource() {
         return proteinSource;
+    }
+
+    public static class Builder {
+        private final Long id;
+        private final String name;
+        private MealTypeEnum mealType;
+        private Category category;
+        private Set<Ingredient> ingredients;
+        private BigDecimal price;
+        private boolean containsDairy;
+        private boolean containsEggs;
+        private String proteinSource;
+
+        public Builder(Long id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        public Builder setMealType(MealTypeEnum mealType) {
+            this.mealType = mealType;
+            return this;
+        }
+
+        public Builder setCategory(Category category) {
+            this.category = category;
+            return this;
+        }
+
+        public Builder setIngredients(Set<Ingredient> ingredients) {
+            this.ingredients = ingredients;
+            return this;
+        }
+
+        public Builder setPrice(BigDecimal price) {
+            this.price = price;
+            return this;
+        }
+
+        public Builder setContainsDairy(boolean containsDairy) {
+            this.containsDairy = containsDairy;
+            return this;
+        }
+
+        public Builder setContainsEggs(boolean containsEggs) {
+            this.containsEggs = containsEggs;
+            return this;
+        }
+
+        public Builder setProteinSource(String proteinSource) {
+            this.proteinSource = proteinSource;
+            return this;
+        }
+
+        public VegetarianMeal build() {
+            return new VegetarianMeal(this);
+        }
     }
 }

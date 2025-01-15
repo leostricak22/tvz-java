@@ -81,7 +81,7 @@ public class MealSearchController implements SearchController {
                 new SimpleStringProperty(cellData.getValue().getName()));
 
         mealTypeColumn.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getMealType()));
+                new SimpleStringProperty(cellData.getValue().getMealType().getName()));
 
         mealCategoryNameColumn.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getCategory().getName()));
@@ -128,7 +128,7 @@ public class MealSearchController implements SearchController {
                 .filter(meal -> mealPriceFromTextFieldValue.isBlank() ||
                         meal.getPrice().compareTo(new BigDecimal(mealPriceFromTextFieldValue)) >= 0)
                 .filter(meal -> mealTypeComboBoxValue.isBlank() ||
-                        meal.getMealType().contains(mealTypeComboBoxValue))
+                        meal.getMealType().getName().contains(mealTypeComboBoxValue))
                 .filter(meal -> mealCategoryComboBoxValue.isBlank() ||
                         meal.getCategory().getName().contains(mealCategoryComboBoxValue))
                 .filter(meal -> mealIngredientComboBoxValue.isBlank() ||

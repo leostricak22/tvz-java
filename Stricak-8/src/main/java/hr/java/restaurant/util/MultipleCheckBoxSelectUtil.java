@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Set;
 
 public class MultipleCheckBoxSelectUtil {
-    public static <T extends Entity> List<T> openWindow(Set<T> items) {
+    public static <T extends Entity> List<T> openWindow(Set<T> items, List<T> previouslySelectedItems) {
         List<T> selectedItems = new ArrayList<>();
 
         try {
@@ -23,7 +23,8 @@ public class MultipleCheckBoxSelectUtil {
             Scene scene = new Scene(fxmlLoader.load(), 300, 250);
 
             MultipleCheckBoxSelectController<T> controller = fxmlLoader.getController();
-            controller.initialize(new ArrayList<>(items));
+
+            controller.initialize(new ArrayList<>(items), previouslySelectedItems);
 
             controller.setOnConfirmCallback(selectedItems::addAll);
 

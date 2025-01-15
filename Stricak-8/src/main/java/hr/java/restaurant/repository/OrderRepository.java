@@ -1,6 +1,7 @@
 package hr.java.restaurant.repository;
 
 import hr.java.restaurant.model.*;
+import hr.java.restaurant.util.EntityFinder;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -45,7 +46,7 @@ public class OrderRepository<T extends Order> extends AbstractRepository<T> {
                 LocalDateTime deliveryDateAndTime = LocalDateTime.parse(fileRows.get(4));
 
                 Restaurant restaurant = restaurantRepository.findById(Long.parseLong(restaurantIdentifier));
-                Set<Meal> meals = Meal.getMealByIdentifiers(mealIdentifier);
+                Set<Meal> meals = EntityFinder.getMealByIdentifiers(mealIdentifier);
                 Deliverer deliverer = new ArrayList<>(Person.getPersonByIdentifiers(delivererIdentifier, delivererRepository.findAll())).getFirst();
 
 

@@ -1,5 +1,6 @@
 package hr.java.restaurant.model;
 
+import hr.java.restaurant.enumeration.MealTypeEnum;
 import hr.java.restaurant.exception.DuplicateEntryException;
 import hr.java.restaurant.exception.InvalidValueException;
 import hr.java.restaurant.util.EntityFinder;
@@ -19,40 +20,96 @@ import java.util.Set;
  * Represents a meal that is vegan.
  */
 public final class VeganMeal extends Meal implements Vegan, Serializable {
-    private final String proteinSource;
-    private final boolean organic;
-    private final boolean glutenFree;
-    private static final Logger logger = LoggerFactory.getLogger(VeganMeal.class);
+    private String proteinSource;
+    private boolean organic;
+    private boolean glutenFree;
 
-    /**
-     * Constructs a VeganMeal object.
-     * @param name the name of the meal
-     * @param category the category of the meal
-     * @param ingredients the ingredients.txt of the meal
-     * @param price the price of the meal
-     * @param proteinSource the source of protein
-     * @param organic if the meal is organic
-     * @param glutenFree if the meal is gluten-free
-     */
-    public VeganMeal(Long id, String name, String mealType, Category category, Set<Ingredient> ingredients, BigDecimal price, String proteinSource, boolean organic, boolean glutenFree) {
-        super(id, name, mealType, category, ingredients, price);
-        this.proteinSource = proteinSource;
-        this.organic = organic;
-        this.glutenFree = glutenFree;
-    }
-
-
-    @Override
-    public boolean isOrganic() {
-        return this.organic;
-    }
-
-    @Override
-    public boolean isGlutenFree() {
-        return this.glutenFree;
+   public VeganMeal(Builder builder) {
+        super(builder.id, builder.name, builder.mealType, builder.category, builder.ingredients, builder.price);
+        this.proteinSource = builder.proteinSource;
+        this.organic = builder.organic;
+        this.glutenFree = builder.glutenFree;
     }
 
     public String getProteinSource() {
         return proteinSource;
+    }
+
+    public void setProteinSource(String proteinSource) {
+        this.proteinSource = proteinSource;
+    }
+
+    @Override
+    public boolean isOrganic() {
+        return organic;
+    }
+
+    public void setOrganic(boolean organic) {
+        this.organic = organic;
+    }
+
+    @Override
+    public boolean isGlutenFree() {
+        return glutenFree;
+    }
+
+    public void setGlutenFree(boolean glutenFree) {
+        this.glutenFree = glutenFree;
+    }
+
+    public static class Builder {
+        private final Long id;
+        private final String name;
+        private MealTypeEnum mealType;
+        private Category category;
+        private Set<Ingredient> ingredients;
+        private BigDecimal price;
+        private boolean organic;
+        private boolean glutenFree;
+        private String proteinSource;
+
+        public Builder(Long id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        public Builder setMealType(MealTypeEnum mealType) {
+            this.mealType = mealType;
+            return this;
+        }
+
+        public Builder setCategory(Category category) {
+            this.category = category;
+            return this;
+        }
+
+        public Builder setIngredients(Set<Ingredient> ingredients) {
+            this.ingredients = ingredients;
+            return this;
+        }
+
+        public Builder setPrice(BigDecimal price) {
+            this.price = price;
+            return this;
+        }
+
+        public Builder setOrganic(boolean organic) {
+            this.organic = organic;
+            return this;
+        }
+
+        public Builder setGlutenFree(boolean glutenFree) {
+            this.glutenFree = glutenFree;
+            return this;
+        }
+
+        public Builder setProteinSource(String proteinSource) {
+            this.proteinSource = proteinSource;
+            return this;
+        }
+
+        public VeganMeal build() {
+            return new VeganMeal(this);
+        }
     }
 }

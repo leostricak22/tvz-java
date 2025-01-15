@@ -1,5 +1,6 @@
 package hr.java.restaurant.model;
 
+import hr.java.restaurant.enumeration.MealTypeEnum;
 import hr.java.restaurant.exception.DuplicateEntryException;
 import hr.java.restaurant.exception.InvalidValueException;
 import hr.java.restaurant.util.EntityFinder;
@@ -17,40 +18,94 @@ import java.util.*;
  * Represents a meal that contains meat.
  */
 public final class MeatMeal extends Meal implements Meat, Serializable {
-    private final String meatType;
-    private final String meatOrigin;
-    private final String meatCookingType;
-    private static final Logger logger = LoggerFactory.getLogger(MeatMeal.class);
+    private String meatType;
+    private boolean ecoFriendly;
+    private boolean organic;
 
-    /**
-     * Constructs a MeatMeal object.
-     *
-     * @param name the name of the meal
-     * @param category the category of the meal
-     * @param ingredients the ingredients.txt of the meal
-     * @param price the price of the meal
-     * @param meatType the type of meat
-     * @param meatOrigin the origin of meat
-     * @param meatCookingType the cooking type of meat
-     */
-    public MeatMeal(Long id, String name, String mealType, Category category, Set<Ingredient> ingredients, BigDecimal price, String meatType, String meatOrigin, String meatCookingType) {
-        super(id, name, mealType, category, ingredients, price);
-        this.meatType = meatType;
-        this.meatOrigin = meatOrigin;
-        this.meatCookingType = meatCookingType;
+    public MeatMeal(Builder builder) {
+        super(builder.id, builder.name, builder.mealType, builder.category, builder.ingredients, builder.price);
+        this.meatType = builder.meatType;
+        this.ecoFriendly = builder.ecoFriendly;
+        this.organic = builder.organic;
     }
 
-    @Override
     public String getMeatType() {
-        return this.meatType;
+        return meatType;
     }
 
-    @Override
-    public String getMeatOrigin() {
-        return this.meatOrigin;
+    public void setMeatType(String meatType) {
+        this.meatType = meatType;
     }
 
-    public String getMeatCookingType() {
-        return meatCookingType;
+    public boolean isEcoFriendly() {
+        return ecoFriendly;
+    }
+
+    public void setEcoFriendly(boolean ecoFriendly) {
+        this.ecoFriendly = ecoFriendly;
+    }
+
+    public boolean isOrganic() {
+        return organic;
+    }
+
+    public void setOrganic(boolean organic) {
+        this.organic = organic;
+    }
+
+    public static class Builder {
+        private final Long id;
+        private final String name;
+        private MealTypeEnum mealType;
+        private Category category;
+        private Set<Ingredient> ingredients;
+        private BigDecimal price;
+        private String meatType;
+        private boolean ecoFriendly;
+        private boolean organic;
+
+        public Builder(Long id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        public Builder setMealType(MealTypeEnum mealType) {
+            this.mealType = mealType;
+            return this;
+        }
+
+        public Builder setCategory(Category category) {
+            this.category = category;
+            return this;
+        }
+
+        public Builder setIngredients(Set<Ingredient> ingredients) {
+            this.ingredients = ingredients;
+            return this;
+        }
+
+        public Builder setPrice(BigDecimal price) {
+            this.price = price;
+            return this;
+        }
+
+        public Builder setMeatType(String meatType) {
+            this.meatType = meatType;
+            return this;
+        }
+
+        public Builder setEcoFriendly(boolean ecoFriendly) {
+            this.ecoFriendly = ecoFriendly;
+            return this;
+        }
+
+        public Builder setOrganic(boolean organic) {
+            this.organic = organic;
+            return this;
+        }
+
+        public MeatMeal build() {
+            return new MeatMeal(this);
+        }
     }
 }
