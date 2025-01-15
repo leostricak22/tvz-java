@@ -12,6 +12,7 @@
     </Menu>
     <Menu mnemonicParsing="false" text="Ingredient">
         <MenuItem mnemonicParsing="false" onAction="#showSearchScreen" id="ingredientSearch" text="Search"/>
+        <MenuItem mnemonicParsing="false" onAction="#showAddScreen" id="ingredientAdd" text="Add"/>
     </Menu>
     <Menu mnemonicParsing="false" text="Meal">
         <MenuItem mnemonicParsing="false" onAction="#showSearchScreen" id="mealSearch" text="Search"/>

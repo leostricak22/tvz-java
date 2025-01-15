@@ -40,11 +40,19 @@ public class Validation {
         return value.matches("\\b([0-9]{4})-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])\\b");
     }
 
-    public static boolean validNonEmptyString(String value) {
+    public static boolean validString(String value) {
         return !value.isEmpty();
     }
 
-    public static <T extends Category> boolean isDuplicateByName(Iterable<T> list, String name) {
+    public static boolean validBigDecimal(String value) {
+        return value.matches("\\d+(\\.\\d+)?");
+    }
+
+    public static boolean validInteger(String value) {
+        return value.matches("\\d+");
+    }
+
+    public static <T extends Entity> boolean isDuplicateByName(Iterable<T> list, String name) {
         for (T item : list) {
             if (item.getName().equals(name)) {
                 return true;

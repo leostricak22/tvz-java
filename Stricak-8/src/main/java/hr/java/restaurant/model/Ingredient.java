@@ -23,18 +23,11 @@ public class Ingredient extends Entity implements Serializable {
 
     private static final IngredientRepository<Ingredient> ingredientRepository = new IngredientRepository<>();
 
-    /**
-     * Constructs an Ingredient object
-     * @param name the name of the ingredient
-     * @param category the category of the ingredient
-     * @param kcal the calories of the ingredient
-     * @param preparationMethod the preparation method of the ingredient
-     */
-    public Ingredient(Long id, String name, Category category, BigDecimal kcal, String preparationMethod) {
-        super(id, name);
-        this.category = category;
-        this.kcal = kcal;
-        this.preparationMethod = preparationMethod;
+    private Ingredient(Builder builder) {
+        super(builder.id, builder.name);
+        this.category = builder.category;
+        this.kcal = builder.kcal;
+        this.preparationMethod = builder.preparationMethod;
     }
 
     public Category getCategory() {
@@ -114,5 +107,37 @@ public class Ingredient extends Entity implements Serializable {
         Output.tabulatorPrint(tabulators);
         System.out.println("Kategorija:");
         category.print(tabulators+1);
+    }
+
+    public static class Builder {
+        private final Long id;
+        private final String name;
+        private Category category;
+        private BigDecimal kcal;
+        private String preparationMethod;
+
+        public Builder(Long id, String name) {
+            this.id = id;
+            this.name = name;
+        }
+
+        public Builder setCategory(Category category) {
+            this.category = category;
+            return this;
+        }
+
+        public Builder setKcal(BigDecimal kcal) {
+            this.kcal = kcal;
+            return this;
+        }
+
+        public Builder setPreparationMethod(String preparationMethod) {
+            this.preparationMethod = preparationMethod;
+            return this;
+        }
+
+        public Ingredient build() {
+            return new Ingredient(this);
+        }
     }
 }

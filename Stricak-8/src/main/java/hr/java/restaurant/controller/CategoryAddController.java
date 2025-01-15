@@ -6,12 +6,10 @@ import hr.java.restaurant.util.AlertDialog;
 import hr.java.restaurant.util.SceneLoader;
 import hr.java.restaurant.util.Validation;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class CategoryAddController implements AddController {
     @FXML private TextField nameTextField;
@@ -24,19 +22,12 @@ public class CategoryAddController implements AddController {
 
     @Override
     public void add() {
-        List<Category> categories = new ArrayList<>(categoryRepository.findAll());
+        Set<Category> categories = new HashSet<>(categoryRepository.findAll());
 
         String categoryName = nameTextField.getText();
         String categoryDescription = descriptionTextField.getText();
 
-        String error = "";
-        if (!Validation.validNonEmptyString(categoryName))
-            error = "Invalid category name.";
-        else if (!Validation.validNonEmptyString(categoryDescription))
-            error = "Invalid category description.";
-        else if (Validation.isDuplicateByName(categories, categoryName))
-            error = "Category with that name already exists.";
-
+        String error = validateInput(categoryName, categoryDescription, categories);
         if (!error.isEmpty()) {
             AlertDialog.showErrorDialog("Category add error", error);
             return;
@@ -51,5 +42,16 @@ public class CategoryAddController implements AddController {
         AlertDialog.showInformationDialog("Category added", "Category successfully added.");
 
         SceneLoader.loadScene("categorySearch", "Category search");
+    }
+
+    private String validateInput(String categoryName, String categoryDescription, Set<Category> categories) {
+        if (!Validation.validString(categoryName))
+            return "Invalid category name.";
+        else if (!Validation.validString(categoryDescription))
+            return "Invalid category description.";
+        else if (Validation.isDuplicateByName(categories, categoryName))
+            return "Category with that name already exists.";
+
+        return "";
     }
 }

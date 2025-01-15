@@ -4,107 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4f528465-ba8d-46d2-beb3-c46214f220ac" name="Changes" comment="refactor: Code cleanup">
-      <change afterPath="$PROJECT_DIR$/../Stricak-7/src/main/java/hr/java/restaurant/controller/ContractController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Stricak-7/src/main/java/hr/java/restaurant/repository/ContractRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Stricak-7/src/main/resources/hr/java/restaurant/contract.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dat/categories.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dat/chefs.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dat/deliverers.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dat/ingredients.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dat/meals.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dat/orders.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dat/restaurants.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dat/waiters.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/logs/application.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mvnw" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mvnw.cmd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/AddController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/CategoryAddController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/CategorySearchController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/ChefSearchController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/ContractController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/DelivererSearchController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/IngredientSearchController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/MealSearchController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/MenuController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/OrderSearchController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/PersonSearchController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/RestaurantSearchController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/SearchController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/WaiterSearchController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/enumeration/ContractType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/enumeration/MealTypeEnum.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/exception/DuplicateEntryException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/exception/InvalidValueException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/main/RestaurantApplication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Address.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Bonus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Category.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Chef.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Contract.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Deliverer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Entity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Ingredient.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Meal.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Meat.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/MeatMeal.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Order.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Person.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Restaurant.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Vegan.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/VeganMeal.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Vegetarian.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/VegetarianMeal.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Waiter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/AbstractRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/CategoryRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/ChefRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/ContractRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/DelivererRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/IngredientRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/MealRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/OrderRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/RestaurantRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/WaiterRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/AlertDialog.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/ComboBoxUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/Constants.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/EntityFinder.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/FXMLLoaderHelper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/Input.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/Localization.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/Output.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/SceneLoader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/Validation.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/categoryAdd.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/categorySearch.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/chefSearch.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/contract.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/delivererSearch.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/firstScreen.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/ingredientSearch.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/mealSearch.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/menu.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/orderSearch.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/restaurantSearch.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/waiterSearch.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/logback.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Stricak-7/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Stricak-7/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Stricak-7/src/main/java/hr/java/restaurant/enumeration/ContractType.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Stricak-7/src/main/java/hr/java/restaurant/enumeration/ContractType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Stricak-7/src/main/java/hr/java/restaurant/main/RestaurantApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Stricak-7/src/main/java/hr/java/restaurant/main/RestaurantApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Stricak-7/src/main/java/hr/java/restaurant/model/Contract.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Stricak-7/src/main/java/hr/java/restaurant/model/Contract.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Stricak-7/src/main/resources/hr/java/restaurant/menu.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/../Stricak-7/src/main/resources/hr/java/restaurant/menu.fxml" afterDir="false" />
+    <list default="true" id="4f528465-ba8d-46d2-beb3-c46214f220ac" name="Changes" comment="feat: Add Category Add scene">
+      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/IngredientAddController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/ingredientAdd.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dat/ingredients.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dat/ingredients.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/AddController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/AddController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/CategoryAddController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/CategoryAddController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Ingredient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Ingredient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/IngredientRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/IngredientRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/Validation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/Validation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/categoryAdd.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/categoryAdd.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/menu.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/menu.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -114,8 +26,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="FxmlFile" />
         <option value="Interface" />
+        <option value="FxmlFile" />
         <option value="Class" />
       </list>
     </option>
@@ -255,7 +167,7 @@
       <workItem from="1734708765234" duration="4005000" />
       <workItem from="1734739457932" duration="87000" />
       <workItem from="1736810935376" duration="243000" />
-      <workItem from="1736890422027" duration="6730000" />
+      <workItem from="1736890422027" duration="11437000" />
     </task>
     <task id="LOCAL−00001" summary="feat: Add JavaFX project and add category searching and filtering">
       <option name="closed" value="true" />
@@ -334,7 +246,14 @@
       <option name="presentableId" value="LOCAL−00011" />
       <updated>1734706520650</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL−00012" summary="feat: Add Category Add scene">
+      <option name="closed" value="true" />
+      <created>1736897210049</created>
+      <option name="number" value="LOCAL−00012" />
+      <option name="presentableId" value="LOCAL−00012" />
+      <updated>1736897210049</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -352,6 +271,7 @@
     <MESSAGE value="feat: Add order search and filtering" />
     <MESSAGE value="feat: Filter orders for selected restaurant" />
     <MESSAGE value="refactor: Code cleanup" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor: Code cleanup" />
+    <MESSAGE value="feat: Add Category Add scene" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: Add Category Add scene" />
   </component>
 </project>

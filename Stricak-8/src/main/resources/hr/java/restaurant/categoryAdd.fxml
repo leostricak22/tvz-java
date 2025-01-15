@@ -46,7 +46,6 @@
          <Label text="Name" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
          <Label text="Description" GridPane.halignment="RIGHT" GridPane.rowIndex="3" />
          <Button mnemonicParsing="false" onAction="#add" text="Add" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="4" />
-         <Label fx:id="errorLabel" textFill="RED" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="TOP" />
       </children>
    </GridPane>
     <fx:include source="menu.fxml" />

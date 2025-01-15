@@ -44,7 +44,11 @@ public class IngredientRepository<T extends Ingredient> extends AbstractReposito
 
                 Category category = EntityFinder.categoryById(categoryId, categoryRepository.findAll());
 
-                ingredients.add((T) new Ingredient(id, name, category, kcal, preparationMethod));
+                ingredients.add((T) new Ingredient.Builder(id, name)
+                        .setCategory(category)
+                        .setKcal(kcal)
+                        .setPreparationMethod(preparationMethod)
+                        .build());
 
                 fileRows = fileRows.subList(5, fileRows.size());
             }
@@ -68,5 +72,20 @@ public class IngredientRepository<T extends Ingredient> extends AbstractReposito
         } catch (IOException e) {
             System.err.println("Greška pri zapisivanju u datoteku: " + e.getMessage());
         }
+    }
+
+    //@Override
+    public Long getNextId() {
+        return findAll().stream()
+                .map(Ingredient::getId)
+                .max(Long::compareTo)
+                .orElse(0L) + 1;
+    }
+
+    //@Override
+    public void add(T entity) {
+        Set<T> ingredients = findAll();
+        ingredients.add(entity);
+        save(ingredients);
     }
 }
