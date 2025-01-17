@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.java.restaurant.controller.WaiterAddController">
+    <fx:include source="menu.fxml" />
+    <GridPane prefHeight="400.0" prefWidth="1065.0">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+        <children>
+            <GridPane GridPane.columnIndex="1" GridPane.rowIndex="2">
+                <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                </rowConstraints>
+                <children>
+                    <Label text="First name">
+                        <GridPane.margin>
+                            <Insets left="5.0" right="5.0" />
+                        </GridPane.margin>
+                    </Label>
+                    <TextField fx:id="firstNameTextField" GridPane.rowIndex="1">
+                        <GridPane.margin>
+                            <Insets left="5.0" right="5.0" />
+                        </GridPane.margin>
+                    </TextField>
+                </children>
+            </GridPane>
+            <GridPane GridPane.columnIndex="2" GridPane.rowIndex="2">
+                <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                </rowConstraints>
+                <children>
+                    <Label text="Last name">
+                        <GridPane.margin>
+                            <Insets left="5.0" right="5.0" />
+                        </GridPane.margin>
+                    </Label>
+                    <TextField fx:id="lastNameTextField" GridPane.rowIndex="1">
+                        <GridPane.margin>
+                            <Insets left="5.0" right="5.0" />
+                        </GridPane.margin>
+                    </TextField>
+                </children>
+            </GridPane>
+            <GridPane GridPane.columnIndex="1" GridPane.rowIndex="3">
+                <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                </rowConstraints>
+                <children>
+                    <Label text="Contract">
+                        <GridPane.margin>
+                            <Insets left="5.0" right="5.0" />
+                        </GridPane.margin>
+                    </Label>
+                    <ComboBox fx:id="contractComboBox" prefHeight="25.0" prefWidth="327.0" GridPane.rowIndex="1">
+                        <GridPane.margin>
+                            <Insets left="5.0" right="5.0" />
+                        </GridPane.margin>
+                    </ComboBox>
+                </children>
+            </GridPane>
+            <GridPane GridPane.columnIndex="2" GridPane.rowIndex="3">
+                <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                </columnConstraints>
+                <rowConstraints>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                </rowConstraints>
+                <children>
+                    <Label text="Bonus">
+                        <GridPane.margin>
+                            <Insets left="5.0" right="5.0" />
+                        </GridPane.margin>
+                    </Label>
+                    <TextField fx:id="bonusTextField" GridPane.rowIndex="1">
+                        <GridPane.margin>
+                            <Insets left="5.0" right="5.0" />
+                        </GridPane.margin>
+                    </TextField>
+                </children>
+            </GridPane>
+            <Label prefHeight="24.0" prefWidth="204.0" text="Click here to create a new Contract" wrapText="true" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="LEFT" GridPane.rowIndex="4" GridPane.valignment="TOP">
+                <GridPane.margin>
+                    <Insets left="5.0" />
+                </GridPane.margin>
+            </Label>
+          <Button mnemonicParsing="false" onAction="#add" prefHeight="25.0" prefWidth="110.0" text="Add" GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+         <Label text="Add new Waiter" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+            <font>
+               <Font size="23.0" />
+            </font>
+         </Label>
+        </children>
+    </GridPane>
+</AnchorPane>

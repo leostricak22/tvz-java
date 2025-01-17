@@ -168,3 +168,90 @@
 2025-01-16 00:29:01 ERROR [JavaFX Application Thread] h.j.r.c.MealAddController [MealAddController.java:67] Meal add error: Invalid meal name.
 2025-01-16 00:29:16 ERROR [JavaFX Application Thread] h.j.r.c.MealAddController [MealAddController.java:67] Meal add error: Invalid price format.
 2025-01-16 00:29:20 INFO [JavaFX Application Thread] h.j.r.c.MealAddController [MealAddController.java:83] Meal added: hr.java.restaurant.model.MeatMeal@2d
+2025-01-16 01:28:04 ERROR [JavaFX Application Thread] h.j.r.c.PersonAddController [PersonAddController.java:36] Error validating person data: First name is required
+2025-01-16 01:28:13 ERROR [JavaFX Application Thread] h.j.r.c.PersonAddController [PersonAddController.java:36] Error validating person data: Contract is required
+2025-01-16 01:58:03 ERROR [JavaFX Application Thread] h.j.r.c.PersonAddController [PersonAddController.java:35] firstNameTextField is null
+2025-01-16 22:53:06 INFO [JavaFX Application Thread] h.j.r.c.PersonAddController [PersonAddController.java:50] firstNameTextField is initialized
+2025-01-16 22:55:37 INFO [JavaFX Application Thread] h.j.r.c.PersonAddController [PersonAddController.java:50] firstNameTextField is initialized
+2025-01-16 22:55:37 ERROR [JavaFX Application Thread] h.j.r.c.ChefAddController [ChefAddController.java:31] Error loading PersonAddController
+java.io.FileNotFoundException: .\src\main\resources\hr\java\restaurant\hr\java\restaurant\personAdd.fxml (The system cannot find the path specified)
+	at java.base/java.io.FileInputStream.open0(Native Method)
+	at java.base/java.io.FileInputStream.open(FileInputStream.java:219)
+	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:159)
+	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:112)
+	at java.base/sun.net.www.protocol.file.FileURLConnection.connect(FileURLConnection.java:83)
+	at java.base/sun.net.www.protocol.file.FileURLConnection.getInputStream(FileURLConnection.java:185)
+	at java.base/java.net.URL.openStream(URL.java:1325)
+	at javafx.fxml/javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2554)
+	at javafx.fxml/javafx.fxml.FXMLLoader.load(FXMLLoader.java:2523)
+	at hr.java.restaurant/hr.java.restaurant.controller.ChefAddController.initialize(ChefAddController.java:25)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:77)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at javafx.base/com.sun.javafx.reflect.MethodUtil.invoke(MethodUtil.java:275)
+	at javafx.fxml/com.sun.javafx.fxml.MethodHelper.invoke(MethodHelper.java:84)
+	at javafx.fxml/javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2680)
+	at javafx.fxml/javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2555)
+	at javafx.fxml/javafx.fxml.FXMLLoader.load(FXMLLoader.java:2523)
+	at hr.java.restaurant/hr.java.restaurant.controller.MenuController.showAddScreen(MenuController.java:30)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:77)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580)
+	at javafx.base/com.sun.javafx.reflect.MethodUtil.invoke(MethodUtil.java:275)
+	at javafx.fxml/com.sun.javafx.fxml.MethodHelper.invoke(MethodHelper.java:84)
+	at javafx.fxml/javafx.fxml.FXMLLoader$MethodHandler.invoke(FXMLLoader.java:1852)
+	at javafx.fxml/javafx.fxml.FXMLLoader$ControllerMethodEventHandler.handle(FXMLLoader.java:1724)
+	at javafx.base/com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86)
+	at javafx.base/com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:234)
+	at javafx.base/com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at javafx.base/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at javafx.base/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base/com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at javafx.base/com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49)
+	at javafx.base/javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.controls/javafx.scene.control.MenuItem.fire(MenuItem.java:459)
+	at javafx.controls/com.sun.javafx.scene.control.ContextMenuContent$MenuItemContainer.doSelect(ContextMenuContent.java:1385)
+	at javafx.controls/com.sun.javafx.scene.control.ContextMenuContent$MenuItemContainer.lambda$createChildren$12(ContextMenuContent.java:1338)
+	at javafx.base/com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:247)
+	at javafx.base/com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80)
+	at javafx.base/com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:234)
+	at javafx.base/com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191)
+	at javafx.base/com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59)
+	at javafx.base/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58)
+	at javafx.base/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at javafx.base/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at javafx.base/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base/com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56)
+	at javafx.base/com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114)
+	at javafx.base/com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74)
+	at javafx.base/com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54)
+	at javafx.base/javafx.event.Event.fireEvent(Event.java:198)
+	at javafx.graphics/javafx.scene.Scene$MouseHandler.process(Scene.java:3897)
+	at javafx.graphics/javafx.scene.Scene.processMouseEvent(Scene.java:1878)
+	at javafx.graphics/javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2623)
+	at javafx.graphics/com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:411)
+	at javafx.graphics/com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:301)
+	at java.base/java.security.AccessController.doPrivileged(AccessController.java:400)
+	at javafx.graphics/com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:450)
+	at javafx.graphics/com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:424)
+	at javafx.graphics/com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:449)
+	at javafx.graphics/com.sun.glass.ui.View.handleMouseEvent(View.java:557)
+	at javafx.graphics/com.sun.glass.ui.View.notifyMouse(View.java:943)
+	at javafx.graphics/com.sun.glass.ui.win.WinApplication._runLoop(Native Method)
+	at javafx.graphics/com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:184)
+	at java.base/java.lang.Thread.run(Thread.java:1575)
+2025-01-16 22:55:40 ERROR [JavaFX Application Thread] h.j.r.c.ChefAddController [ChefAddController.java:40] personAddController is null.
+2025-01-16 22:55:41 ERROR [JavaFX Application Thread] h.j.r.c.ChefAddController [ChefAddController.java:40] personAddController is null.
+2025-01-16 22:55:43 ERROR [JavaFX Application Thread] h.j.r.c.ChefAddController [ChefAddController.java:40] personAddController is null.
+2025-01-17 13:59:49 INFO [JavaFX Application Thread] h.j.r.c.PersonAddController [PersonAddController.java:63] Person 1 2 added successfully
+2025-01-17 14:05:23 ERROR [JavaFX Application Thread] h.j.r.c.PersonAddController [PersonAddController.java:49] Error creating a Person: Bonus must be a number
+2025-01-17 14:05:28 INFO [JavaFX Application Thread] h.j.r.c.PersonAddController [PersonAddController.java:63] Person Matija Trstenjak added successfully
+2025-01-17 14:13:19 ERROR [JavaFX Application Thread] h.j.r.c.PersonAddController [PersonAddController.java:49] Error creating a Person: Bonus must be a number
+2025-01-17 14:13:22 INFO [JavaFX Application Thread] h.j.r.c.PersonAddController [PersonAddController.java:63] Person aha aha added successfully
+2025-01-17 14:18:04 INFO [JavaFX Application Thread] h.j.r.c.PersonAddController [PersonAddController.java:63] Person Netko Netkic added successfully

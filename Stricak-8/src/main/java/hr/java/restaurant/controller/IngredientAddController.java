@@ -2,7 +2,6 @@ package hr.java.restaurant.controller;
 
 import hr.java.restaurant.model.Category;
 import hr.java.restaurant.model.Ingredient;
-import hr.java.restaurant.model.Meal;
 import hr.java.restaurant.repository.CategoryRepository;
 import hr.java.restaurant.repository.IngredientRepository;
 import hr.java.restaurant.util.AlertDialog;
@@ -18,6 +17,8 @@ import org.slf4j.LoggerFactory;
 import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.Set;
+
+import static java.util.Objects.isNull;
 
 public class IngredientAddController implements AddController {
 
@@ -45,7 +46,12 @@ public class IngredientAddController implements AddController {
         String preparationMethod = preparationMethodTextField.getText();
         Optional<Category> category = Optional.ofNullable(categoryComboBox.getValue());
 
-        String error = validateInput(ingredientName, kCalString, preparationMethod, category.orElse(null), ingredients);
+        String error = validateInput(
+                ingredientName,
+                kCalString,
+                preparationMethod,
+                category.orElse(null),
+                ingredients);
 
         if (!error.isEmpty()) {
             AlertDialog.showErrorDialog("Ingredient add error", error);
@@ -57,7 +63,7 @@ public class IngredientAddController implements AddController {
         Ingredient newIngredient = new Ingredient.Builder(ingredientRepository.getNextId(), ingredientName)
                 .setKcal(kcal)
                 .setPreparationMethod(preparationMethod)
-                .setCategory(category.orElse(null))
+                .setCategory(category.orElseThrow(() -> new IllegalArgumentException("Category is null.")))
                 .build();
 
         ingredientRepository.add(newIngredient);
@@ -80,7 +86,7 @@ public class IngredientAddController implements AddController {
             return "kCal cannot be negative.";
         if (!Validation.validString(preparationMethod))
             return "Invalid preparation method.";
-        if (category == null)
+        if (isNull(category))
             return "Invalid category.";
         if (Validation.isDuplicateByName(ingredients, ingredientName))
             return "Ingredient with that name already exists.";

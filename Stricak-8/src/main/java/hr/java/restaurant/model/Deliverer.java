@@ -11,9 +11,7 @@ import java.util.*;
  * Represents a deliverer in a restaurant.
  */
 public class Deliverer extends Person implements Serializable {
-    private static final Logger logger = LoggerFactory.getLogger(Deliverer.class);
 
-    private static Long counter = 0L;
     private final Contract contract;
     private Bonus bonus;
 
@@ -27,78 +25,13 @@ public class Deliverer extends Person implements Serializable {
         this.bonus = builder.bonus;
     }
 
-    /**
-     * Checks if the deliverer with the provided name already exists in the array of deliverers.
-     * @param deliverers the deliverers
-     * @param firstName the first name of the deliverer
-     * @param lastName the last name of the deliverer
-     */
-    public static Integer existsByName(Set<Deliverer> deliverers, String firstName, String lastName) {
-        int i=0;
-        for (Deliverer deliverer : deliverers) {
-            if (deliverer.getFirstName().equals(firstName) && deliverer.getLastName().equals(lastName)) {
-                return i;
-            }
-
-            i++;
-        }
-
-        return -1;
+    @Override
+    public Bonus getBonus() {
+        return bonus;
     }
 
-    /**
-     * Returns the names of the deliverers in the array.
-     * @param deliverers the deliverers
-     * @return the array of deliverer names
-     */
-    public static List<String> delivererNameArray(Set<Deliverer> deliverers) {
-        List<String> delivererNames = new ArrayList<>();
-
-        for (Deliverer deliverer : deliverers) {
-            delivererNames.add(deliverer.getFirstName() + " " + deliverer.getLastName());
-        }
-
-        return delivererNames;
-    }
-
-    /**
-     * Builder class for creating instances of {@link Deliverer}.
-     */
-    public static class Builder {
-        private Long id;
-        private String firstName;
-        private String lastName;
-        private Contract contract;
-        private Bonus bonus;
-
-        public Builder id(Long id) {
-            this.id = id;
-            return this;
-        }
-
-        public Builder firstName(String firstName) {
-            this.firstName = firstName;
-            return this;
-        }
-
-        public Builder lastName(String lastName) {
-            this.lastName = lastName;
-            return this;
-        }
-
-        public Builder contract(Contract contract) {
-            this.contract = contract;
-            return this;
-        }
-
-        public Builder bonus(Bonus bonus) {
-            this.bonus = bonus;
-            return this;
-        }
-
-        public Deliverer build() {
-            return new Deliverer(this);
-        }
+    public void setBonus(Bonus bonus) {
+        this.bonus = bonus;
     }
 
     @Override
@@ -111,39 +44,42 @@ public class Deliverer extends Person implements Serializable {
         return contract;
     }
 
-    public static Deliverer getDelivererByIdentifiers(String deliverersIdentifiers, Set<Deliverer> deliverers) {
-        String[] identifiers = deliverersIdentifiers.split(",");
-        for (String identifier : identifiers) {
-            for (Deliverer deliverer : deliverers) {
-                if (deliverer.getId().equals(Long.parseLong(identifier))) {
-                    return deliverer;
-                }
-            }
+    /**
+     * Builder class for creating instances of {@link Deliverer}.
+     */
+    public static class Builder {
+        private final Long id;
+        private String firstName;
+        private String lastName;
+        private Contract contract;
+        private Bonus bonus;
+
+        public Builder(Long id) {
+            this.id = id;
         }
 
-        return null;
-    }
+        public Builder setFirstName(String firstName) {
+            this.firstName = firstName;
+            return this;
+        }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Deliverer deliverer = (Deliverer) o;
-        return Objects.equals(contract, deliverer.contract) && Objects.equals(bonus, deliverer.bonus);
-    }
+        public Builder setLastName(String lastName) {
+            this.lastName = lastName;
+            return this;
+        }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(contract, bonus);
-    }
+        public Builder setContract(Contract contract) {
+            this.contract = contract;
+            return this;
+        }
 
-    /**
-     * Prints the deliverer details with the specified number of tabulators.
-     * @param tabulators the number of tabulators to format the output
-     */
-    @Override
-    public void print(Integer tabulators) {
-        logger.info("Printing deliverer.");
-        Person.outputFullData(tabulators, getId(), getFirstName(), getLastName() , contract, bonus);
+        public Builder setBonus(Bonus bonus) {
+            this.bonus = bonus;
+            return this;
+        }
+
+        public Deliverer build() {
+            return new Deliverer(this);
+        }
     }
 }

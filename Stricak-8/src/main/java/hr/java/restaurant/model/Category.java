@@ -31,16 +31,12 @@ public class Category extends Entity implements Serializable {
      */
     public static class Builder {
         private final Long id;
-        private String name;
+        private final String name;
         private String description;
 
-        public Builder(Long id) {
+        public Builder(Long id, String name) {
             this.id = id;
-        }
-
-        public Builder setName(String name) {
             this.name = name;
-            return this;
         }
 
         public Builder setDescription(String description) {

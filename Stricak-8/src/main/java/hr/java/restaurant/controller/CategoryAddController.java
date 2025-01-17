@@ -1,7 +1,6 @@
 package hr.java.restaurant.controller;
 
 import hr.java.restaurant.model.Category;
-import hr.java.restaurant.model.Meal;
 import hr.java.restaurant.repository.CategoryRepository;
 import hr.java.restaurant.util.AlertDialog;
 import hr.java.restaurant.util.SceneLoader;
@@ -38,8 +37,7 @@ public class CategoryAddController implements AddController {
             return;
         }
 
-        Category newCategory = new Category.Builder(categoryRepository.getNextId())
-                .setName(categoryName)
+        Category newCategory = new Category.Builder(categoryRepository.getNextId(), categoryName)
                 .setDescription(categoryDescription)
                 .build();
 

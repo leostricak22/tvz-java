@@ -63,12 +63,11 @@ public class DelivererRepository<T extends Deliverer> extends AbstractRepository
                 String contractType = fileRows.get(6);
                 BigDecimal bonus = new BigDecimal(fileRows.get(7));
 
-                deliverers.add((T) new Deliverer.Builder()
-                        .id(id)
-                        .firstName(firstName)
-                        .lastName(lastName)
-                        .contract(new Contract(salary, contractStartDate, contractEndDate, ContractType.valueOf(contractType)))
-                        .bonus(new Bonus(bonus))
+                deliverers.add((T) new Deliverer.Builder(id)
+                        .setFirstName(firstName)
+                        .setLastName(lastName)
+                        .setContract(new Contract(salary, contractStartDate, contractEndDate, ContractType.valueOf(contractType)))
+                        .setBonus(new Bonus(bonus))
                         .build());
 
                 fileRows = fileRows.subList(8, fileRows.size());
@@ -78,5 +77,18 @@ public class DelivererRepository<T extends Deliverer> extends AbstractRepository
         }
 
         return deliverers;
+    }
+
+    public Long getNextId() {
+        return findAll().stream()
+                .map(Deliverer::getId)
+                .max(Long::compareTo)
+                .orElse(0L) + 1;
+    }
+
+    public void add(T deliverer) {
+        Set<T> deliverers = findAll();
+        deliverers.add(deliverer);
+        save(deliverers);
     }
 }

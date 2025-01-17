@@ -66,12 +66,11 @@ public class ChefRepository<T extends Chef> extends AbstractRepository<T> {
                 String contractType = fileRows.get(6);
                 BigDecimal bonus = new BigDecimal(fileRows.get(7));
 
-                chefs.add((T) new Chef.Builder()
-                        .id(id)
-                        .firstName(firstName)
-                        .lastName(lastName)
-                        .contract(new Contract(salary, contractStartDate, contractEndDate, ContractType.valueOf(contractType)))
-                        .bonus(new Bonus(bonus))
+                chefs.add((T) new Chef.Builder(id)
+                        .setFirstName(firstName)
+                        .setLastName(lastName)
+                        .setContract(new Contract(salary, contractStartDate, contractEndDate, ContractType.valueOf(contractType)))
+                        .setBonus(new Bonus(bonus))
                         .build());
 
                 fileRows = fileRows.subList(8, fileRows.size());
@@ -81,5 +80,19 @@ public class ChefRepository<T extends Chef> extends AbstractRepository<T> {
         }
 
         return chefs;
+    }
+
+    //@Override
+    public Long getNextId() {
+        return findAll().stream()
+                .map(Chef::getId)
+                .max(Long::compareTo)
+                .orElse(0L) + 1;
+    }
+
+    public void add(T entity) {
+        Set<T> entities = findAll();
+        entities.add(entity);
+        save(entities);
     }
 }

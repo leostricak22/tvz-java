@@ -4,27 +4,33 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4f528465-ba8d-46d2-beb3-c46214f220ac" name="Changes" comment="feat: add multiple checkbox select window with generics">
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/MealInputUtil.java" afterDir="false" />
+    <list default="true" id="4f528465-ba8d-46d2-beb3-c46214f220ac" name="Changes" comment="feat: finish meal add controller">
+      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/ChefAddController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/DelivererAddController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/PersonAddController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/WaiterAddController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/chefAdd.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/delivererAdd.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/personAdd.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/waiterAdd.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dat/meals.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dat/meals.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dat/chefs.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dat/chefs.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dat/deliverers.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dat/deliverers.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dat/waiters.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dat/waiters.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logs/application.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/application.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/CategoryAddController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/CategoryAddController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/IngredientAddController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/IngredientAddController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/MealAddController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/MealAddController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/MealSearchController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/MealSearchController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/MultipleCheckBoxSelectController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/MultipleCheckBoxSelectController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Entity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Entity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Meal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Meal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Meat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Meat.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/MeatMeal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/MeatMeal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/VeganMeal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/VeganMeal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/VegetarianMeal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/VegetarianMeal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/MealRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/MealRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/OrderRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/OrderRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/RestaurantRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/RestaurantRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/EntityFinder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/EntityFinder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/MultipleCheckBoxSelectUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/MultipleCheckBoxSelectUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/Validation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/Validation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/mealAdd.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/mealAdd.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Category.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Category.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Chef.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Chef.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Deliverer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Deliverer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Waiter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Waiter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/CategoryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/CategoryRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/ChefRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/ChefRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/DelivererRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/DelivererRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/WaiterRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/WaiterRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/SceneLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/SceneLoader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/menu.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/menu.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -35,9 +41,9 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Interface" />
-        <option value="FxmlFile" />
         <option value="JavaFXApplication" />
         <option value="Class" />
+        <option value="FxmlFile" />
       </list>
     </option>
   </component>
@@ -74,32 +80,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.HelloApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;Application.MealAddController.executor&quot;: &quot;Run&quot;,
-    &quot;Application.RestaurantApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Application.hr.java.restaurant.controller.MealAddController.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/LeoHP/Documents/GitHub/tvz-programiranje-java/Stricak-8&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.HelloApplication.executor": "Run",
+    "Application.Main.executor": "Run",
+    "Application.MealAddController.executor": "Run",
+    "Application.RestaurantApplication.executor": "Run",
+    "Application.hr.java.restaurant.controller.MealAddController.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/LeoHP/Documents/GitHub/tvz-programiranje-java/Stricak-8/src/main/resources/hr/java/restaurant",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\LeoHP\Documents\GitHub\tvz-programiranje-java\Stricak-8\src\main\resources\hr\java\restaurant" />
       <recent name="C:\Users\LeoHP\Documents\GitHub\tvz-programiranje-java\Stricak-7\src\main\java\hr\java\restaurant\repository" />
       <recent name="C:\Users\LeoHP\Documents\GitHub\tvz-programiranje-java\Stricak-7\src\main\java\hr\java\restaurant\model" />
       <recent name="C:\Users\LeoHP\Documents\GitHub\tvz-programiranje-java\Stricak-7\src\main\resources\hr\java\restaurant" />
       <recent name="C:\Users\LeoHP\Documents\GitHub\tvz-programiranje-java\Stricak-7\src\main\java\hr\java" />
-      <recent name="C:\Users\LeoHP\Documents\GitHub\tvz-programiranje-java\Stricak-7\src\main\resources" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\LeoHP\Documents\GitHub\tvz-programiranje-java\Stricak-7\src\main\java\hr\java\restaurant\model" />
@@ -213,7 +219,9 @@
       <workItem from="1736810935376" duration="243000" />
       <workItem from="1736890422027" duration="15867000" />
       <workItem from="1736944237265" duration="2373000" />
-      <workItem from="1736946690393" duration="9147000" />
+      <workItem from="1736946690393" duration="14573000" />
+      <workItem from="1737063196097" duration="2108000" />
+      <workItem from="1737116711744" duration="3622000" />
     </task>
     <task id="LOCAL−00001" summary="feat: Add JavaFX project and add category searching and filtering">
       <option name="closed" value="true" />
@@ -320,7 +328,14 @@
       <option name="presentableId" value="LOCAL−00015" />
       <updated>1736947848949</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL−00016" summary="feat: finish meal add controller">
+      <option name="closed" value="true" />
+      <created>1736983797167</created>
+      <option name="number" value="LOCAL−00016" />
+      <option name="presentableId" value="LOCAL−00016" />
+      <updated>1736983797167</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -342,6 +357,7 @@
     <MESSAGE value="feat: Add Ingredient Add scene" />
     <MESSAGE value="refactor: Category and Ingredient classes" />
     <MESSAGE value="feat: add multiple checkbox select window with generics" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: add multiple checkbox select window with generics" />
+    <MESSAGE value="feat: finish meal add controller" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: finish meal add controller" />
   </component>
 </project>

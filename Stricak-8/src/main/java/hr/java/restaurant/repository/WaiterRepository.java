@@ -63,12 +63,11 @@ public class WaiterRepository<T extends Waiter> extends AbstractRepository<T> {
                 String contractType = fileRows.get(6);
                 BigDecimal bonus = new BigDecimal(fileRows.get(7));
 
-                waiters.add((T) new Waiter.Builder()
-                        .id(id)
-                        .firstName(firstName)
-                        .lastName(lastName)
-                        .contract(new Contract(salary, contractStartDate, contractEndDate, ContractType.valueOf(contractType)))
-                        .bonus(new Bonus(bonus))
+                waiters.add((T) new Waiter.Builder(id)
+                        .setFirstName(firstName)
+                        .setLastName(lastName)
+                        .setContract(new Contract(salary, contractStartDate, contractEndDate, ContractType.valueOf(contractType)))
+                        .setBonus(new Bonus(bonus))
                         .build());
 
                 fileRows = fileRows.subList(8, fileRows.size());
@@ -78,5 +77,18 @@ public class WaiterRepository<T extends Waiter> extends AbstractRepository<T> {
         }
 
         return waiters;
+    }
+
+    public Long getNextId() {
+        return findAll().stream()
+                .map(Waiter::getId)
+                .max(Long::compareTo)
+                .orElse(0L) + 1;
+    }
+
+    public void add(T waiter) {
+        Set<T> waiters = findAll();
+        waiters.add(waiter);
+        save(waiters);
     }
 }

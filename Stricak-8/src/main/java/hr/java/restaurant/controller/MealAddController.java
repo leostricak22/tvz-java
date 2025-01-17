@@ -80,7 +80,7 @@ public class MealAddController implements AddController {
                 additionalAttribute3);
 
         mealRepository.add(newMeal);
-        logger.info("Meal added: {}", newMeal);
+        logger.info("Meal added: {}", newMeal.getName());
         AlertDialog.showInformationDialog("Meal add", "Meal added successfully.");
 
         SceneLoader.loadScene("mealSearch", "Meal search");
@@ -139,8 +139,8 @@ public class MealAddController implements AddController {
             additionalAttribute2Label.setText("Is organic:");
             additionalAttribute3Label.setText("Protein source:");
         } else if (mealTypeComboBox.getValue().equals(MealTypeEnum.MEAT)) {
-            additionalAttribute1Label.setText("Cooking type:");
-            additionalAttribute2Label.setText("Origin:");
+            additionalAttribute1Label.setText("Is organic:");
+            additionalAttribute2Label.setText("Is eco friendly:");
             additionalAttribute3Label.setText("Meat type:");
         } else if (mealTypeComboBox.getValue().equals(MealTypeEnum.VEGETARIAN)) {
             additionalAttribute1Label.setText("Contains dairy:");

@@ -20,12 +20,15 @@
     </Menu>
     <Menu mnemonicParsing="false" text="Chef">
         <MenuItem mnemonicParsing="false" text="Search" onAction="#showSearchScreen" id="chefSearch"/>
+        <MenuItem mnemonicParsing="false" text="Add" onAction="#showAddScreen" id="chefAdd"/>
     </Menu>
     <Menu mnemonicParsing="false" text="Waiter">
         <MenuItem mnemonicParsing="false" text="Search" onAction="#showSearchScreen" id="waiterSearch"/>
+        <MenuItem mnemonicParsing="false" text="Add" onAction="#showAddScreen" id="waiterAdd"/>
     </Menu>
     <Menu mnemonicParsing="false" text="Deliverer">
         <MenuItem mnemonicParsing="false" text="Search" onAction="#showSearchScreen" id="delivererSearch"/>
+        <MenuItem mnemonicParsing="false" text="Add" onAction="#showAddScreen" id="delivererAdd"/>
     </Menu>
     <Menu mnemonicParsing="false" text="Restaurant">
         <MenuItem mnemonicParsing="false" text="Search" onAction="#showSearchScreen" id="restaurantSearch"/>

@@ -19,6 +19,7 @@ public class SceneLoader {
             RestaurantApplication.getMainStage().setScene(scene);
             RestaurantApplication.getMainStage().show();
         } catch (IOException e) {
+            e.printStackTrace();
             AlertDialog.showErrorDialog("Error", "Error loading scene: " + fxmlFileName);
         }
     }
