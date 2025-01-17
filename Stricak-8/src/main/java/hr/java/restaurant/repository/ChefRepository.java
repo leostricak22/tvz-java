@@ -18,7 +18,9 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 public class ChefRepository<T extends Chef> extends AbstractRepository<T> {
+
     public final static String FILE_PATH = "dat/chefs.txt";
+    private final ContractRepository contractRepository = new ContractRepository();
 
     @Override
     public T findById(Long id) {
@@ -35,10 +37,7 @@ public class ChefRepository<T extends Chef> extends AbstractRepository<T> {
                 printWriter.println(chef.getId());
                 printWriter.println(chef.getFirstName());
                 printWriter.println(chef.getLastName());
-                printWriter.println(chef.getContract().getSalary());
-                printWriter.println(chef.getContract().getStartDate());
-                printWriter.println(chef.getContract().getEndDate());
-                printWriter.println(chef.getContract().getContractType());
+                printWriter.println(chef.getContract().getId());
                 printWriter.println(chef.getBonus().amount());
             }
 
@@ -60,20 +59,17 @@ public class ChefRepository<T extends Chef> extends AbstractRepository<T> {
                 Long id = Long.parseLong(fileRows.get(0));
                 String firstName = fileRows.get(1);
                 String lastName = fileRows.get(2);
-                BigDecimal salary = new BigDecimal(fileRows.get(3));
-                LocalDate contractStartDate = LocalDate.parse(fileRows.get(4));
-                LocalDate contractEndDate = LocalDate.parse(fileRows.get(5));
-                String contractType = fileRows.get(6);
-                BigDecimal bonus = new BigDecimal(fileRows.get(7));
+                Long contractId = Long.parseLong(fileRows.get(3));
+                BigDecimal bonus = new BigDecimal(fileRows.get(4));
 
                 chefs.add((T) new Chef.Builder(id)
                         .setFirstName(firstName)
                         .setLastName(lastName)
-                        .setContract(new Contract(salary, contractStartDate, contractEndDate, ContractType.valueOf(contractType)))
+                        .setContract(contractRepository.findById(contractId))
                         .setBonus(new Bonus(bonus))
                         .build());
 
-                fileRows = fileRows.subList(8, fileRows.size());
+                fileRows = fileRows.subList(5, fileRows.size());
             }
         } catch (IOException e) {
             System.err.println("Greška pri čitanju datoteke: " + e.getMessage());

@@ -15,7 +15,9 @@ import java.util.Set;
 import java.util.stream.Stream;
 
 public class DelivererRepository<T extends Deliverer> extends AbstractRepository<T> {
+
     public final static String FILE_PATH = "dat/deliverers.txt";
+    private final ContractRepository contractRepository = new ContractRepository();
 
     @Override
     public T findById(Long id) {
@@ -32,10 +34,7 @@ public class DelivererRepository<T extends Deliverer> extends AbstractRepository
                 printWriter.println(deliverer.getId());
                 printWriter.println(deliverer.getFirstName());
                 printWriter.println(deliverer.getLastName());
-                printWriter.println(deliverer.getContract().getSalary());
-                printWriter.println(deliverer.getContract().getStartDate());
-                printWriter.println(deliverer.getContract().getEndDate());
-                printWriter.println(deliverer.getContract().getContractType());
+                printWriter.println(deliverer.getContract().getId());
                 printWriter.println(deliverer.getBonus().amount());
             }
 
@@ -57,20 +56,17 @@ public class DelivererRepository<T extends Deliverer> extends AbstractRepository
                 Long id = Long.parseLong(fileRows.get(0));
                 String firstName = fileRows.get(1);
                 String lastName = fileRows.get(2);
-                BigDecimal salary = new BigDecimal(fileRows.get(3));
-                LocalDate contractStartDate = LocalDate.parse(fileRows.get(4));
-                LocalDate contractEndDate = LocalDate.parse(fileRows.get(5));
-                String contractType = fileRows.get(6);
-                BigDecimal bonus = new BigDecimal(fileRows.get(7));
+                Long contractId = Long.parseLong(fileRows.get(3));
+                BigDecimal bonus = new BigDecimal(fileRows.get(4));
 
                 deliverers.add((T) new Deliverer.Builder(id)
                         .setFirstName(firstName)
                         .setLastName(lastName)
-                        .setContract(new Contract(salary, contractStartDate, contractEndDate, ContractType.valueOf(contractType)))
+                        .setContract(contractRepository.findById(contractId))
                         .setBonus(new Bonus(bonus))
                         .build());
 
-                fileRows = fileRows.subList(8, fileRows.size());
+                fileRows = fileRows.subList(5, fileRows.size());
             }
         } catch (IOException e) {
             System.err.println("Greška pri čitanju datoteke: " + e.getMessage());

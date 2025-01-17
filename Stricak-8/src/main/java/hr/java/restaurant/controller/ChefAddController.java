@@ -13,12 +13,12 @@ public class ChefAddController extends PersonAddController<Chef> {
     private final ChefRepository<Chef> chefRepository = new ChefRepository<>();
 
     @Override
-    Chef addPerson(String firstName, String lastName, Contract contract, BigDecimal bonus) {
+    Chef addPerson(String firstName, String lastName, Contract contract, Bonus bonus) {
         return new Chef.Builder(chefRepository.getNextId())
                 .setFirstName(firstName)
                 .setLastName(lastName)
                 .setContract(contract)
-                .setBonus(new Bonus(bonus))
+                .setBonus(bonus)
                 .build();
     }
 

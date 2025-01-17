@@ -12,12 +12,8 @@ import java.io.IOException;
 public class RestaurantApplication extends Application {
     private static Stage mainStage;
 
-    private static final ContractRepository contractRepository = new ContractRepository();
-
     @Override
     public void start(Stage stage) throws IOException {
-        contractRepository.initializeList();
-
         FXMLLoader fxmlLoader = FXMLLoaderHelper.fxmlFilePath("firstScreen.fxml");
         Scene scene = new Scene(fxmlLoader.load(), Constants.SCENE_WIDTH, Constants.SCENE_HEIGHT);
 

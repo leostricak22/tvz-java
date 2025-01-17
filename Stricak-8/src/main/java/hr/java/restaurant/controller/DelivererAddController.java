@@ -13,12 +13,12 @@ public class DelivererAddController extends PersonAddController<Deliverer> {
     private final DelivererRepository<Deliverer> delivererRepository = new DelivererRepository<>();
 
     @Override
-    Deliverer addPerson(String firstName, String lastName, Contract contract, BigDecimal bonus) {
+    Deliverer addPerson(String firstName, String lastName, Contract contract, Bonus bonus) {
         return new Deliverer.Builder(delivererRepository.getNextId())
                 .setFirstName(firstName)
                 .setLastName(lastName)
                 .setContract(contract)
-                .setBonus(new Bonus(bonus))
+                .setBonus(bonus)
                 .build();
     }
 

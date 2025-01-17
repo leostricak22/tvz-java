@@ -30,13 +30,13 @@
         <MenuItem mnemonicParsing="false" text="Search" onAction="#showSearchScreen" id="delivererSearch"/>
         <MenuItem mnemonicParsing="false" text="Add" onAction="#showAddPersonScreen" id="delivererAdd"/>
     </Menu>
+    <Menu mnemonicParsing="false" text="Contract">
+        <MenuItem mnemonicParsing="false" text="Search and Add" onAction="#showSearchScreen" id="contract"/>
+    </Menu>
     <Menu mnemonicParsing="false" text="Restaurant">
         <MenuItem mnemonicParsing="false" text="Search" onAction="#showSearchScreen" id="restaurantSearch"/>
     </Menu>
     <Menu mnemonicParsing="false" text="Order">
         <MenuItem mnemonicParsing="false" text="Search" onAction="#showSearchScreen" id="orderSearch"/>
-    </Menu>
-    <Menu mnemonicParsing="false" text="Contract">
-        <MenuItem mnemonicParsing="false" text="Search" onAction="#showSearchScreen" id="contract"/>
     </Menu>
 </MenuBar>

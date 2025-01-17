@@ -12,7 +12,7 @@ import java.time.LocalDate;
 /**
  * Represents a contract of a person.
  */
-public class Contract implements Serializable {
+public class Contract extends Entity implements Serializable {
     private static final Logger logger = LoggerFactory.getLogger(Contract.class);
     private final static BigDecimal MIN_SALARY = new BigDecimal(800);
 
@@ -29,7 +29,8 @@ public class Contract implements Serializable {
      * @param endDate  the end date of the contract
      * @param contractType the type of the contract
      */
-    public Contract(BigDecimal salary, LocalDate startDate, LocalDate endDate, ContractType contractType) {
+    public Contract(Long id, String name, BigDecimal salary, LocalDate startDate, LocalDate endDate, ContractType contractType) {
+        super(id, name);
         this.salary = salary;
         this.startDate = startDate;
         this.endDate = endDate;

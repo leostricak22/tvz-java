@@ -13,59 +13,32 @@ import javafx.scene.control.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import static java.util.Objects.isNull;
 
 public class ContractController implements SearchController {
 
-    @FXML
-    private TextField contractSalaryFromTextField;
-
-    @FXML
-    private TextField contractSalaryToTextField;
-
-    @FXML
-    private DatePicker contractEndDateFromDatePicker;
-
-    @FXML
-    private DatePicker contractEndDateToDatePicker;
-
-    @FXML
-    private ComboBox<ContractType> contractTypeComboBox;
-
-    @FXML
-    private TextField addContractSalaryTextField;
-
-    @FXML
-    private ComboBox<ContractType> addContractTypeComboBox;
-
-    @FXML
-    private DatePicker addContractStartDateDatePicker;
-
-    @FXML
-    private DatePicker addContractEndDateDatePicker;
-
-    @FXML
-    private Label errorLabel;
-
-    @FXML
-    private TableView<Contract> contractTableView;
-
-    @FXML
-    private TableColumn<Contract, String> salaryColumn;
-
-    @FXML
-    private TableColumn<Contract, String> startDateColumn;
-
-    @FXML
-    private TableColumn<Contract, String> endDateColumn;
-
-    @FXML
-    private TableColumn<Contract, String> contractTypeColumn;
-
-    @FXML
-    private TableColumn<Contract, String> activeColumn;
+    @FXML private TextField contractSalaryFromTextField;
+    @FXML private TextField contractSalaryToTextField;
+    @FXML private DatePicker contractEndDateFromDatePicker;
+    @FXML private DatePicker contractEndDateToDatePicker;
+    @FXML private ComboBox<ContractType> contractTypeComboBox;
+    @FXML private TextField addContractSalaryTextField;
+    @FXML private ComboBox<ContractType> addContractTypeComboBox;
+    @FXML private DatePicker addContractStartDateDatePicker;
+    @FXML private DatePicker addContractEndDateDatePicker;
+    @FXML private Label errorLabel;
+    @FXML private TableView<Contract> contractTableView;
+    @FXML private TableColumn<Contract, String> idColumn;
+    @FXML private TableColumn<Contract, String> nameColumn;
+    @FXML private TableColumn<Contract, String> salaryColumn;
+    @FXML private TableColumn<Contract, String> startDateColumn;
+    @FXML private TableColumn<Contract, String> endDateColumn;
+    @FXML private TableColumn<Contract, String> contractTypeColumn;
+    @FXML private TableColumn<Contract, String> activeColumn;
 
     ContractRepository contractRepository = new ContractRepository();
 
@@ -73,6 +46,12 @@ public class ContractController implements SearchController {
     public void initialize() {
         ComboBoxUtil.comboBoxContractTypeConverter(contractTypeComboBox);
         ComboBoxUtil.comboBoxContractTypeConverter(addContractTypeComboBox);
+
+        idColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getId().toString()));
+
+        nameColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getName()));
 
         salaryColumn.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getSalary().toString()));
@@ -96,7 +75,7 @@ public class ContractController implements SearchController {
 
     @Override
     public void filter() {
-        List<Contract> contracts = contractRepository.getAll();
+        List<Contract> contracts = new ArrayList<>(contractRepository.findAll());
 
         String contractSalaryFromTextFieldValue = contractSalaryFromTextField.getText();
         String contractSalaryToTextFieldValue = contractSalaryToTextField.getText();
@@ -156,13 +135,16 @@ public class ContractController implements SearchController {
 
         errorLabel.setText("");
 
+        Long nextId = contractRepository.getNextId();
         Contract contract = new Contract(
+                contractRepository.getNextId(),
+                "Contract" + nextId,
                 new BigDecimal(addContractSalary),
                 addContractStartDate,
                 addContractEndDate,
                 ContractType.valueOfByName(addContractType.orElse(null))
         );
-        contractRepository.save(contract);
+        contractRepository.add(contract);
 
         removeFilter();
     }

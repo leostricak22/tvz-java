@@ -9,7 +9,6 @@ import java.math.BigDecimal;
 public class Waiter extends Person implements Serializable {
 
     private final Contract contract;
-    private Bonus bonus;
 
     /**
      * Constructs a Waiter object using the provided builder.
@@ -20,14 +19,6 @@ public class Waiter extends Person implements Serializable {
         this.contract = builder.contract;
     }
 
-    @Override
-    public Bonus getBonus() {
-        return bonus;
-    }
-
-    public void setBonus(Bonus bonus) {
-        this.bonus = bonus;
-    }
 
     @Override
     public BigDecimal getSalary() {

@@ -149,35 +149,6 @@ public class Input {
     }
 
     /**
-     * Reads a person from the user.
-     * @param scanner the scanner object used for input
-     * @param message the message to be displayed to the user
-     * @return the person
-     */
-    public static Contract contract(Scanner scanner, String message) {
-        logger.info("Contract input.");
-        BigDecimal salary;
-
-        while (true) {
-            salary = Input.bigDecimal(scanner, "Unesite plaću.");
-
-            try {
-                Validation.checkSalary(salary);
-                break;
-            } catch (InvalidValueException e) {
-                logger.error("Entered invalid salary value.");
-                System.out.println("Unesena plaća je neispravna. Plaća mora biti veća od minimalne (" + Contract.getMinSalary() + ").");
-            }
-        }
-
-        LocalDate startDate = Input.localDate(scanner, "Unesite početak ugovora.");
-        LocalDate endDate = Input.localDate(scanner, "Unesite kraj ugovora.");
-        ContractType contractType = ContractType.valueOf(Input.string(scanner, "Unesite tip ugovora."));
-
-        return new Contract(salary, startDate, endDate, contractType);
-    }
-
-    /**
      * Reads a boolean value from the user.
      * @param scanner the scanner object used for input
      * @param message the message to be displayed to the user

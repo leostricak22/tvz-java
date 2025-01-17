@@ -13,12 +13,12 @@ public class WaiterAddController extends PersonAddController<Waiter> {
     private final WaiterRepository<Waiter> waiterRepository = new WaiterRepository<>();
 
     @Override
-    Waiter addPerson(String firstName, String lastName, Contract contract, BigDecimal bonus) {
+    Waiter addPerson(String firstName, String lastName, Contract contract, Bonus bonus) {
         return new Waiter.Builder(waiterRepository.getNextId())
                 .setFirstName(firstName)
                 .setLastName(lastName)
                 .setContract(contract)
-                .setBonus(new Bonus(bonus))
+                .setBonus(bonus)
                 .build();
     }
 

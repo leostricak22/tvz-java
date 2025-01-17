@@ -261,3 +261,10 @@ java.io.FileNotFoundException: .\src\main\resources\hr\java\restaurant\hr\java\r
 2025-01-17 17:41:58 ERROR [JavaFX Application Thread] h.j.r.c.PersonAddController [PersonAddController.java:44] Error creating a Person: Bonus must be a number
 2025-01-17 17:41:59 ERROR [JavaFX Application Thread] h.j.r.c.PersonAddController [PersonAddController.java:44] Error creating a Person: Bonus must be a number
 2025-01-17 17:42:04 INFO [JavaFX Application Thread] h.j.r.c.PersonAddController [PersonAddController.java:58] Person o a added successfully
+2025-01-17 19:38:12 ERROR [JavaFX Application Thread] h.j.r.c.PersonAddController [PersonAddController.java:51] Error creating a Person: First name must be filled
+2025-01-17 19:38:19 ERROR [JavaFX Application Thread] h.j.r.c.PersonAddController [PersonAddController.java:51] Error creating a Person: Bonus must be a number
+2025-01-17 19:38:24 INFO [JavaFX Application Thread] h.j.r.c.PersonAddController [PersonAddController.java:61] Person nez nez added successfully
+2025-01-17 19:51:57 ERROR [JavaFX Application Thread] h.j.r.c.PersonAddController [PersonAddController.java:56] Error creating a Person: First name must be filled
+2025-01-17 19:52:31 ERROR [JavaFX Application Thread] h.j.r.c.PersonAddController [PersonAddController.java:56] Error creating a Person: First name must be filled
+2025-01-17 20:04:38 INFO [JavaFX Application Thread] h.j.r.c.PersonAddController [PersonAddController.java:72] Person 123 123 added successfully
+2025-01-17 20:10:51 INFO [JavaFX Application Thread] h.j.r.c.PersonAddController [PersonAddController.java:72] Person 123 123 added successfully
