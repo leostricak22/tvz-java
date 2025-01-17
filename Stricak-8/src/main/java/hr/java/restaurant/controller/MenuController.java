@@ -34,4 +34,21 @@ public class MenuController {
         RestaurantApplication.getMainStage().show();
     }
 
+    public void showAddPersonScreen(ActionEvent event) throws IOException {
+        MenuItem menuItem = (MenuItem) event.getSource();
+        FXMLLoader fxmlLoader = FXMLLoaderHelper.fxmlFilePath("personAdd.fxml");
+
+        Object controller = new ChefAddController();
+        if (menuItem.getId().equals("waiterAdd"))
+            controller = new WaiterAddController();
+        else if (menuItem.getId().equals("delivererAdd"))
+            controller = new DelivererAddController();
+
+        fxmlLoader.setController(controller);
+        Scene scene = new Scene(fxmlLoader.load(), Constants.SCENE_WIDTH, Constants.SCENE_HEIGHT);
+
+        RestaurantApplication.getMainStage().setTitle("Add");
+        RestaurantApplication.getMainStage().setScene(scene);
+        RestaurantApplication.getMainStage().show();
+    }
 }
