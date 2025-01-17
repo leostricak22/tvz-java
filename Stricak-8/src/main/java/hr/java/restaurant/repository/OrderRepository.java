@@ -65,4 +65,17 @@ public class OrderRepository<T extends Order> extends AbstractRepository<T> {
     public void save(Set<T> entity) {
 
     }
+
+    public Long getNextId() {
+        return findAll().stream()
+                .map(Order::getId)
+                .max(Long::compareTo)
+                .orElse(0L) + 1;
+    }
+
+    public void add(T order) {
+        Set<T> orders = findAll();
+        orders.add(order);
+        save(orders);
+    }
 }

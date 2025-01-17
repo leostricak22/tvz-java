@@ -68,4 +68,26 @@ public class EntityFinder {
         return ingredientIdentifiers.toString();
     }
 
+    public static String getMealIdentifiers(Set<Meal> meals) {
+        StringBuilder mealIdentifiers = new StringBuilder();
+        for (Meal meal : meals) {
+            mealIdentifiers.append(meal.getId()).append(",");
+        }
+
+        mealIdentifiers.deleteCharAt(mealIdentifiers.length() - 1);
+
+        return mealIdentifiers.toString();
+    }
+
+
+    public static <T extends Person> String getPersonIdentifiers(Set<T> people) {
+        StringBuilder personIdentifiers = new StringBuilder();
+        for (Person person : people) {
+            personIdentifiers.append(person.getId()).append(",");
+        }
+
+        personIdentifiers.deleteCharAt(personIdentifiers.length() - 1);
+
+        return personIdentifiers.toString();
+    }
 }

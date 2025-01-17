@@ -4,6 +4,7 @@ import hr.java.restaurant.model.*;
 import hr.java.restaurant.util.EntityFinder;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashSet;
@@ -17,6 +18,7 @@ public class RestaurantRepository<T extends Restaurant> extends AbstractReposito
     private final ChefRepository<Chef> chefRepository = new ChefRepository<>();
     private final WaiterRepository<Waiter> waiterRepository = new WaiterRepository<>();
     private final DelivererRepository<Deliverer> delivererRepository = new DelivererRepository<>();
+    private final AddressRepository addressRepository = new AddressRepository();
 
     @Override
     public T findById(Long id) {
@@ -45,30 +47,22 @@ public class RestaurantRepository<T extends Restaurant> extends AbstractReposito
                 Long id = Long.parseLong(fileRows.get(0));
                 String name = fileRows.get(1);
 
-                String street = fileRows.get(2);
-                String houseNumber = fileRows.get(3);
-                String city = fileRows.get(4);
-                String postalCode = fileRows.get(5);
+                Long addressId = Long.parseLong(fileRows.get(2));
 
-                String mealsInRestaurantIdentifiers = fileRows.get(6);
-                String chefsInRestaurantIdentifiers = fileRows.get(7);
-                String waitersInRestaurantIdentifiers = fileRows.get(8);
-                String deliverersInRestaurantIdentifiers = fileRows.get(9);
+                String mealsInRestaurantIdentifiers = fileRows.get(3);
+                String chefsInRestaurantIdentifiers = fileRows.get(4);
+                String waitersInRestaurantIdentifiers = fileRows.get(5);
+                String deliverersInRestaurantIdentifiers = fileRows.get(6);
 
                 Set<Meal> mealsInRestaurant = EntityFinder.getMealByIdentifiers(mealsInRestaurantIdentifiers);
                 Set<Chef> chefsInRestaurant = Person.getPersonByIdentifiers(chefsInRestaurantIdentifiers, chefRepository.findAll());
                 Set<Waiter> waitersInRestaurant = Person.getPersonByIdentifiers(waitersInRestaurantIdentifiers, waiterRepository.findAll());
                 Set<Deliverer> deliverersInRestaurant = Person.getPersonByIdentifiers(deliverersInRestaurantIdentifiers, delivererRepository.findAll());
 
-                restaurants.add((T) new Restaurant(id, name, new Address.Builder(id)
-                        .setStreet(street)
-                        .setHouseNumber(houseNumber)
-                        .setCity(city)
-                        .setPostalCode(postalCode)
-                        .build()
-                        , mealsInRestaurant, chefsInRestaurant, waitersInRestaurant, deliverersInRestaurant));
+                restaurants.add((T) new Restaurant(id, name, addressRepository.findById(addressId)
+                        ,mealsInRestaurant, chefsInRestaurant, waitersInRestaurant, deliverersInRestaurant));
 
-                fileRows = fileRows.subList(10, fileRows.size());
+                fileRows = fileRows.subList(7, fileRows.size());
             }
         } catch (IOException e) {
             System.err.println("Greška pri čitanju datoteke: " + e.getMessage());
@@ -78,7 +72,34 @@ public class RestaurantRepository<T extends Restaurant> extends AbstractReposito
     }
 
     @Override
-    public void save(Set<T> entity) {
+    public void save(Set<T> entities) {
+        try (PrintWriter printWriter = new PrintWriter(FILE_PATH)) {
+            for (T restaurant : entities) {
+                printWriter.println(restaurant.getId());
+                printWriter.println(restaurant.getName());
+                printWriter.println(restaurant.getAddress().getId());
+                printWriter.println(EntityFinder.getMealIdentifiers(restaurant.getMeals()));
+                printWriter.println(EntityFinder.getPersonIdentifiers(restaurant.getChefs()));
+                printWriter.println(EntityFinder.getPersonIdentifiers(restaurant.getWaiters()));
+                printWriter.println(EntityFinder.getPersonIdentifiers(restaurant.getDeliverers()));
+            }
 
+            printWriter.flush();
+        } catch (IOException e) {
+            System.err.println("Greška pri zapisivanju u datoteku: " + e.getMessage());
+        }
+    }
+
+    public Long getNextId() {
+        return findAll().stream()
+                .map(Restaurant::getId)
+                .max(Long::compareTo)
+                .orElse(0L) + 1;
+    }
+
+    public void add(T entity) {
+        Set<T> restaurants = findAll();
+        restaurants.add(entity);
+        save(restaurants);
     }
 }

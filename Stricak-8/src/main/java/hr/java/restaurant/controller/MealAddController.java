@@ -37,7 +37,9 @@ public class MealAddController implements AddController {
     private final IngredientRepository<Ingredient> ingredientRepository = new IngredientRepository<>();
     private final CategoryRepository<Category> categoryRepository = new CategoryRepository<>();
     private final MealRepository<Meal> mealRepository = new MealRepository<>();
+
     private Set<Ingredient> selectedIngredients = new HashSet<>();
+
     private static final Logger logger = LoggerFactory.getLogger(MealAddController.class);
 
     @Override
