@@ -33,6 +33,10 @@
     <Menu mnemonicParsing="false" text="Contract">
         <MenuItem mnemonicParsing="false" text="Search and Add" onAction="#showSearchScreen" id="contract"/>
     </Menu>
+    <Menu mnemonicParsing="false" text="Address">
+        <MenuItem mnemonicParsing="false" text="Search" onAction="#showSearchScreen" id="addressSearch"/>
+        <MenuItem mnemonicParsing="false" text="Add" onAction="#showAddScreen" id="addressAdd"/>
+    </Menu>
     <Menu mnemonicParsing="false" text="Restaurant">
         <MenuItem mnemonicParsing="false" text="Search" onAction="#showSearchScreen" id="restaurantSearch"/>
     </Menu>

@@ -5,18 +5,17 @@ import hr.java.restaurant.main.RestaurantApplication;
 import hr.java.restaurant.model.Entity;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.CheckBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Set;
 
 public class MultipleCheckBoxSelectUtil {
-    public static <T extends Entity> List<T> openWindow(Set<T> items, List<T> previouslySelectedItems) {
-        List<T> selectedItems = new ArrayList<>();
+    public static <T extends Entity> Set<T> openWindow(Set<T> items, Set<T> previouslySelectedItems) {
+        Set<T> selectedItems = new HashSet<>();
 
         try {
             FXMLLoader fxmlLoader = FXMLLoaderHelper.fxmlFilePath("multipleCheckBoxSelect.fxml");
@@ -24,7 +23,7 @@ public class MultipleCheckBoxSelectUtil {
 
             MultipleCheckBoxSelectController<T> controller = fxmlLoader.getController();
 
-            controller.initialize(new ArrayList<>(items), previouslySelectedItems);
+            controller.initialize(new ArrayList<>(items), new ArrayList<>(previouslySelectedItems));
 
             controller.setOnConfirmCallback(selectedItems::addAll);
 

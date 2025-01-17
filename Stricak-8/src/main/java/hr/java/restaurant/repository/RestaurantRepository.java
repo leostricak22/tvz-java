@@ -60,7 +60,13 @@ public class RestaurantRepository<T extends Restaurant> extends AbstractReposito
                 Set<Waiter> waitersInRestaurant = Person.getPersonByIdentifiers(waitersInRestaurantIdentifiers, waiterRepository.findAll());
                 Set<Deliverer> deliverersInRestaurant = Person.getPersonByIdentifiers(deliverersInRestaurantIdentifiers, delivererRepository.findAll());
 
-                restaurants.add((T) new Restaurant(id, name, new Address.Builder().id(id).street(street).houseNumber(houseNumber).city(city).postalCode(postalCode).build(), mealsInRestaurant, chefsInRestaurant, waitersInRestaurant, deliverersInRestaurant));
+                restaurants.add((T) new Restaurant(id, name, new Address.Builder(id)
+                        .setStreet(street)
+                        .setHouseNumber(houseNumber)
+                        .setCity(city)
+                        .setPostalCode(postalCode)
+                        .build()
+                        , mealsInRestaurant, chefsInRestaurant, waitersInRestaurant, deliverersInRestaurant));
 
                 fileRows = fileRows.subList(10, fileRows.size());
             }

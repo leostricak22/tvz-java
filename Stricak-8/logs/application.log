@@ -268,3 +268,7 @@ java.io.FileNotFoundException: .\src\main\resources\hr\java\restaurant\hr\java\r
 2025-01-17 19:52:31 ERROR [JavaFX Application Thread] h.j.r.c.PersonAddController [PersonAddController.java:56] Error creating a Person: First name must be filled
 2025-01-17 20:04:38 INFO [JavaFX Application Thread] h.j.r.c.PersonAddController [PersonAddController.java:72] Person 123 123 added successfully
 2025-01-17 20:10:51 INFO [JavaFX Application Thread] h.j.r.c.PersonAddController [PersonAddController.java:72] Person 123 123 added successfully
+2025-01-17 21:33:49 ERROR [JavaFX Application Thread] h.j.r.c.MealAddController [MealAddController.java:67] Meal add error: Meal name is empty.
+2025-01-17 22:09:56 INFO [JavaFX Application Thread] h.j.r.c.AddressAddController [AddressAddController.java:50] Address added: hr.java.restaurant.model.Address@20
+2025-01-17 22:10:02 ERROR [JavaFX Application Thread] h.j.r.c.AddressAddController [AddressAddController.java:37] Address add error: Sva polja moraju biti popunjena!
+2025-01-17 22:10:25 INFO [JavaFX Application Thread] h.j.r.c.AddressAddController [AddressAddController.java:50] Address added: hr.java.restaurant.model.Address@21

@@ -37,7 +37,7 @@ public class MealAddController implements AddController {
     private final IngredientRepository<Ingredient> ingredientRepository = new IngredientRepository<>();
     private final CategoryRepository<Category> categoryRepository = new CategoryRepository<>();
     private final MealRepository<Meal> mealRepository = new MealRepository<>();
-    private List<Ingredient> selectedIngredients = new ArrayList<>();
+    private Set<Ingredient> selectedIngredients = new HashSet<>();
     private static final Logger logger = LoggerFactory.getLogger(MealAddController.class);
 
     @Override
@@ -74,7 +74,7 @@ public class MealAddController implements AddController {
                 name,
                 category,
                 priceBigDecimal,
-                new HashSet<>(selectedIngredients),
+                selectedIngredients,
                 additionalAttribute1,
                 additionalAttribute2,
                 additionalAttribute3);
@@ -87,7 +87,7 @@ public class MealAddController implements AddController {
     }
 
     public void handleMultipleCheckBoxSelectWindow() {
-        List<Ingredient> selectedIngredientsFromMultipleCheckBoxWindow =
+        Set<Ingredient> selectedIngredientsFromMultipleCheckBoxWindow =
                 MultipleCheckBoxSelectUtil.openWindow(ingredientRepository.findAll(), selectedIngredients);
 
         if (selectedIngredientsFromMultipleCheckBoxWindow.isEmpty())
@@ -104,7 +104,7 @@ public class MealAddController implements AddController {
                                  MealTypeEnum mealType,
                                  Category category,
                                  String price,
-                                 List<Ingredient> ingredients,
+                                 Set<Ingredient> ingredients,
                                  String additionalAttribute3) {
         if (name.isEmpty())
             return "Meal name is empty.";
