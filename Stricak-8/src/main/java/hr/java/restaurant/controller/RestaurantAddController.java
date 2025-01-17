@@ -49,7 +49,6 @@ public class RestaurantAddController implements AddController {
     @Override
     public void initialize() {
         ComboBoxUtil.comboBoxStringConverter(addressComboBox);
-
         addressComboBox.setItems(
                 FXCollections.observableArrayList(addressRepository.findAll()));
     }
@@ -76,17 +75,9 @@ public class RestaurantAddController implements AddController {
     }
 
     public void pickMeals() {
-        Set<Meal> selectedMealsFromMultipleCheckBoxWindow =
-                MultipleCheckBoxSelectUtil.openWindow(mealRepository.findAll(), selectedMeals);
-
-        if (selectedMealsFromMultipleCheckBoxWindow.isEmpty())
-            return;
-
-        selectedMeals =selectedMealsFromMultipleCheckBoxWindow;
-        mealNameArrayLabel.setText(selectedMeals.stream()
-                .map(Meal::getName)
-                .reduce("", (a, b) -> a + ", " + b)
-                .substring(2));
+        selectedMeals = MultipleCheckBoxSelectUtil.pickMealsFromMultipleCheckBoxWindow(mealRepository.findAll(),
+                selectedMeals,
+                mealNameArrayLabel);
     }
 
     public void pickChefs() {

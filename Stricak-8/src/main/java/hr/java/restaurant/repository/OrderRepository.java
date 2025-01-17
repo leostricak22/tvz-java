@@ -4,6 +4,7 @@ import hr.java.restaurant.model.*;
 import hr.java.restaurant.util.EntityFinder;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
@@ -16,7 +17,6 @@ import java.util.stream.Stream;
 public class OrderRepository<T extends Order> extends AbstractRepository<T> {
     public final static String FILE_PATH = "dat/orders.txt";
 
-    private final MealRepository<Meal> mealRepository = new MealRepository<>();
     private final DelivererRepository<Deliverer> delivererRepository = new DelivererRepository<>();
     private final RestaurantRepository<Restaurant> restaurantRepository = new RestaurantRepository<>();
 
@@ -62,8 +62,20 @@ public class OrderRepository<T extends Order> extends AbstractRepository<T> {
     }
 
     @Override
-    public void save(Set<T> entity) {
+    public void save(Set<T> entities) {
+        try (PrintWriter printWriter = new PrintWriter(FILE_PATH)) {
+            for (T order : entities) {
+                printWriter.println(order.getId());
+                printWriter.println(order.getRestaurant().getId());
+                printWriter.println(EntityFinder.getMealIdentifiers(new HashSet<>(order.getMeals())));
+                printWriter.println(order.getDeliverer().getId());
+                printWriter.println(order.getDeliveryDateAndTime());
+            }
 
+            printWriter.flush();
+        } catch (IOException e) {
+            System.err.println("Greška pri zapisivanju u datoteku: " + e.getMessage());
+        }
     }
 
     public Long getNextId() {

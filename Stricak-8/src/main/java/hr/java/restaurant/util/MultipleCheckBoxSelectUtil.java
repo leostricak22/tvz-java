@@ -3,8 +3,11 @@ package hr.java.restaurant.util;
 import hr.java.restaurant.controller.MultipleCheckBoxSelectController;
 import hr.java.restaurant.main.RestaurantApplication;
 import hr.java.restaurant.model.Entity;
+import hr.java.restaurant.model.Meal;
+import hr.java.restaurant.repository.MealRepository;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -40,5 +43,23 @@ public class MultipleCheckBoxSelectUtil {
         }
 
         return selectedItems;
+    }
+
+    public static Set<Meal> pickMealsFromMultipleCheckBoxWindow(Set<Meal> items,
+                                                           Set<Meal> selectedMeals,
+                                                           Label mealNameArrayLabel) {
+        Set<Meal> selectedMealsFromMultipleCheckBoxWindow =
+                MultipleCheckBoxSelectUtil.openWindow(items, selectedMeals);
+
+        if (selectedMealsFromMultipleCheckBoxWindow.isEmpty())
+            return selectedMeals;
+
+        selectedMeals =selectedMealsFromMultipleCheckBoxWindow;
+        mealNameArrayLabel.setText(selectedMeals.stream()
+                .map(Meal::getName)
+                .reduce("", (a, b) -> a + ", " + b)
+                .substring(2));
+
+        return selectedMeals;
     }
 }
