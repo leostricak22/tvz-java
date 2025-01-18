@@ -4,6 +4,7 @@ import hr.java.restaurant.enumeration.ContractType;
 import hr.java.restaurant.model.Contract;
 import hr.java.restaurant.model.Ingredient;
 import hr.java.restaurant.model.Restaurant;
+import hr.java.restaurant.util.EntityFinder;
 
 import java.math.BigDecimal;
 import java.nio.file.Files;
@@ -41,10 +42,13 @@ public class ContractRepository extends AbstractRepository<Contract> {
                 LocalDate startDate = LocalDate.parse(fileRows.get(3));
                 LocalDate endDate = LocalDate.parse(fileRows.get(4));
                 ContractType contractType = ContractType.valueOf(fileRows.get(5));
+                String filesPaths = fileRows.get(6);
+
+                List<String> files = EntityFinder.getFilesFromPaths(filesPaths);
 
                 contracts.add(new Contract(id, name, salary, startDate, endDate, contractType));
 
-                fileRows = fileRows.subList(6, fileRows.size());
+                fileRows = fileRows.subList(7, fileRows.size());
             }
         } catch (Exception e) {
             System.err.println("Greška pri čitanju datoteke: " + e.getMessage());
@@ -64,6 +68,8 @@ public class ContractRepository extends AbstractRepository<Contract> {
             fileRows.add(contract.getStartDate().toString());
             fileRows.add(contract.getEndDate().toString());
             fileRows.add(contract.getContractType().toString());
+            System.out.println(contract.getFiles());
+            fileRows.add(EntityFinder.getFilesPaths(contract.getFiles()));
         }
 
         try {

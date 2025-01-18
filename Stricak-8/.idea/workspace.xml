@@ -4,16 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4f528465-ba8d-46d2-beb3-c46214f220ac" name="Changes" comment="feat: add restaurant add view">
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/OrderAddController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/orderAdd.fxml" afterDir="false" />
+    <list default="true" id="4f528465-ba8d-46d2-beb3-c46214f220ac" name="Changes" comment="feat: add order creation controller and fxml file">
+      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/ContractAddStep1Controller.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/ContractAddStep2Controller.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/ContractAddStep3Controller.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/contractAddStep1.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/contractAddStep2.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/contractAddStep3.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dat/orders.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dat/orders.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/RestaurantAddController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/RestaurantAddController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/OrderRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/OrderRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/MultipleCheckBoxSelectUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/MultipleCheckBoxSelectUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dat/contracts.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dat/contracts.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dat/meals.txt" beforeDir="false" afterPath="$PROJECT_DIR$/dat/meals.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/logs/application.log" beforeDir="false" afterPath="$PROJECT_DIR$/logs/application.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Contract.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Contract.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/ContractRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/ContractRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/EntityFinder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/EntityFinder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/SceneLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/SceneLoader.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/menu.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/menu.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/restaurantAdd.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/restaurantAdd.fxml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -206,7 +212,8 @@
       <workItem from="1737063196097" duration="2108000" />
       <workItem from="1737116711744" duration="4961000" />
       <workItem from="1737137323106" duration="9889000" />
-      <workItem from="1737151941985" duration="2029000" />
+      <workItem from="1737151941985" duration="2107000" />
+      <workItem from="1737194941251" duration="4567000" />
     </task>
     <task id="LOCAL−00001" summary="feat: Add JavaFX project and add category searching and filtering">
       <option name="closed" value="true" />
@@ -355,7 +362,14 @@
       <option name="presentableId" value="LOCAL−00021" />
       <updated>1737152552586</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL−00022" summary="feat: add order creation controller and fxml file">
+      <option name="closed" value="true" />
+      <created>1737154054185</created>
+      <option name="number" value="LOCAL−00022" />
+      <option name="presentableId" value="LOCAL−00022" />
+      <updated>1737154054185</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -383,6 +397,7 @@
     <MESSAGE value="feat: create contract repository and update Person add controller" />
     <MESSAGE value="feat: add address repository, search and add controllers" />
     <MESSAGE value="feat: add restaurant add view" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: add restaurant add view" />
+    <MESSAGE value="feat: add order creation controller and fxml file" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: add order creation controller and fxml file" />
   </component>
 </project>

@@ -122,5 +122,14 @@ MEAT
 4
 123
 123
+true
 false
+15
+onjlnmlkćmć
+VEGETARIAN
+3
+4,5,6
+15
+pompolč
+true
 true

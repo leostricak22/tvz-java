@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Represents a contract of a person.
@@ -21,6 +23,7 @@ public class Contract extends Entity implements Serializable {
     private LocalDate endDate;
     private ContractType contractType;
     private boolean active = true;
+    private List<String> files = new ArrayList<>();
 
     /**
      * Constructs a Contract object using the provided builder.
@@ -35,6 +38,15 @@ public class Contract extends Entity implements Serializable {
         this.startDate = startDate;
         this.endDate = endDate;
         this.contractType = contractType;
+    }
+
+    public List<String> getFiles() {
+        return files;
+    }
+
+    public void setFiles(List<String> files) {
+        System.out.println("Setting files" + files);
+        this.files = files;
     }
 
     public boolean getActive() {

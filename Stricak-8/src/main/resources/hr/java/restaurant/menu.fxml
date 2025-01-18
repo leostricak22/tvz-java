@@ -31,7 +31,8 @@
         <MenuItem mnemonicParsing="false" text="Add" onAction="#showAddPersonScreen" id="delivererAdd"/>
     </Menu>
     <Menu mnemonicParsing="false" text="Contract">
-        <MenuItem mnemonicParsing="false" text="Search and Add" onAction="#showSearchScreen" id="contract"/>
+        <MenuItem mnemonicParsing="false" text="Search" onAction="#showSearchScreen" id="contract"/>
+        <MenuItem mnemonicParsing="false" text="Add" onAction="#showAddScreen" id="contractAddStep1"/>
     </Menu>
     <Menu mnemonicParsing="false" text="Address">
         <MenuItem mnemonicParsing="false" text="Search" onAction="#showSearchScreen" id="addressSearch"/>

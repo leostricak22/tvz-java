@@ -90,4 +90,27 @@ public class EntityFinder {
 
         return personIdentifiers.toString();
     }
+
+    public static List<String> getFilesFromPaths(String filesPaths) {
+        List<String> files = new ArrayList<>();
+        String[] paths = filesPaths.split(",");
+        for (String path : paths) {
+            files.add(path);
+        }
+
+        return files;
+    }
+
+    public static String getFilesPaths(List<String> files) {
+        StringBuilder filesPaths = new StringBuilder();
+        for (String file : files) {
+            filesPaths.append(file).append(",");
+        }
+
+        System.out.println(filesPaths);
+        if (!filesPaths.isEmpty())
+            filesPaths.deleteCharAt(filesPaths.length() - 1);
+
+        return filesPaths.toString();
+    }
 }
