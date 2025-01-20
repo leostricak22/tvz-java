@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Button?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.java.restaurant.controller.MultipleCheckBoxSelectController" spacing="10" alignment="CENTER" style="-fx-padding: 20;">
+    <ListView fx:id="listView" prefHeight="200" prefWidth="200"/>
+    <Button text="Confirm" onAction="#onConfirm" />
+</VBox>
