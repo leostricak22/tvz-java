@@ -4,7 +4,6 @@ import hr.java.restaurant.controller.MultipleCheckBoxSelectController;
 import hr.java.restaurant.main.RestaurantApplication;
 import hr.java.restaurant.model.Entity;
 import hr.java.restaurant.model.Meal;
-import hr.java.restaurant.repository.MealRepository;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;

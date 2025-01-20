@@ -15,7 +15,7 @@ public final class VegetarianMeal extends Meal implements Vegetarian, Serializab
     private final String proteinSource;
 
     public VegetarianMeal(Builder builder) {
-        super(builder.id, builder.name, builder.mealType, builder.category, builder.ingredients, builder.price);
+        super(builder.id, builder.name, builder.category, builder.ingredients, builder.price);
         this.containsDairy = builder.containsDairy;
         this.containsEggs = builder.containsEggs;
         this.proteinSource = builder.proteinSource;
@@ -44,7 +44,6 @@ public final class VegetarianMeal extends Meal implements Vegetarian, Serializab
     public static class Builder {
         private final Long id;
         private final String name;
-        private MealTypeEnum mealType;
         private Category category;
         private Set<Ingredient> ingredients;
         private BigDecimal price;
@@ -55,11 +54,6 @@ public final class VegetarianMeal extends Meal implements Vegetarian, Serializab
         public Builder(Long id, String name) {
             this.id = id;
             this.name = name;
-        }
-
-        public Builder setMealType(MealTypeEnum mealType) {
-            this.mealType = mealType;
-            return this;
         }
 
         public Builder setCategory(Category category) {

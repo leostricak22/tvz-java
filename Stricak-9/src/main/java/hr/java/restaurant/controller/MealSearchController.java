@@ -6,7 +6,7 @@ import hr.java.restaurant.model.Ingredient;
 import hr.java.restaurant.model.Meal;
 import hr.java.restaurant.repository.CategoryDatabaseRepository;
 import hr.java.restaurant.repository.IngredientDatabaseRepository;
-import hr.java.restaurant.repository.MealRepository;
+import hr.java.restaurant.repository.MealDatabaseRepository;
 import hr.java.restaurant.util.ComboBoxUtil;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MealSearchController implements SearchController {
-    private static final MealRepository<Meal> mealRepository = new MealRepository<>();
+    private static final MealDatabaseRepository mealRepository = new MealDatabaseRepository();
     private static final CategoryDatabaseRepository categoryRepository = new CategoryDatabaseRepository();
     private final IngredientDatabaseRepository ingredientRepository = new IngredientDatabaseRepository();
 
@@ -81,7 +81,7 @@ public class MealSearchController implements SearchController {
                 new SimpleStringProperty(cellData.getValue().getName()));
 
         mealTypeColumn.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getMealType().getName()));
+                new SimpleStringProperty("Ne znam"));
 
         mealCategoryNameColumn.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getCategory().getName()));
@@ -127,8 +127,6 @@ public class MealSearchController implements SearchController {
                         meal.getPrice().compareTo(new BigDecimal(mealPriceToTextFieldValue)) <= 0)
                 .filter(meal -> mealPriceFromTextFieldValue.isBlank() ||
                         meal.getPrice().compareTo(new BigDecimal(mealPriceFromTextFieldValue)) >= 0)
-                .filter(meal -> mealTypeComboBoxValue.isBlank() ||
-                        meal.getMealType().getName().contains(mealTypeComboBoxValue))
                 .filter(meal -> mealCategoryComboBoxValue.isBlank() ||
                         meal.getCategory().getName().contains(mealCategoryComboBoxValue))
                 .filter(meal -> mealIngredientComboBoxValue.isBlank() ||

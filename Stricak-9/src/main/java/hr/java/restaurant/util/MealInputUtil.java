@@ -2,14 +2,14 @@ package hr.java.restaurant.util;
 
 import hr.java.restaurant.enumeration.MealTypeEnum;
 import hr.java.restaurant.model.*;
-import hr.java.restaurant.repository.MealRepository;
+import hr.java.restaurant.repository.MealDatabaseRepository;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
 public class MealInputUtil {
-    private static final MealRepository<Meal> mealRepository = new MealRepository<>();
+    private static final MealDatabaseRepository mealRepository = new MealDatabaseRepository();
 
     public static Meal createMeal(MealTypeEnum mealType, String name,
                                   Category category, BigDecimal price,
@@ -20,7 +20,6 @@ public class MealInputUtil {
 
         return switch (mealType) {
             case MEAT -> new MeatMeal.Builder(mealRepository.findNextId(), name)
-                    .setMealType(mealType)
                     .setCategory(category)
                     .setPrice(price)
                     .setIngredients(new HashSet<>(selectedIngredients))
@@ -38,7 +37,6 @@ public class MealInputUtil {
                     .setProteinSource(additionalAttribute3)
                     .build();
             case VEGETARIAN -> new VegetarianMeal.Builder(mealRepository.findNextId(), name)
-                    .setMealType(mealType)
                     .setCategory(category)
                     .setPrice(price)
                     .setIngredients(new HashSet<>(selectedIngredients))

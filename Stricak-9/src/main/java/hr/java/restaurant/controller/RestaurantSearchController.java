@@ -93,7 +93,7 @@ public class RestaurantSearchController implements SearchController {
     private Button getOrdersButton;
 
     private final RestaurantRepository<Restaurant> restaurantRepository = new RestaurantRepository<>();
-    private final MealRepository<Meal> mealRepository = new MealRepository<>();
+    private final MealDatabaseRepository mealRepository = new MealDatabaseRepository();
     private final ChefRepository<Chef> chefRepository = new ChefRepository<>();
     private final WaiterRepository<Waiter> waiterRepository = new WaiterRepository<>();
     private final DelivererRepository<Deliverer> delivererRepository = new DelivererRepository<>();

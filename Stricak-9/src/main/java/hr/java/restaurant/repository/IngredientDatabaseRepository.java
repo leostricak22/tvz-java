@@ -87,7 +87,7 @@ public class IngredientDatabaseRepository extends AbstractRepository<Ingredient>
         }
     }
 
-    private Ingredient mapResultSetToIngredient(ResultSet resultSet) throws SQLException {
+    public Ingredient mapResultSetToIngredient(ResultSet resultSet) throws SQLException {
         Long id = resultSet.getLong("ID");
         String name = resultSet.getString("NAME");
         Category category = categoryRepository.findById(resultSet.getLong("CATEGORY_ID"));

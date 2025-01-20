@@ -23,7 +23,7 @@ public final class MeatMeal extends Meal implements Meat, Serializable {
     private boolean organic;
 
     public MeatMeal(Builder builder) {
-        super(builder.id, builder.name, builder.mealType, builder.category, builder.ingredients, builder.price);
+        super(builder.id, builder.name, builder.category, builder.ingredients, builder.price);
         this.meatType = builder.meatType;
         this.ecoFriendly = builder.ecoFriendly;
         this.organic = builder.organic;
@@ -56,7 +56,6 @@ public final class MeatMeal extends Meal implements Meat, Serializable {
     public static class Builder {
         private final Long id;
         private final String name;
-        private MealTypeEnum mealType;
         private Category category;
         private Set<Ingredient> ingredients;
         private BigDecimal price;
@@ -67,11 +66,6 @@ public final class MeatMeal extends Meal implements Meat, Serializable {
         public Builder(Long id, String name) {
             this.id = id;
             this.name = name;
-        }
-
-        public Builder setMealType(MealTypeEnum mealType) {
-            this.mealType = mealType;
-            return this;
         }
 
         public Builder setCategory(Category category) {

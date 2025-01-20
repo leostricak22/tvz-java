@@ -25,7 +25,7 @@ public final class VeganMeal extends Meal implements Vegan, Serializable {
     private boolean glutenFree;
 
    public VeganMeal(Builder builder) {
-        super(builder.id, builder.name, builder.mealType, builder.category, builder.ingredients, builder.price);
+        super(builder.id, builder.name, builder.category, builder.ingredients, builder.price);
         this.proteinSource = builder.proteinSource;
         this.organic = builder.organic;
         this.glutenFree = builder.glutenFree;

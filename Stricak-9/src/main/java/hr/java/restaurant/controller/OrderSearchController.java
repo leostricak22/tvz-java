@@ -2,7 +2,7 @@ package hr.java.restaurant.controller;
 
 import hr.java.restaurant.model.*;
 import hr.java.restaurant.repository.DelivererRepository;
-import hr.java.restaurant.repository.MealRepository;
+import hr.java.restaurant.repository.MealDatabaseRepository;
 import hr.java.restaurant.repository.OrderRepository;
 import hr.java.restaurant.repository.RestaurantRepository;
 import hr.java.restaurant.util.ComboBoxUtil;
@@ -61,7 +61,7 @@ public class OrderSearchController implements SearchController {
 
     private static final OrderRepository<Order> orderRepository = new OrderRepository<>();
     private static final RestaurantRepository<Restaurant> restaurantRepository = new RestaurantRepository<>();
-    private static final MealRepository<Meal> mealRepository = new MealRepository<>();
+    private static final MealDatabaseRepository mealRepository = new MealDatabaseRepository();
     private static final DelivererRepository<Deliverer> delivererRepository = new DelivererRepository<>();
 
     public void setRestaurantNameParameter(String restaurantNameParameter) {
