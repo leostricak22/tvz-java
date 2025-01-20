@@ -1,5 +1,4 @@
 package hr.java.restaurant.main;
-import hr.java.restaurant.repository.ContractRepository;
 import hr.java.restaurant.util.FXMLLoaderHelper;
 import hr.java.restaurant.util.Constants;
 import javafx.application.Application;

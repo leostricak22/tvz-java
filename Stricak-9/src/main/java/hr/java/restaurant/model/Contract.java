@@ -81,19 +81,5 @@ public class Contract extends Entity implements Serializable {
         return contractType;
     }
 
-    /**
-     * Reads the contract information from the console.
-     * @return the contract
-     */
 
-
-    /**
-     * Prints the contract information.
-     * @param tabulators the number of tabulators
-     */
-    public void print(Integer tabulators) {
-        logger.info("Printing contract.");
-        Output.tabulatorPrint(tabulators);
-        System.out.println("Plaća: " + this.salary + ", Početak ugovora: " + this.startDate + ", Kraj ugovora: " + this.endDate + ", Tip ugovora: " + this.contractType);
-    }
 }

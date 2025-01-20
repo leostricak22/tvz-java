@@ -4,25 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4f528465-ba8d-46d2-beb3-c46214f220ac" name="Changes" comment="feat: add ingredient database repository">
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/MealIngredientRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/template.database.properties" afterDir="false" />
+    <list default="true" id="4f528465-ba8d-46d2-beb3-c46214f220ac" name="Changes" comment="feat: add meal database repository">
+      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/ContractDatabaseRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/MealAddController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/MealAddController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/MealSearchController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/MealSearchController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/OrderSearchController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/OrderSearchController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/RestaurantAddController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/RestaurantAddController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/RestaurantSearchController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/RestaurantSearchController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Meal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Meal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/MeatMeal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/MeatMeal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/VeganMeal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/VeganMeal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/VegetarianMeal.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/VegetarianMeal.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/IngredientDatabaseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/IngredientDatabaseRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/MealDatabaseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/MealDatabaseRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/MealRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/EntityFinder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/EntityFinder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/MealInputUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/MealInputUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/MultipleCheckBoxSelectUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/MultipleCheckBoxSelectUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/ContractAddStep3Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/ContractAddStep3Controller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/ContractController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/ContractController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/PersonAddController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/PersonAddController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/main/RestaurantApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/main/RestaurantApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Contract.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Contract.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Person.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Person.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/ChefRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/ChefRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/ContractRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/DelivererRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/DelivererRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/WaiterRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/WaiterRepository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -225,7 +219,7 @@
       <workItem from="1737151941985" duration="2107000" />
       <workItem from="1737194941251" duration="4567000" />
       <workItem from="1737224030650" duration="1509000" />
-      <workItem from="1737404095574" duration="10993000" />
+      <workItem from="1737404095574" duration="12300000" />
     </task>
     <task id="LOCAL−00001" summary="feat: Add JavaFX project and add category searching and filtering">
       <option name="closed" value="true" />
@@ -402,7 +396,14 @@
       <option name="presentableId" value="LOCAL−00025" />
       <updated>1737412550762</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL−00026" summary="feat: add meal database repository">
+      <option name="closed" value="true" />
+      <created>1737415691983</created>
+      <option name="number" value="LOCAL−00026" />
+      <option name="presentableId" value="LOCAL−00026" />
+      <updated>1737415691983</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -420,7 +421,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="feat: Add JavaFX project and add category searching and filtering" />
     <MESSAGE value="feat: Remove unnecessary files" />
     <MESSAGE value="feat: Add ingredient searching and filtering" />
     <MESSAGE value="refactor: Add SearchController interface" />
@@ -445,6 +445,7 @@
     <MESSAGE value="feat: add contract wizard creation" />
     <MESSAGE value="feat: add category database repository" />
     <MESSAGE value="feat: add ingredient database repository" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: add ingredient database repository" />
+    <MESSAGE value="feat: add meal database repository" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: add meal database repository" />
   </component>
 </project>

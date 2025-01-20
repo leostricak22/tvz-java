@@ -2,7 +2,7 @@ package hr.java.restaurant.controller;
 
 import hr.java.restaurant.enumeration.ContractType;
 import hr.java.restaurant.model.Contract;
-import hr.java.restaurant.repository.ContractRepository;
+import hr.java.restaurant.repository.ContractDatabaseRepository;
 import hr.java.restaurant.util.ComboBoxUtil;
 import hr.java.restaurant.util.Localization;
 import javafx.beans.property.SimpleStringProperty;
@@ -39,7 +39,7 @@ public class ContractController implements SearchController {
     @FXML private TableColumn<Contract, String> contractTypeColumn;
     @FXML private TableColumn<Contract, String> activeColumn;
 
-    ContractRepository contractRepository = new ContractRepository();
+    private final ContractDatabaseRepository contractRepository = new ContractDatabaseRepository();
 
     @Override
     public void initialize() {
@@ -59,7 +59,7 @@ public class ContractController implements SearchController {
                 new SimpleStringProperty(cellData.getValue().getStartDate().format(Localization.DateFormatter())));
 
         endDateColumn.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getEndDate().format(Localization.DateFormatter())));
+                new SimpleStringProperty(isNull(cellData.getValue().getEndDate()) ? "-" : cellData.getValue().getEndDate().format(Localization.DateFormatter())));
 
         contractTypeColumn.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getContractType().getName()));

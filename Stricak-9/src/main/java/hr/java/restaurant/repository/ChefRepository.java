@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 public class ChefRepository<T extends Chef> extends AbstractRepository<T> {
 
     public final static String FILE_PATH = "dat/chefs.txt";
-    private final ContractRepository contractRepository = new ContractRepository();
+    private final ContractDatabaseRepository contractRepository = new ContractDatabaseRepository();
 
     @Override
     public T findById(Long id) {

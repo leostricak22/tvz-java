@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 public class DelivererRepository<T extends Deliverer> extends AbstractRepository<T> {
 
     public final static String FILE_PATH = "dat/deliverers.txt";
-    private final ContractRepository contractRepository = new ContractRepository();
+    private final ContractDatabaseRepository contractRepository = new ContractDatabaseRepository();
 
     @Override
     public T findById(Long id) {

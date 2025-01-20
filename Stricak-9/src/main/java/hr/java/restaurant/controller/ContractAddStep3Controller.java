@@ -2,7 +2,7 @@ package hr.java.restaurant.controller;
 
 import hr.java.restaurant.enumeration.ContractType;
 import hr.java.restaurant.model.Contract;
-import hr.java.restaurant.repository.ContractRepository;
+import hr.java.restaurant.repository.ContractDatabaseRepository;
 import hr.java.restaurant.util.SceneLoader;
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
@@ -28,7 +28,7 @@ public class ContractAddStep3Controller{
     @FXML private TextField contractTypeTextField;
     @FXML private ListView<String> filesListView;
 
-    private final ContractRepository contractRepository = new ContractRepository();
+    private final ContractDatabaseRepository contractRepository = new ContractDatabaseRepository();
 
     public void initialize(String name, String salary, LocalDate startDate, LocalDate endDate, ContractType contractType, List<String> files) {
         this.name = name;
