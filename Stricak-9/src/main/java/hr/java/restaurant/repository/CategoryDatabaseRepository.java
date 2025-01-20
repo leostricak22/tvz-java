@@ -8,6 +8,7 @@ import hr.java.restaurant.util.DatabaseUtil;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -27,13 +28,13 @@ public class CategoryDatabaseRepository extends AbstractRepository<Category> {
                 throw new EmptyRepositoryResultException("Category with id " + id + " not found");
             }
         } catch (IOException | SQLException e) {
-            throw new RepositoryAccessException("Error while connecting to database", e);
+            throw new RepositoryAccessException(e);
         }
     }
 
     @Override
     public Set<Category> findAll() throws RepositoryAccessException {
-        List<Category> categories = new ArrayList<>();
+        Set<Category> categories = new HashSet<>();
 
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             Statement stmt = connection.createStatement();
@@ -44,9 +45,9 @@ public class CategoryDatabaseRepository extends AbstractRepository<Category> {
                 categories.add(category);
             }
 
-            return Set.copyOf(categories);
+            return categories;
         } catch (IOException | SQLException e) {
-            throw new RepositoryAccessException("Error while connecting to database", e);
+            throw new RepositoryAccessException(e);
         }
     }
 
@@ -63,13 +64,8 @@ public class CategoryDatabaseRepository extends AbstractRepository<Category> {
 
             }
         } catch (IOException | SQLException e) {
-            throw new RepositoryAccessException("Error while connecting to database", e);
+            throw new RepositoryAccessException(e);
         }
-    }
-
-    @Override
-    public void save(Category category) {
-        save(Set.of(category));
     }
 
     @Override
@@ -84,7 +80,7 @@ public class CategoryDatabaseRepository extends AbstractRepository<Category> {
                 return 1L;
             }
         } catch (IOException | SQLException e) {
-            throw new RepositoryAccessException("Error while connecting to database", e);
+            throw new RepositoryAccessException(e);
         }
     }
 

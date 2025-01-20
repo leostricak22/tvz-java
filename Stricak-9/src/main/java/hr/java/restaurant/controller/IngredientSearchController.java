@@ -3,7 +3,7 @@ package hr.java.restaurant.controller;
 import hr.java.restaurant.model.Category;
 import hr.java.restaurant.model.Ingredient;
 import hr.java.restaurant.repository.CategoryDatabaseRepository;
-import hr.java.restaurant.repository.IngredientRepository;
+import hr.java.restaurant.repository.IngredientDatabaseRepository;
 import hr.java.restaurant.util.ComboBoxUtil;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -18,7 +18,7 @@ import java.util.List;
 
 public class IngredientSearchController implements SearchController {
     private static final CategoryDatabaseRepository categoryRepository = new CategoryDatabaseRepository();
-    private static final IngredientRepository<Ingredient> ingredientRepository = new IngredientRepository<>();
+    private final IngredientDatabaseRepository ingredientRepository = new IngredientDatabaseRepository();
 
     @FXML
     private TextField ingredientIdTextField;
