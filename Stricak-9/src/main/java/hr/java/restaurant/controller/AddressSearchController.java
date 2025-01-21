@@ -1,7 +1,7 @@
 package hr.java.restaurant.controller;
 
 import hr.java.restaurant.model.Address;
-import hr.java.restaurant.repository.AddressRepository;
+import hr.java.restaurant.repository.AddressDatabaseRepository;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -30,7 +30,7 @@ public class AddressSearchController implements SearchController {
     @FXML private TableColumn<Address, String> cityTableColumn;
     @FXML private TableColumn<Address, String> postalCodeTableColumn;
 
-    private final AddressRepository addressRepository = new AddressRepository();
+    private final AddressDatabaseRepository addressRepository = new AddressDatabaseRepository();
 
     @Override
     public void initialize() {

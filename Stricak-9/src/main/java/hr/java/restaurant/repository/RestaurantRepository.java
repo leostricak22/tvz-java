@@ -18,7 +18,7 @@ public class RestaurantRepository<T extends Restaurant> extends AbstractReposito
     private final ChefRepository<Chef> chefRepository = new ChefRepository<>();
     private final WaiterRepository<Waiter> waiterRepository = new WaiterRepository<>();
     private final DelivererRepository<Deliverer> delivererRepository = new DelivererRepository<>();
-    private final AddressRepository addressRepository = new AddressRepository();
+    private final AddressDatabaseRepository addressRepository = new AddressDatabaseRepository();
 
     @Override
     public T findById(Long id) {

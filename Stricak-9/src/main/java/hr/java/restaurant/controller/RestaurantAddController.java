@@ -30,7 +30,7 @@ public class RestaurantAddController implements AddController {
     @FXML private Label waiterNameArrayLabel;
     @FXML private Label delivererNameArrayLabel;
 
-    private final AddressRepository addressRepository = new AddressRepository();
+    private final AddressDatabaseRepository addressRepository = new AddressDatabaseRepository();
     private final RestaurantRepository<Restaurant> restaurantRepository = new RestaurantRepository<>();
     private final MealDatabaseRepository mealRepository = new MealDatabaseRepository();
     private final ChefRepository<Chef> chefRepository = new ChefRepository<>();

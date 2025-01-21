@@ -1,8 +1,9 @@
 package hr.java.restaurant.controller;
 
 import hr.java.restaurant.model.Address;
-import hr.java.restaurant.repository.AddressRepository;
+import hr.java.restaurant.repository.AddressDatabaseRepository;
 import hr.java.restaurant.util.AlertDialog;
+import hr.java.restaurant.util.SceneLoader;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import org.slf4j.Logger;
@@ -15,7 +16,7 @@ public class AddressAddController implements AddController {
     @FXML private TextField cityTextField;
     @FXML private TextField postalCodeTextField;
 
-    private final AddressRepository addressRepository = new AddressRepository();
+    private final AddressDatabaseRepository addressRepository = new AddressDatabaseRepository();
     private static final Logger logger = LoggerFactory.getLogger(AddressAddController.class);
 
     @Override
@@ -49,7 +50,7 @@ public class AddressAddController implements AddController {
         logger.info("Address added: {}", address);
         AlertDialog.showInformationDialog("Address save", "Address added successfully!");
 
-        //SceneLoader.loadScene("addressSearch", "Address search");
+        SceneLoader.loadScene("addressSearch", "Address search");
     }
 
     private String validateInput(String street, String houseNumber, String city, String postalCode) {
