@@ -5,6 +5,7 @@ import hr.java.restaurant.exception.RepositoryAccessException;
 import hr.java.restaurant.model.Category;
 import hr.java.restaurant.model.Ingredient;
 import hr.java.restaurant.util.DatabaseUtil;
+import hr.java.restaurant.util.ObjectMapper;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -12,9 +13,7 @@ import java.sql.*;
 import java.util.HashSet;
 import java.util.Set;
 
-public class IngredientDatabaseRepository extends AbstractRepository<Ingredient> {
-
-    private final CategoryDatabaseRepository categoryRepository = new CategoryDatabaseRepository();
+public class IngredientRepository extends AbstractRepository<Ingredient> {
 
     @Override
     public Ingredient findById(Long id) throws RepositoryAccessException {
@@ -25,7 +24,7 @@ public class IngredientDatabaseRepository extends AbstractRepository<Ingredient>
             ResultSet resultSet = stmt.executeQuery();
 
             if (resultSet.next()) {
-                return mapResultSetToIngredient(resultSet);
+                return ObjectMapper.mapResultSetToIngredient(resultSet);
             } else {
                 throw new EmptyRepositoryResultException("Ingredient with id " + id + " not found");
             }
@@ -43,7 +42,7 @@ public class IngredientDatabaseRepository extends AbstractRepository<Ingredient>
             ResultSet resultSet = stmt.executeQuery("SELECT * FROM INGREDIENT;");
 
             while (resultSet.next()) {
-                Ingredient ingredient = mapResultSetToIngredient(resultSet);
+                Ingredient ingredient = ObjectMapper.mapResultSetToIngredient(resultSet);
                 ingredients.add(ingredient);
             }
 
@@ -85,19 +84,5 @@ public class IngredientDatabaseRepository extends AbstractRepository<Ingredient>
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
         }
-    }
-
-    public Ingredient mapResultSetToIngredient(ResultSet resultSet) throws SQLException {
-        Long id = resultSet.getLong("ID");
-        String name = resultSet.getString("NAME");
-        Category category = categoryRepository.findById(resultSet.getLong("CATEGORY_ID"));
-        BigDecimal kcal = resultSet.getBigDecimal("KCAL");
-        String preparationMethod = resultSet.getString("PREPARATION_METHOD");
-
-        return new Ingredient.Builder(id, name)
-                .setCategory(category)
-                .setKcal(kcal)
-                .setPreparationMethod(preparationMethod)
-                .build();
     }
 }

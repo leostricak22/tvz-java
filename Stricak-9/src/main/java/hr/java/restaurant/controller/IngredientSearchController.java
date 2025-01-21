@@ -2,8 +2,8 @@ package hr.java.restaurant.controller;
 
 import hr.java.restaurant.model.Category;
 import hr.java.restaurant.model.Ingredient;
-import hr.java.restaurant.repository.CategoryDatabaseRepository;
-import hr.java.restaurant.repository.IngredientDatabaseRepository;
+import hr.java.restaurant.repository.CategoryRepository;
+import hr.java.restaurant.repository.IngredientRepository;
 import hr.java.restaurant.util.ComboBoxUtil;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -11,14 +11,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.input.MouseEvent;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class IngredientSearchController implements SearchController {
-    private static final CategoryDatabaseRepository categoryRepository = new CategoryDatabaseRepository();
-    private final IngredientDatabaseRepository ingredientRepository = new IngredientDatabaseRepository();
+    private static final CategoryRepository categoryRepository = new CategoryRepository();
+    private final IngredientRepository ingredientRepository = new IngredientRepository();
 
     @FXML
     private TextField ingredientIdTextField;

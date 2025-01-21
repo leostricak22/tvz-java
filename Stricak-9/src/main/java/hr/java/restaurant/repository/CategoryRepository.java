@@ -2,7 +2,7 @@ package hr.java.restaurant.repository;
 
 import hr.java.restaurant.exception.EmptyRepositoryResultException;
 import hr.java.restaurant.exception.RepositoryAccessException;
-import hr.java.restaurant.model.Address;
+import hr.java.restaurant.model.Category;
 import hr.java.restaurant.util.DatabaseUtil;
 import hr.java.restaurant.util.ObjectMapper;
 
@@ -11,20 +11,20 @@ import java.sql.*;
 import java.util.HashSet;
 import java.util.Set;
 
-public class AddressRepository extends AbstractRepository<Address> {
+public class CategoryRepository extends AbstractRepository<Category> {
 
     @Override
-    public Address findById(Long id) throws RepositoryAccessException {
+    public Category findById(Long id) {
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             PreparedStatement stmt = connection.prepareStatement(
-                    "SELECT * FROM ADDRESS WHERE ID = ?;");
+                    "SELECT * FROM CATEGORY WHERE ID = ?;");
             stmt.setLong(1, id);
             ResultSet resultSet = stmt.executeQuery();
 
             if (resultSet.next()) {
-                return ObjectMapper.mapResultSetToAddress(resultSet);
+                return ObjectMapper.mapResultSetToCategory(resultSet);
             } else {
-                throw new EmptyRepositoryResultException("Address with id " + id + " not found");
+                throw new EmptyRepositoryResultException("Category with id " + id + " not found");
             }
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
@@ -32,36 +32,35 @@ public class AddressRepository extends AbstractRepository<Address> {
     }
 
     @Override
-    public Set<Address> findAll() throws RepositoryAccessException {
-        Set<Address> addresses = new HashSet<>();
+    public Set<Category> findAll() throws RepositoryAccessException {
+        Set<Category> categories = new HashSet<>();
 
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             Statement stmt = connection.createStatement();
-            ResultSet resultSet = stmt.executeQuery("SELECT * FROM ADDRESS;");
+            ResultSet resultSet = stmt.executeQuery("SELECT * FROM CATEGORY;");
 
             while (resultSet.next()) {
-                Address address = ObjectMapper.mapResultSetToAddress(resultSet);
-                addresses.add(address);
+                Category category = ObjectMapper.mapResultSetToCategory(resultSet);
+                categories.add(category);
             }
 
-            return addresses;
+            return categories;
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
         }
     }
 
     @Override
-    public void save(Set<Address> entities) throws RepositoryAccessException {
+    public void save(Set<Category> entities) {
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             PreparedStatement stmt = connection.prepareStatement(
-                    "INSERT INTO ADDRESS (STREET, HOUSE_NUMBER, CITY, POSTAL_CODE) VALUES (?, ?, ?, ?);");
+                    "INSERT INTO CATEGORY (NAME, DESCRIPTION) VALUES (?, ?);");
 
-            for (Address address : entities) {
-                stmt.setString(1, address.getStreet());
-                stmt.setString(2, address.getHouseNumber());
-                stmt.setString(3, address.getCity());
-                stmt.setString(4, address.getPostalCode());
+            for (Category category : entities) {
+                stmt.setString(1, category.getName());
+                stmt.setString(2, category.getDescription());
                 stmt.executeUpdate();
+
             }
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
@@ -69,10 +68,10 @@ public class AddressRepository extends AbstractRepository<Address> {
     }
 
     @Override
-    public Long findNextId() throws RepositoryAccessException {
+    public Long findNextId() {
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             Statement stmt = connection.createStatement();
-            ResultSet resultSet = stmt.executeQuery("SELECT MAX(ID) FROM ADDRESS;");
+            ResultSet resultSet = stmt.executeQuery("SELECT MAX(ID) FROM CATEGORY;");
 
             if (resultSet.next()) {
                 return resultSet.getLong(1) + 1;
@@ -83,4 +82,6 @@ public class AddressRepository extends AbstractRepository<Address> {
             throw new RepositoryAccessException(e);
         }
     }
+
+
 }

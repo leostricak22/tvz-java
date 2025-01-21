@@ -1,29 +1,29 @@
 package hr.java.restaurant.repository;
 
-import hr.java.restaurant.exception.EmptyRepositoryResultException;
 import hr.java.restaurant.exception.RepositoryAccessException;
-import hr.java.restaurant.model.Category;
+import hr.java.restaurant.model.Chef;
 import hr.java.restaurant.util.DatabaseUtil;
+import hr.java.restaurant.util.ObjectMapper;
 
 import java.io.IOException;
 import java.sql.*;
 import java.util.HashSet;
 import java.util.Set;
 
-public class CategoryDatabaseRepository extends AbstractRepository<Category> {
+public class ChefRepository extends AbstractRepository<Chef> {
 
     @Override
-    public Category findById(Long id) {
+    public Chef findById(Long id) throws RepositoryAccessException {
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             PreparedStatement stmt = connection.prepareStatement(
-                    "SELECT * FROM CATEGORY WHERE ID = ?;");
+                    "SELECT * FROM CHEF WHERE ID = ?;");
             stmt.setLong(1, id);
             ResultSet resultSet = stmt.executeQuery();
 
             if (resultSet.next()) {
-                return mapResultSetToCategory(resultSet);
+                return ObjectMapper.mapResultSetToChef(resultSet);
             } else {
-                throw new EmptyRepositoryResultException("Category with id " + id + " not found");
+                throw new RepositoryAccessException("Chef with id " + id + " not found");
             }
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
@@ -31,35 +31,36 @@ public class CategoryDatabaseRepository extends AbstractRepository<Category> {
     }
 
     @Override
-    public Set<Category> findAll() throws RepositoryAccessException {
-        Set<Category> categories = new HashSet<>();
+    public Set<Chef> findAll() throws RepositoryAccessException {
+        Set<Chef> chefs = new HashSet<>();
 
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             Statement stmt = connection.createStatement();
-            ResultSet resultSet = stmt.executeQuery("SELECT * FROM CATEGORY;");
+            ResultSet resultSet = stmt.executeQuery("SELECT * FROM CHEF;");
 
             while (resultSet.next()) {
-                Category category = mapResultSetToCategory(resultSet);
-                categories.add(category);
+                Chef chef = ObjectMapper.mapResultSetToChef(resultSet);
+                chefs.add(chef);
             }
 
-            return categories;
+            return chefs;
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
         }
     }
 
     @Override
-    public void save(Set<Category> entities) {
+    public void save(Set<Chef> entities) throws RepositoryAccessException {
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             PreparedStatement stmt = connection.prepareStatement(
-                    "INSERT INTO CATEGORY (NAME, DESCRIPTION) VALUES (?, ?);");
+                    "INSERT INTO CHEF (FIRST_NAME, LAST_NAME, CONTRACT_ID, BONUS) VALUES (?, ?, ?, ?);");
 
-            for (Category category : entities) {
-                stmt.setString(1, category.getName());
-                stmt.setString(2, category.getDescription());
+            for (Chef chef : entities) {
+                stmt.setString(1, chef.getFirstName());
+                stmt.setString(2, chef.getLastName());
+                stmt.setLong(3, chef.getContract().getId());
+                stmt.setBigDecimal(4, chef.getBonus().amount());
                 stmt.executeUpdate();
-
             }
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
@@ -67,10 +68,10 @@ public class CategoryDatabaseRepository extends AbstractRepository<Category> {
     }
 
     @Override
-    public Long findNextId() {
+    public Long findNextId() throws RepositoryAccessException {
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             Statement stmt = connection.createStatement();
-            ResultSet resultSet = stmt.executeQuery("SELECT MAX(ID) FROM CATEGORY;");
+            ResultSet resultSet = stmt.executeQuery("SELECT MAX(ID) FROM CHEF;");
 
             if (resultSet.next()) {
                 return resultSet.getLong(1) + 1;
@@ -80,15 +81,5 @@ public class CategoryDatabaseRepository extends AbstractRepository<Category> {
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
         }
-    }
-
-    private static Category mapResultSetToCategory(ResultSet resultSet) throws SQLException {
-        Long id = resultSet.getLong("ID");
-        String name = resultSet.getString("NAME");
-        String description = resultSet.getString("DESCRIPTION");
-
-        return new Category.Builder(id, name)
-                .setDescription(description)
-                .build();
     }
 }

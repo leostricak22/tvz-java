@@ -2,14 +2,14 @@ package hr.java.restaurant.util;
 
 import hr.java.restaurant.enumeration.MealTypeEnum;
 import hr.java.restaurant.model.*;
-import hr.java.restaurant.repository.MealDatabaseRepository;
+import hr.java.restaurant.repository.MealRepository;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
 public class MealInputUtil {
-    private static final MealDatabaseRepository mealRepository = new MealDatabaseRepository();
+    private static final MealRepository mealRepository = new MealRepository();
 
     public static Meal createMeal(MealTypeEnum mealType, String name,
                                   Category category, BigDecimal price,

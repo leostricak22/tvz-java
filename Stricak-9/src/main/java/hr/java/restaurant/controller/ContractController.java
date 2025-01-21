@@ -2,7 +2,7 @@ package hr.java.restaurant.controller;
 
 import hr.java.restaurant.enumeration.ContractType;
 import hr.java.restaurant.model.Contract;
-import hr.java.restaurant.repository.ContractDatabaseRepository;
+import hr.java.restaurant.repository.ContractRepository;
 import hr.java.restaurant.util.ComboBoxUtil;
 import hr.java.restaurant.util.Localization;
 import javafx.beans.property.SimpleStringProperty;
@@ -39,7 +39,7 @@ public class ContractController implements SearchController {
     @FXML private TableColumn<Contract, String> contractTypeColumn;
     @FXML private TableColumn<Contract, String> activeColumn;
 
-    private final ContractDatabaseRepository contractRepository = new ContractDatabaseRepository();
+    private final ContractRepository contractRepository = new ContractRepository();
 
     @Override
     public void initialize() {

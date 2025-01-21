@@ -1,11 +1,9 @@
 package hr.java.restaurant.util;
 
 import hr.java.restaurant.model.*;
-import hr.java.restaurant.repository.IngredientDatabaseRepository;
-import hr.java.restaurant.repository.MealDatabaseRepository;
-import hr.java.restaurant.repository.RestaurantDatabaseRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import hr.java.restaurant.repository.IngredientRepository;
+import hr.java.restaurant.repository.MealRepository;
+import hr.java.restaurant.repository.RestaurantRepository;
 
 import java.util.*;
 
@@ -14,9 +12,9 @@ import java.util.*;
  */
 public class EntityFinder {
 
-    private static final IngredientDatabaseRepository ingredientRepository = new IngredientDatabaseRepository();
-    private static final MealDatabaseRepository mealRepository = new MealDatabaseRepository();
-    private static final RestaurantDatabaseRepository restaurantRepository = new RestaurantDatabaseRepository();
+    private static final IngredientRepository ingredientRepository = new IngredientRepository();
+    private static final MealRepository mealRepository = new MealRepository();
+    private static final RestaurantRepository restaurantRepository = new RestaurantRepository();
 
     public static Set<Ingredient> ingredientsByIdentifiers(String ingredientsIdentifiers) {
         Set<Ingredient> ingredientsList = new HashSet<>();

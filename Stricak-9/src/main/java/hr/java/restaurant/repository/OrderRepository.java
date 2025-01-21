@@ -1,24 +1,16 @@
 package hr.java.restaurant.repository;
 
 import hr.java.restaurant.exception.RepositoryAccessException;
-import hr.java.restaurant.model.Deliverer;
-import hr.java.restaurant.model.Meal;
-import hr.java.restaurant.model.Order;
-import hr.java.restaurant.model.Restaurant;
+import hr.java.restaurant.model.*;
 import hr.java.restaurant.util.DatabaseUtil;
+import hr.java.restaurant.util.ObjectMapper;
 
 import java.io.IOException;
 import java.sql.*;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
-public class OrderDatabaseRepository extends AbstractRepository<Order> {
-
-    private final RestaurantDatabaseRepository restaurantRepository = new RestaurantDatabaseRepository();
-    private final MealDatabaseRepository mealRepository = new MealDatabaseRepository();
-    private final DelivererDatabaseRepository delivererRepository = new DelivererDatabaseRepository();
+public class OrderRepository extends AbstractRepository<Order> {
 
     @Override
     public Order findById(Long id) throws RepositoryAccessException {
@@ -28,7 +20,7 @@ public class OrderDatabaseRepository extends AbstractRepository<Order> {
             ResultSet resultSet = stmt.executeQuery();
 
             if (resultSet.next()) {
-                return mapResultSetToOrder(resultSet);
+                return ObjectMapper.mapResultSetToOrder(resultSet);
             } else {
                 throw new RepositoryAccessException("Order with id " + id + " not found");
             }
@@ -46,7 +38,7 @@ public class OrderDatabaseRepository extends AbstractRepository<Order> {
             ResultSet resultSet = stmt.executeQuery("SELECT * FROM RESTAURANT_ORDER;");
 
             while (resultSet.next()) {
-                Order order = mapResultSetToOrder(resultSet);
+                Order order = ObjectMapper.mapResultSetToOrder(resultSet);
                 meals.add(order);
             }
 
@@ -73,7 +65,7 @@ public class OrderDatabaseRepository extends AbstractRepository<Order> {
                     order.setId(generatedKeys.getLong(1));
                 }
 
-                saveMealsForOrder(order);
+                OrderMealsRepository.saveMealsForOrder(order);
             }
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
@@ -94,56 +86,5 @@ public class OrderDatabaseRepository extends AbstractRepository<Order> {
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
         }
-    }
-
-    private void saveMealsForOrder(Order order) {
-        try (Connection connection = DatabaseUtil.connectToDatabase()) {
-            PreparedStatement stmt = connection.prepareStatement("""
-                INSERT INTO RESTAURANT_ORDER_MEAL (RESTAURANT_ORDER_ID, MEAL_ID) VALUES (?, ?);
-                """);
-
-            for (Meal meal : order.getMeals()) {
-                stmt.setLong(1, order.getId());
-                stmt.setLong(2, meal.getId());
-                stmt.executeUpdate();
-            }
-        } catch (IOException | SQLException e) {
-            throw new RepositoryAccessException(e);
-        }
-    }
-
-    private Set<Meal> getMealsForOrder(Long orderId) {
-        Set<Meal> meals = new HashSet<>();
-
-        try (Connection connection = DatabaseUtil.connectToDatabase()) {
-            PreparedStatement stmt = connection.prepareStatement("""
-                SELECT m.*
-                FROM RESTAURANT_ORDER_MEAL rom
-                JOIN MEAL m ON rom.MEAL_ID = m.ID
-                WHERE rom.RESTAURANT_ORDER_ID = ?;
-                """);
-
-            stmt.setLong(1, orderId);
-            ResultSet resultSet = stmt.executeQuery();
-
-            while (resultSet.next()) {
-                Meal meal = mealRepository.mapResultSetToMeal(resultSet);
-                meals.add(meal);
-            }
-
-            return meals;
-        } catch (IOException | SQLException e) {
-            throw new RepositoryAccessException(e);
-        }
-    }
-
-    private Order mapResultSetToOrder(ResultSet resultSet) throws SQLException {
-        Long id = resultSet.getLong("ID");
-        Restaurant restaurant = restaurantRepository.findById(resultSet.getLong("RESTAURANT_ID"));
-        Set<Meal> meals = getMealsForOrder(id);
-        Deliverer deliverer = delivererRepository.findById(resultSet.getLong("DELIVERER_ID"));
-        LocalDateTime deliveryDateAndTime = resultSet.getTimestamp("DATE_AND_TIME").toLocalDateTime();
-
-        return new Order(id, restaurant, new ArrayList<>(meals), deliverer, deliveryDateAndTime);
     }
 }

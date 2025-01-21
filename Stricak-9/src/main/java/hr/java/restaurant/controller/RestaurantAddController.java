@@ -31,11 +31,11 @@ public class RestaurantAddController implements AddController {
     @FXML private Label delivererNameArrayLabel;
 
     private final AddressRepository addressRepository = new AddressRepository();
-    private static final RestaurantDatabaseRepository restaurantRepository = new RestaurantDatabaseRepository();
-    private final MealDatabaseRepository mealRepository = new MealDatabaseRepository();
-    private final ChefDatabaseRepository chefRepository = new ChefDatabaseRepository();
-    private final WaiterDatabaseRepository waiterRepository = new WaiterDatabaseRepository();
-    private final DelivererDatabaseRepository delivererRepository = new DelivererDatabaseRepository();
+    private static final RestaurantRepository restaurantRepository = new RestaurantRepository();
+    private final MealRepository mealRepository = new MealRepository();
+    private final ChefRepository chefRepository = new ChefRepository();
+    private final WaiterRepository waiterRepository = new WaiterRepository();
+    private final DelivererRepository delivererRepository = new DelivererRepository();
 
     private Set<Meal> selectedMeals = new HashSet<>();
     private Set<Chef> selectedChefs = new HashSet<>();

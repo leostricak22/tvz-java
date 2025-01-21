@@ -1,7 +1,7 @@
 package hr.java.restaurant.controller;
 
 import hr.java.restaurant.model.Category;
-import hr.java.restaurant.repository.CategoryDatabaseRepository;
+import hr.java.restaurant.repository.CategoryRepository;
 import hr.java.restaurant.util.AlertDialog;
 import hr.java.restaurant.util.SceneLoader;
 import hr.java.restaurant.util.Validation;
@@ -17,7 +17,7 @@ public class CategoryAddController implements AddController {
     @FXML private TextField nameTextField;
     @FXML private TextField descriptionTextField;
 
-    private final CategoryDatabaseRepository categoryRepository = new CategoryDatabaseRepository();
+    private final CategoryRepository categoryRepository = new CategoryRepository();
     private static final Logger logger = LoggerFactory.getLogger(CategoryAddController.class);
 
     @Override

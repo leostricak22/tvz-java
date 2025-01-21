@@ -1,10 +1,9 @@
 package hr.java.restaurant.controller;
 
-import hr.java.restaurant.enumeration.ContractType;
 import hr.java.restaurant.model.Bonus;
 import hr.java.restaurant.model.Contract;
 import hr.java.restaurant.model.Person;
-import hr.java.restaurant.repository.ContractDatabaseRepository;
+import hr.java.restaurant.repository.ContractRepository;
 import hr.java.restaurant.util.AlertDialog;
 import hr.java.restaurant.util.ComboBoxUtil;
 import hr.java.restaurant.util.Validation;
@@ -17,7 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
 import static java.util.Objects.isNull;
 
@@ -31,7 +29,7 @@ public abstract class PersonAddController<T extends Person> implements AddContro
 
     private String title;
     private static final Logger logger = LoggerFactory.getLogger(PersonAddController.class);
-    private final ContractDatabaseRepository contractRepository = new ContractDatabaseRepository();
+    private final ContractRepository contractRepository = new ContractRepository();
 
     abstract T addPerson(String firstName, String lastName, Contract contract, Bonus bonus);
     abstract void savePerson(T person);

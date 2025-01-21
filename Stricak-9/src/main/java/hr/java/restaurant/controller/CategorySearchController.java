@@ -1,7 +1,7 @@
 package hr.java.restaurant.controller;
 
 import hr.java.restaurant.model.Category;
-import hr.java.restaurant.repository.CategoryDatabaseRepository;
+import hr.java.restaurant.repository.CategoryRepository;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -17,7 +17,7 @@ import java.util.List;
 
 public class CategorySearchController implements SearchController {
 
-    private static final CategoryDatabaseRepository categoryRepository = new CategoryDatabaseRepository();
+    private static final CategoryRepository categoryRepository = new CategoryRepository();
 
     @FXML
     private TextField categoryIdTextField;

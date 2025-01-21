@@ -2,9 +2,9 @@ package hr.java.restaurant.controller;
 
 import hr.java.restaurant.enumeration.MealTypeEnum;
 import hr.java.restaurant.model.*;
-import hr.java.restaurant.repository.CategoryDatabaseRepository;
-import hr.java.restaurant.repository.IngredientDatabaseRepository;
-import hr.java.restaurant.repository.MealDatabaseRepository;
+import hr.java.restaurant.repository.CategoryRepository;
+import hr.java.restaurant.repository.IngredientRepository;
+import hr.java.restaurant.repository.MealRepository;
 import hr.java.restaurant.util.*;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -34,9 +34,9 @@ public class MealAddController implements AddController {
     @FXML private CheckBox additionalAttribute2CheckBox;
     @FXML private TextField additionalAttribute3TextField;
 
-    private final IngredientDatabaseRepository ingredientRepository = new IngredientDatabaseRepository();
-    private final CategoryDatabaseRepository categoryRepository = new CategoryDatabaseRepository();
-    private final MealDatabaseRepository mealRepository = new MealDatabaseRepository();
+    private final IngredientRepository ingredientRepository = new IngredientRepository();
+    private final CategoryRepository categoryRepository = new CategoryRepository();
+    private final MealRepository mealRepository = new MealRepository();
 
     private Set<Ingredient> selectedIngredients = new HashSet<>();
 

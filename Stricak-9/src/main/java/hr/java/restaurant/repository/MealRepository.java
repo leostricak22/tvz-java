@@ -2,21 +2,16 @@ package hr.java.restaurant.repository;
 
 import hr.java.restaurant.exception.EmptyRepositoryResultException;
 import hr.java.restaurant.exception.RepositoryAccessException;
-import hr.java.restaurant.model.Category;
-import hr.java.restaurant.model.Ingredient;
 import hr.java.restaurant.model.Meal;
 import hr.java.restaurant.util.DatabaseUtil;
+import hr.java.restaurant.util.ObjectMapper;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.sql.*;
 import java.util.HashSet;
 import java.util.Set;
 
-public class MealDatabaseRepository extends AbstractRepository<Meal> {
-
-    private final CategoryDatabaseRepository categoryRepository = new CategoryDatabaseRepository();
-    private final IngredientDatabaseRepository ingredientRepository = new IngredientDatabaseRepository();
+public class MealRepository extends AbstractRepository<Meal> {
 
     @Override
     public Meal findById(Long id) throws RepositoryAccessException {
@@ -26,7 +21,7 @@ public class MealDatabaseRepository extends AbstractRepository<Meal> {
             ResultSet resultSet = stmt.executeQuery();
 
             if (resultSet.next()) {
-                return mapResultSetToMeal(resultSet);
+                return ObjectMapper.mapResultSetToMeal(resultSet);
             } else {
                 throw new EmptyRepositoryResultException("Meal with id " + id + " not found");
             }
@@ -44,7 +39,7 @@ public class MealDatabaseRepository extends AbstractRepository<Meal> {
             ResultSet resultSet = stmt.executeQuery("SELECT * FROM MEAL;");
 
             while (resultSet.next()) {
-                Meal meal = mapResultSetToMeal(resultSet);
+                Meal meal = ObjectMapper.mapResultSetToMeal(resultSet);
                 meals.add(meal);
             }
 
@@ -72,7 +67,7 @@ public class MealDatabaseRepository extends AbstractRepository<Meal> {
                     meal.setId(generatedKeys.getLong(1));
                 }
 
-                saveIngredientsForMeal(meal);
+                MealIngredientsRepository.saveIngredientsForMeal(meal);
             }
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
@@ -93,60 +88,5 @@ public class MealDatabaseRepository extends AbstractRepository<Meal> {
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
         }
-    }
-
-    private Set<Ingredient> getIngredientsForMeal(Long mealId) {
-        Set<Ingredient> ingredients = new HashSet<>();
-
-        try (Connection connection = DatabaseUtil.connectToDatabase()) {
-            PreparedStatement stmt = connection.prepareStatement("""
-                SELECT i.ID, i.NAME, i.CATEGORY_ID, i.KCAL, i.PREPARATION_METHOD
-                FROM MEAL_INGREDIENT mi
-                JOIN INGREDIENT i ON mi.INGREDIENT_ID = i.ID
-                WHERE mi.MEAL_ID = ?;
-                """);
-
-            stmt.setLong(1, mealId);
-            ResultSet resultSet = stmt.executeQuery();
-
-            while (resultSet.next()) {
-                Ingredient ingredient = ingredientRepository.mapResultSetToIngredient(resultSet);
-                ingredients.add(ingredient);
-            }
-
-            return ingredients;
-        } catch (IOException | SQLException e) {
-            throw new RepositoryAccessException(e);
-        }
-    }
-
-    private void saveIngredientsForMeal(Meal meal) {
-        try (Connection connection = DatabaseUtil.connectToDatabase()) {
-            PreparedStatement stmt = connection.prepareStatement("""
-                INSERT INTO MEAL_INGREDIENT (MEAL_ID, INGREDIENT_ID) VALUES (?, ?);
-                """);
-
-            for (Ingredient ingredient : meal.getIngredients()) {
-                stmt.setLong(1, meal.getId());
-                stmt.setLong(2, ingredient.getId());
-                stmt.executeUpdate();
-            }
-        } catch (IOException | SQLException e) {
-            throw new RepositoryAccessException(e);
-        }
-    }
-
-    public Meal mapResultSetToMeal(ResultSet resultSet) throws SQLException, IOException {
-        Long id = resultSet.getLong("ID");
-        String name = resultSet.getString("NAME");
-        Category category = categoryRepository.findById(resultSet.getLong("CATEGORY_ID"));
-        BigDecimal price = resultSet.getBigDecimal("PRICE");
-        Set<Ingredient> ingredients = getIngredientsForMeal(id);
-
-        return new Meal.Builder(id, name)
-                .setCategory(category)
-                .setPrice(price)
-                .setIngredients(ingredients)
-                .build();
     }
 }

@@ -2,8 +2,8 @@ package hr.java.restaurant.controller;
 
 import hr.java.restaurant.model.Category;
 import hr.java.restaurant.model.Ingredient;
-import hr.java.restaurant.repository.CategoryDatabaseRepository;
-import hr.java.restaurant.repository.IngredientDatabaseRepository;
+import hr.java.restaurant.repository.CategoryRepository;
+import hr.java.restaurant.repository.IngredientRepository;
 import hr.java.restaurant.util.AlertDialog;
 import hr.java.restaurant.util.ComboBoxUtil;
 import hr.java.restaurant.util.SceneLoader;
@@ -27,8 +27,8 @@ public class IngredientAddController implements AddController {
     @FXML private TextField preparationMethodTextField;
     @FXML private ComboBox<Category> categoryComboBox;
 
-    private final IngredientDatabaseRepository ingredientRepository = new IngredientDatabaseRepository();
-    private final CategoryDatabaseRepository categoryRepository = new CategoryDatabaseRepository();
+    private final IngredientRepository ingredientRepository = new IngredientRepository();
+    private final CategoryRepository categoryRepository = new CategoryRepository();
     private static final Logger logger = LoggerFactory.getLogger(IngredientAddController.class);
 
     @Override

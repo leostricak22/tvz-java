@@ -56,10 +56,10 @@ public class OrderSearchController implements SearchController {
     @FXML
     private Label removeFilterLabel;
 
-    private static final OrderDatabaseRepository orderRepository = new OrderDatabaseRepository();
-    private static final RestaurantDatabaseRepository restaurantRepository = new RestaurantDatabaseRepository();
-    private static final MealDatabaseRepository mealRepository = new MealDatabaseRepository();
-    private final DelivererDatabaseRepository delivererRepository = new DelivererDatabaseRepository();
+    private static final OrderRepository orderRepository = new OrderRepository();
+    private static final RestaurantRepository restaurantRepository = new RestaurantRepository();
+    private static final MealRepository mealRepository = new MealRepository();
+    private final DelivererRepository delivererRepository = new DelivererRepository();
 
     public void setRestaurantNameParameter(String restaurantNameParameter) {
         orderRestaurantComboBox.setValue(restaurantRepository.findByName(restaurantNameParameter));

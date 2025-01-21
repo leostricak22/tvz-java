@@ -2,19 +2,18 @@ package hr.java.restaurant.repository;
 
 import hr.java.restaurant.enumeration.ContractType;
 import hr.java.restaurant.exception.RepositoryAccessException;
-import hr.java.restaurant.model.Category;
 import hr.java.restaurant.model.Contract;
 import hr.java.restaurant.util.DatabaseUtil;
+import hr.java.restaurant.util.ObjectMapper;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ContractDatabaseRepository extends AbstractRepository<Contract> {
+public class ContractRepository extends AbstractRepository<Contract> {
+
     @Override
     public Contract findById(Long id) throws RepositoryAccessException {
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
@@ -24,7 +23,7 @@ public class ContractDatabaseRepository extends AbstractRepository<Contract> {
             ResultSet resultSet = stmt.executeQuery();
 
             if (resultSet.next()) {
-                return mapResultSetToContract(resultSet);
+                return ObjectMapper.mapResultSetToContract(resultSet);
             } else {
                 throw new RepositoryAccessException("Contract with id " + id + " not found");
             }
@@ -42,7 +41,7 @@ public class ContractDatabaseRepository extends AbstractRepository<Contract> {
             ResultSet resultSet = stmt.executeQuery("SELECT * FROM CONTRACT;");
 
             while (resultSet.next()) {
-                Contract contract = mapResultSetToContract(resultSet);
+                Contract contract = ObjectMapper.mapResultSetToContract(resultSet);
                 contracts.add(contract);
             }
 
@@ -85,18 +84,5 @@ public class ContractDatabaseRepository extends AbstractRepository<Contract> {
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
         }
-    }
-
-    private Contract mapResultSetToContract(ResultSet resultSet) throws SQLException {
-        return new Contract(
-                resultSet.getLong("ID"),
-                "Contract-"+resultSet.getLong("ID"),
-                resultSet.getBigDecimal("SALARY"),
-                resultSet.getDate("START_DATE").toLocalDate(),
-                resultSet.getDate("END_DATE") == null ?
-                        null :
-                        resultSet.getDate("END_DATE").toLocalDate(),
-                ContractType.valueOf(resultSet.getString("TYPE"))
-        );
     }
 }

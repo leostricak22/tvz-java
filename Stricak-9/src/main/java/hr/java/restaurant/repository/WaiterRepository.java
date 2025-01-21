@@ -3,17 +3,15 @@ package hr.java.restaurant.repository;
 import hr.java.restaurant.exception.RepositoryAccessException;
 import hr.java.restaurant.model.Bonus;
 import hr.java.restaurant.model.Waiter;
-import hr.java.restaurant.model.Waiter;
 import hr.java.restaurant.util.DatabaseUtil;
+import hr.java.restaurant.util.ObjectMapper;
 
 import java.io.IOException;
 import java.sql.*;
 import java.util.HashSet;
 import java.util.Set;
 
-public class WaiterDatabaseRepository extends AbstractRepository<Waiter> {
-
-    private final ContractDatabaseRepository contractRepository = new ContractDatabaseRepository();
+public class WaiterRepository extends AbstractRepository<Waiter> {
 
     @Override
     public Waiter findById(Long id) throws RepositoryAccessException {
@@ -24,7 +22,7 @@ public class WaiterDatabaseRepository extends AbstractRepository<Waiter> {
             ResultSet resultSet = stmt.executeQuery();
 
             if (resultSet.next()) {
-                return mapResultSetToWaiter(resultSet);
+                return ObjectMapper.mapResultSetToWaiter(resultSet);
             } else {
                 throw new RepositoryAccessException("Waiter with id " + id + " not found");
             }
@@ -42,7 +40,7 @@ public class WaiterDatabaseRepository extends AbstractRepository<Waiter> {
             ResultSet resultSet = stmt.executeQuery("SELECT * FROM WAITER;");
 
             while (resultSet.next()) {
-                Waiter waiter = mapResultSetToWaiter(resultSet);
+                Waiter waiter = ObjectMapper.mapResultSetToWaiter(resultSet);
                 waiters.add(waiter);
             }
 
@@ -84,14 +82,5 @@ public class WaiterDatabaseRepository extends AbstractRepository<Waiter> {
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
         }
-    }
-
-    public Waiter mapResultSetToWaiter(ResultSet resultSet) throws SQLException {
-        return new Waiter.Builder(resultSet.getLong("ID"))
-                .setFirstName(resultSet.getString("FIRST_NAME"))
-                .setLastName(resultSet.getString("LAST_NAME"))
-                .setContract(contractRepository.findById(resultSet.getLong("CONTRACT_ID")))
-                .setBonus(new Bonus(resultSet.getBigDecimal("BONUS")))
-                .build();
     }
 }
