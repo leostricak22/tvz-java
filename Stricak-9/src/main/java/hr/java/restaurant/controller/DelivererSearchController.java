@@ -1,9 +1,7 @@
 package hr.java.restaurant.controller;
 
 import hr.java.restaurant.model.Deliverer;
-import hr.java.restaurant.model.Waiter;
 import hr.java.restaurant.repository.DelivererRepository;
-import hr.java.restaurant.repository.WaiterRepository;
 
 import java.util.ArrayList;
 import java.util.List;

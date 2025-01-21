@@ -2,13 +2,14 @@ package hr.java.restaurant.controller;
 
 import hr.java.restaurant.model.Chef;
 import hr.java.restaurant.model.Waiter;
-import hr.java.restaurant.repository.WaiterRepository;
+import hr.java.restaurant.repository.WaiterDatabaseRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class WaiterSearchController extends PersonSearchController<Waiter> {
-    private final static WaiterRepository<Waiter> waiterRepository = new WaiterRepository<>();
+
+    private final WaiterDatabaseRepository waiterRepository = new WaiterDatabaseRepository();
 
     @Override
     protected List<Waiter> fetchAllPeople() {

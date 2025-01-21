@@ -3,12 +3,12 @@ package hr.java.restaurant.controller;
 import hr.java.restaurant.model.Bonus;
 import hr.java.restaurant.model.Contract;
 import hr.java.restaurant.model.Waiter;
-import hr.java.restaurant.repository.WaiterRepository;
+import hr.java.restaurant.repository.WaiterDatabaseRepository;
 import hr.java.restaurant.util.SceneLoader;
 
 public class WaiterAddController extends PersonAddController<Waiter> {
 
-    private final WaiterRepository<Waiter> waiterRepository = new WaiterRepository<>();
+    private final WaiterDatabaseRepository waiterRepository = new WaiterDatabaseRepository();
 
     @Override
     Waiter addPerson(String firstName, String lastName, Contract contract, Bonus bonus) {

@@ -16,7 +16,7 @@ public class RestaurantRepository<T extends Restaurant> extends AbstractReposito
     public final static String FILE_PATH = "dat/restaurants.txt";
 
     private final ChefDatabaseRepository chefRepository = new ChefDatabaseRepository();
-    private final WaiterRepository<Waiter> waiterRepository = new WaiterRepository<>();
+    private final WaiterDatabaseRepository waiterRepository = new WaiterDatabaseRepository();
     private final DelivererRepository<Deliverer> delivererRepository = new DelivererRepository<>();
     private final AddressDatabaseRepository addressRepository = new AddressDatabaseRepository();
 

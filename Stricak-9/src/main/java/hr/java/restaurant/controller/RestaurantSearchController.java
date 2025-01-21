@@ -95,7 +95,7 @@ public class RestaurantSearchController implements SearchController {
     private final RestaurantRepository<Restaurant> restaurantRepository = new RestaurantRepository<>();
     private final MealDatabaseRepository mealRepository = new MealDatabaseRepository();
     private final ChefDatabaseRepository chefRepository = new ChefDatabaseRepository();
-    private final WaiterRepository<Waiter> waiterRepository = new WaiterRepository<>();
+    private final WaiterDatabaseRepository waiterRepository = new WaiterDatabaseRepository();
     private final DelivererRepository<Deliverer> delivererRepository = new DelivererRepository<>();
 
     @Override
