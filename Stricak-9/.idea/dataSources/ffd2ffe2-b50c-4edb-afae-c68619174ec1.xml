@@ -169,7 +169,7 @@
     <schema id="162" parent="2" name="INFORMATION_SCHEMA"/>
     <schema id="163" parent="2" name="PUBLIC">
       <Current>1</Current>
-      <LastIntrospectionLocalTimestamp>2025-01-20.21:26:52</LastIntrospectionLocalTimestamp>
+      <LastIntrospectionLocalTimestamp>2025-01-21.00:32:19</LastIntrospectionLocalTimestamp>
     </schema>
     <user id="164" parent="2" name="STUDENT">
       <Admin>1</Admin>
@@ -280,17 +280,39 @@
       <Position>3</Position>
       <StoredType>CHARACTER VARYING(30)|0s</StoredType>
     </column>
-    <index id="196" parent="167" name="PRIMARY_KEY_1F">
+    <column id="196" parent="167" name="BONUS">
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+      <StoredType>NUMERIC(6,2)|0s</StoredType>
+    </column>
+    <column id="197" parent="167" name="CONTRACT_ID">
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+      <StoredType>BIGINT|0s</StoredType>
+    </column>
+    <foreign-key id="198" parent="167" name="CONSTRAINT_1F8">
+      <ColNames>CONTRACT_ID</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <OnDelete>restrict</OnDelete>
+      <OnUpdate>restrict</OnUpdate>
+      <RefKeyName>CONSTRAINT_C</RefKeyName>
+      <RefTableName>CONTRACT</RefTableName>
+    </foreign-key>
+    <index id="199" parent="167" name="PRIMARY_KEY_1F">
       <ColNames>ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <key id="197" parent="167" name="CONSTRAINT_1F">
+    <index id="200" parent="167" name="CONSTRAINT_INDEX_1F">
+      <ColNames>CONTRACT_ID</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+    </index>
+    <key id="201" parent="167" name="CONSTRAINT_1F">
       <ColNames>ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
     </key>
-    <column id="198" parent="168" name="ID">
+    <column id="202" parent="168" name="ID">
       <ColumnKind>generated-virtual</ColumnKind>
       <NotNull>1</NotNull>
       <Position>1</Position>
@@ -300,41 +322,41 @@
       <SequenceStartValue>1</SequenceStartValue>
       <SequenceStoredType>BIGINT|0s</SequenceStoredType>
     </column>
-    <column id="199" parent="168" name="SALARY">
+    <column id="203" parent="168" name="SALARY">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>NUMERIC(6,2)|0s</StoredType>
     </column>
-    <column id="200" parent="168" name="BONUS">
+    <column id="204" parent="168" name="BONUS">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>NUMERIC(6,2)|0s</StoredType>
     </column>
-    <column id="201" parent="168" name="START_DATE">
+    <column id="205" parent="168" name="START_DATE">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>DATE|0s</StoredType>
     </column>
-    <column id="202" parent="168" name="END_DATE">
+    <column id="206" parent="168" name="END_DATE">
       <Position>5</Position>
       <StoredType>DATE|0s</StoredType>
     </column>
-    <column id="203" parent="168" name="TYPE">
+    <column id="207" parent="168" name="TYPE">
       <NotNull>1</NotNull>
       <Position>6</Position>
       <StoredType>CHARACTER VARYING(10)|0s</StoredType>
     </column>
-    <index id="204" parent="168" name="PRIMARY_KEY_C">
+    <index id="208" parent="168" name="PRIMARY_KEY_C">
       <ColNames>ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <key id="205" parent="168" name="CONSTRAINT_C">
+    <key id="209" parent="168" name="CONSTRAINT_C">
       <ColNames>ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
     </key>
-    <column id="206" parent="169" name="ID">
+    <column id="210" parent="169" name="ID">
       <ColumnKind>generated-virtual</ColumnKind>
       <NotNull>1</NotNull>
       <Position>1</Position>
@@ -344,27 +366,49 @@
       <SequenceStartValue>1</SequenceStartValue>
       <SequenceStoredType>BIGINT|0s</SequenceStoredType>
     </column>
-    <column id="207" parent="169" name="FIRST_NAME">
+    <column id="211" parent="169" name="FIRST_NAME">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>CHARACTER VARYING(30)|0s</StoredType>
     </column>
-    <column id="208" parent="169" name="LAST_NAME">
+    <column id="212" parent="169" name="LAST_NAME">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>CHARACTER VARYING(30)|0s</StoredType>
     </column>
-    <index id="209" parent="169" name="PRIMARY_KEY_97">
+    <column id="213" parent="169" name="BONUS">
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+      <StoredType>NUMERIC(6,2)|0s</StoredType>
+    </column>
+    <column id="214" parent="169" name="CONTRACT_ID">
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+      <StoredType>BIGINT|0s</StoredType>
+    </column>
+    <foreign-key id="215" parent="169" name="CONSTRAINT_97A">
+      <ColNames>CONTRACT_ID</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <OnDelete>restrict</OnDelete>
+      <OnUpdate>restrict</OnUpdate>
+      <RefKeyName>CONSTRAINT_C</RefKeyName>
+      <RefTableName>CONTRACT</RefTableName>
+    </foreign-key>
+    <index id="216" parent="169" name="PRIMARY_KEY_97">
       <ColNames>ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <key id="210" parent="169" name="CONSTRAINT_97">
+    <index id="217" parent="169" name="CONSTRAINT_INDEX_97">
+      <ColNames>CONTRACT_ID</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+    </index>
+    <key id="218" parent="169" name="CONSTRAINT_97">
       <ColNames>ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
     </key>
-    <column id="211" parent="170" name="ID">
+    <column id="219" parent="170" name="ID">
       <ColumnKind>generated-virtual</ColumnKind>
       <NotNull>1</NotNull>
       <Position>1</Position>
@@ -374,26 +418,26 @@
       <SequenceStartValue>1</SequenceStartValue>
       <SequenceStoredType>BIGINT|0s</SequenceStoredType>
     </column>
-    <column id="212" parent="170" name="NAME">
+    <column id="220" parent="170" name="NAME">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>CHARACTER VARYING(25)|0s</StoredType>
     </column>
-    <column id="213" parent="170" name="CATEGORY_ID">
+    <column id="221" parent="170" name="CATEGORY_ID">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>BIGINT|0s</StoredType>
     </column>
-    <column id="214" parent="170" name="KCAL">
+    <column id="222" parent="170" name="KCAL">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>NUMERIC(6,2)|0s</StoredType>
     </column>
-    <column id="215" parent="170" name="PREPARATION_METHOD">
+    <column id="223" parent="170" name="PREPARATION_METHOD">
       <Position>5</Position>
       <StoredType>CHARACTER VARYING(255)|0s</StoredType>
     </column>
-    <foreign-key id="216" parent="170" name="CONSTRAINT_10">
+    <foreign-key id="224" parent="170" name="CONSTRAINT_10">
       <ColNames>CATEGORY_ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <OnDelete>restrict</OnDelete>
@@ -401,21 +445,21 @@
       <RefKeyName>CONSTRAINT_3</RefKeyName>
       <RefTableName>CATEGORY</RefTableName>
     </foreign-key>
-    <index id="217" parent="170" name="PRIMARY_KEY_1">
+    <index id="225" parent="170" name="PRIMARY_KEY_1">
       <ColNames>ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <index id="218" parent="170" name="CONSTRAINT_INDEX_1">
+    <index id="226" parent="170" name="CONSTRAINT_INDEX_1">
       <ColNames>CATEGORY_ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
     </index>
-    <key id="219" parent="170" name="CONSTRAINT_1">
+    <key id="227" parent="170" name="CONSTRAINT_1">
       <ColNames>ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
     </key>
-    <column id="220" parent="171" name="ID">
+    <column id="228" parent="171" name="ID">
       <ColumnKind>generated-virtual</ColumnKind>
       <NotNull>1</NotNull>
       <Position>1</Position>
@@ -425,22 +469,22 @@
       <SequenceStartValue>1</SequenceStartValue>
       <SequenceStoredType>BIGINT|0s</SequenceStoredType>
     </column>
-    <column id="221" parent="171" name="NAME">
+    <column id="229" parent="171" name="NAME">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>CHARACTER VARYING(25)|0s</StoredType>
     </column>
-    <column id="222" parent="171" name="CATEGORY_ID">
+    <column id="230" parent="171" name="CATEGORY_ID">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>BIGINT|0s</StoredType>
     </column>
-    <column id="223" parent="171" name="PRICE">
+    <column id="231" parent="171" name="PRICE">
       <NotNull>1</NotNull>
       <Position>4</Position>
       <StoredType>NUMERIC(6,2)|0s</StoredType>
     </column>
-    <foreign-key id="224" parent="171" name="CONSTRAINT_24">
+    <foreign-key id="232" parent="171" name="CONSTRAINT_24">
       <ColNames>CATEGORY_ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <OnDelete>restrict</OnDelete>
@@ -448,21 +492,21 @@
       <RefKeyName>CONSTRAINT_3</RefKeyName>
       <RefTableName>CATEGORY</RefTableName>
     </foreign-key>
-    <index id="225" parent="171" name="PRIMARY_KEY_2">
+    <index id="233" parent="171" name="PRIMARY_KEY_2">
       <ColNames>ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <index id="226" parent="171" name="CONSTRAINT_INDEX_2">
+    <index id="234" parent="171" name="CONSTRAINT_INDEX_2">
       <ColNames>CATEGORY_ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
     </index>
-    <key id="227" parent="171" name="CONSTRAINT_2">
+    <key id="235" parent="171" name="CONSTRAINT_2">
       <ColNames>ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
     </key>
-    <column id="228" parent="172" name="ID">
+    <column id="236" parent="172" name="ID">
       <ColumnKind>generated-virtual</ColumnKind>
       <NotNull>1</NotNull>
       <Position>1</Position>
@@ -472,17 +516,17 @@
       <SequenceStartValue>1</SequenceStartValue>
       <SequenceStoredType>BIGINT|0s</SequenceStoredType>
     </column>
-    <column id="229" parent="172" name="MEAL_ID">
+    <column id="237" parent="172" name="MEAL_ID">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>BIGINT|0s</StoredType>
     </column>
-    <column id="230" parent="172" name="INGREDIENT_ID">
+    <column id="238" parent="172" name="INGREDIENT_ID">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>BIGINT|0s</StoredType>
     </column>
-    <foreign-key id="231" parent="172" name="CONSTRAINT_114">
+    <foreign-key id="239" parent="172" name="CONSTRAINT_114">
       <ColNames>MEAL_ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <OnDelete>restrict</OnDelete>
@@ -490,7 +534,7 @@
       <RefKeyName>CONSTRAINT_2</RefKeyName>
       <RefTableName>MEAL</RefTableName>
     </foreign-key>
-    <foreign-key id="232" parent="172" name="CONSTRAINT_1142">
+    <foreign-key id="240" parent="172" name="CONSTRAINT_1142">
       <ColNames>INGREDIENT_ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <OnDelete>restrict</OnDelete>
@@ -498,25 +542,25 @@
       <RefKeyName>CONSTRAINT_1</RefKeyName>
       <RefTableName>INGREDIENT</RefTableName>
     </foreign-key>
-    <index id="233" parent="172" name="PRIMARY_KEY_11">
+    <index id="241" parent="172" name="PRIMARY_KEY_11">
       <ColNames>ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <index id="234" parent="172" name="CONSTRAINT_INDEX_11">
+    <index id="242" parent="172" name="CONSTRAINT_INDEX_11">
       <ColNames>MEAL_ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
     </index>
-    <index id="235" parent="172" name="CONSTRAINT_INDEX_114">
+    <index id="243" parent="172" name="CONSTRAINT_INDEX_114">
       <ColNames>INGREDIENT_ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
     </index>
-    <key id="236" parent="172" name="CONSTRAINT_11">
+    <key id="244" parent="172" name="CONSTRAINT_11">
       <ColNames>ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
     </key>
-    <column id="237" parent="173" name="ID">
+    <column id="245" parent="173" name="ID">
       <ColumnKind>generated-virtual</ColumnKind>
       <NotNull>1</NotNull>
       <Position>1</Position>
@@ -526,17 +570,17 @@
       <SequenceStartValue>1</SequenceStartValue>
       <SequenceStoredType>BIGINT|0s</SequenceStoredType>
     </column>
-    <column id="238" parent="173" name="NAME">
+    <column id="246" parent="173" name="NAME">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>CHARACTER VARYING(25)|0s</StoredType>
     </column>
-    <column id="239" parent="173" name="ADDRESS_ID">
+    <column id="247" parent="173" name="ADDRESS_ID">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>BIGINT|0s</StoredType>
     </column>
-    <foreign-key id="240" parent="173" name="CONSTRAINT_B3">
+    <foreign-key id="248" parent="173" name="CONSTRAINT_B3">
       <ColNames>ADDRESS_ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <OnDelete>restrict</OnDelete>
@@ -544,21 +588,21 @@
       <RefKeyName>CONSTRAINT_E</RefKeyName>
       <RefTableName>ADDRESS</RefTableName>
     </foreign-key>
-    <index id="241" parent="173" name="PRIMARY_KEY_B">
+    <index id="249" parent="173" name="PRIMARY_KEY_B">
       <ColNames>ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <index id="242" parent="173" name="CONSTRAINT_INDEX_B">
+    <index id="250" parent="173" name="CONSTRAINT_INDEX_B">
       <ColNames>ADDRESS_ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
     </index>
-    <key id="243" parent="173" name="CONSTRAINT_B">
+    <key id="251" parent="173" name="CONSTRAINT_B">
       <ColNames>ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
     </key>
-    <column id="244" parent="174" name="ID">
+    <column id="252" parent="174" name="ID">
       <ColumnKind>generated-virtual</ColumnKind>
       <NotNull>1</NotNull>
       <Position>1</Position>
@@ -568,22 +612,17 @@
       <SequenceStartValue>1</SequenceStartValue>
       <SequenceStoredType>BIGINT|0s</SequenceStoredType>
     </column>
-    <column id="245" parent="174" name="RESTAURANT_ID">
+    <column id="253" parent="174" name="RESTAURANT_ID">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>BIGINT|0s</StoredType>
     </column>
-    <column id="246" parent="174" name="CHEF_ID">
+    <column id="254" parent="174" name="CHEF_ID">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>BIGINT|0s</StoredType>
     </column>
-    <column id="247" parent="174" name="CONTRACT_ID">
-      <NotNull>1</NotNull>
-      <Position>4</Position>
-      <StoredType>BIGINT|0s</StoredType>
-    </column>
-    <foreign-key id="248" parent="174" name="CONSTRAINT_FF380B">
+    <foreign-key id="255" parent="174" name="CONSTRAINT_FF380B">
       <ColNames>RESTAURANT_ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <OnDelete>restrict</OnDelete>
@@ -591,7 +630,7 @@
       <RefKeyName>CONSTRAINT_B</RefKeyName>
       <RefTableName>RESTAURANT</RefTableName>
     </foreign-key>
-    <foreign-key id="249" parent="174" name="CONSTRAINT_FF380">
+    <foreign-key id="256" parent="174" name="CONSTRAINT_FF380">
       <ColNames>CHEF_ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <OnDelete>restrict</OnDelete>
@@ -599,37 +638,25 @@
       <RefKeyName>CONSTRAINT_1F</RefKeyName>
       <RefTableName>CHEF</RefTableName>
     </foreign-key>
-    <foreign-key id="250" parent="174" name="CONSTRAINT_FF380B8">
-      <ColNames>CONTRACT_ID</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-      <OnDelete>restrict</OnDelete>
-      <OnUpdate>restrict</OnUpdate>
-      <RefKeyName>CONSTRAINT_C</RefKeyName>
-      <RefTableName>CONTRACT</RefTableName>
-    </foreign-key>
-    <index id="251" parent="174" name="PRIMARY_KEY_FF">
+    <index id="257" parent="174" name="PRIMARY_KEY_FF">
       <ColNames>ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <index id="252" parent="174" name="CONSTRAINT_INDEX_FF38">
+    <index id="258" parent="174" name="CONSTRAINT_INDEX_FF38">
       <ColNames>RESTAURANT_ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
     </index>
-    <index id="253" parent="174" name="CONSTRAINT_INDEX_FF3">
+    <index id="259" parent="174" name="CONSTRAINT_INDEX_FF3">
       <ColNames>CHEF_ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
     </index>
-    <index id="254" parent="174" name="CONSTRAINT_INDEX_FF380">
-      <ColNames>CONTRACT_ID</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-    </index>
-    <key id="255" parent="174" name="CONSTRAINT_FF38">
+    <key id="260" parent="174" name="CONSTRAINT_FF38">
       <ColNames>ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
     </key>
-    <column id="256" parent="175" name="ID">
+    <column id="261" parent="175" name="ID">
       <ColumnKind>generated-virtual</ColumnKind>
       <NotNull>1</NotNull>
       <Position>1</Position>
@@ -639,22 +666,17 @@
       <SequenceStartValue>1</SequenceStartValue>
       <SequenceStoredType>BIGINT|0s</SequenceStoredType>
     </column>
-    <column id="257" parent="175" name="RESTAURANT_ID">
+    <column id="262" parent="175" name="RESTAURANT_ID">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>BIGINT|0s</StoredType>
     </column>
-    <column id="258" parent="175" name="DELIVERER_ID">
+    <column id="263" parent="175" name="DELIVERER_ID">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>BIGINT|0s</StoredType>
     </column>
-    <column id="259" parent="175" name="CONTRACT_ID">
-      <NotNull>1</NotNull>
-      <Position>4</Position>
-      <StoredType>BIGINT|0s</StoredType>
-    </column>
-    <foreign-key id="260" parent="175" name="CONSTRAINT_4A1">
+    <foreign-key id="264" parent="175" name="CONSTRAINT_4A1">
       <ColNames>RESTAURANT_ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <OnDelete>restrict</OnDelete>
@@ -662,132 +684,7 @@
       <RefKeyName>CONSTRAINT_B</RefKeyName>
       <RefTableName>RESTAURANT</RefTableName>
     </foreign-key>
-    <foreign-key id="261" parent="175" name="CONSTRAINT_4A">
-      <ColNames>DELIVERER_ID</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-      <OnDelete>restrict</OnDelete>
-      <OnUpdate>restrict</OnUpdate>
-      <RefKeyName>CONSTRAINT_1F</RefKeyName>
-      <RefTableName>CHEF</RefTableName>
-    </foreign-key>
-    <foreign-key id="262" parent="175" name="CONSTRAINT_4A11">
-      <ColNames>CONTRACT_ID</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-      <OnDelete>restrict</OnDelete>
-      <OnUpdate>restrict</OnUpdate>
-      <RefKeyName>CONSTRAINT_C</RefKeyName>
-      <RefTableName>CONTRACT</RefTableName>
-    </foreign-key>
-    <index id="263" parent="175" name="PRIMARY_KEY_4">
-      <ColNames>ID</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-      <Unique>1</Unique>
-    </index>
-    <index id="264" parent="175" name="CONSTRAINT_INDEX_4A">
-      <ColNames>RESTAURANT_ID</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-    </index>
-    <index id="265" parent="175" name="CONSTRAINT_INDEX_4">
-      <ColNames>DELIVERER_ID</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-    </index>
-    <index id="266" parent="175" name="CONSTRAINT_INDEX_4A1">
-      <ColNames>CONTRACT_ID</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-    </index>
-    <key id="267" parent="175" name="CONSTRAINT_4">
-      <ColNames>ID</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-      <Primary>1</Primary>
-    </key>
-    <column id="268" parent="176" name="ID">
-      <ColumnKind>generated-virtual</ColumnKind>
-      <NotNull>1</NotNull>
-      <Position>1</Position>
-      <StoredType>BIGINT|0s</StoredType>
-      <SequenceInline>1</SequenceInline>
-      <SequenceSequenceIdentity>1(3)</SequenceSequenceIdentity>
-      <SequenceStartValue>1</SequenceStartValue>
-      <SequenceStoredType>BIGINT|0s</SequenceStoredType>
-    </column>
-    <column id="269" parent="176" name="RESTAURANT_ID">
-      <NotNull>1</NotNull>
-      <Position>2</Position>
-      <StoredType>BIGINT|0s</StoredType>
-    </column>
-    <column id="270" parent="176" name="MEAL_ID">
-      <NotNull>1</NotNull>
-      <Position>3</Position>
-      <StoredType>BIGINT|0s</StoredType>
-    </column>
-    <foreign-key id="271" parent="176" name="CONSTRAINT_FF">
-      <ColNames>RESTAURANT_ID</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-      <OnDelete>restrict</OnDelete>
-      <OnUpdate>restrict</OnUpdate>
-      <RefKeyName>CONSTRAINT_B</RefKeyName>
-      <RefTableName>RESTAURANT</RefTableName>
-    </foreign-key>
-    <foreign-key id="272" parent="176" name="CONSTRAINT_FF3">
-      <ColNames>MEAL_ID</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-      <OnDelete>restrict</OnDelete>
-      <OnUpdate>restrict</OnUpdate>
-      <RefKeyName>CONSTRAINT_2</RefKeyName>
-      <RefTableName>MEAL</RefTableName>
-    </foreign-key>
-    <index id="273" parent="176" name="PRIMARY_KEY_F">
-      <ColNames>ID</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-      <Unique>1</Unique>
-    </index>
-    <index id="274" parent="176" name="CONSTRAINT_INDEX_F">
-      <ColNames>RESTAURANT_ID</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-    </index>
-    <index id="275" parent="176" name="CONSTRAINT_INDEX_FF">
-      <ColNames>MEAL_ID</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-    </index>
-    <key id="276" parent="176" name="CONSTRAINT_F">
-      <ColNames>ID</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-      <Primary>1</Primary>
-    </key>
-    <column id="277" parent="177" name="ID">
-      <ColumnKind>generated-virtual</ColumnKind>
-      <NotNull>1</NotNull>
-      <Position>1</Position>
-      <StoredType>BIGINT|0s</StoredType>
-      <SequenceInline>1</SequenceInline>
-      <SequenceSequenceIdentity>1(2)</SequenceSequenceIdentity>
-      <SequenceStartValue>1</SequenceStartValue>
-      <SequenceStoredType>BIGINT|0s</SequenceStoredType>
-    </column>
-    <column id="278" parent="177" name="RESTAURANT_ID">
-      <NotNull>1</NotNull>
-      <Position>2</Position>
-      <StoredType>BIGINT|0s</StoredType>
-    </column>
-    <column id="279" parent="177" name="DELIVERER_ID">
-      <NotNull>1</NotNull>
-      <Position>3</Position>
-      <StoredType>BIGINT|0s</StoredType>
-    </column>
-    <column id="280" parent="177" name="DATE_AND_TIME">
-      <NotNull>1</NotNull>
-      <Position>4</Position>
-      <StoredType>TIMESTAMP|0s</StoredType>
-    </column>
-    <foreign-key id="281" parent="177" name="CONSTRAINT_E87">
-      <ColNames>RESTAURANT_ID</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-      <OnDelete>restrict</OnDelete>
-      <OnUpdate>restrict</OnUpdate>
-      <RefKeyName>CONSTRAINT_B</RefKeyName>
-      <RefTableName>RESTAURANT</RefTableName>
-    </foreign-key>
-    <foreign-key id="282" parent="177" name="CONSTRAINT_E877">
+    <foreign-key id="265" parent="175" name="CONSTRAINT_4A">
       <ColNames>DELIVERER_ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <OnDelete>restrict</OnDelete>
@@ -795,25 +692,25 @@
       <RefKeyName>CONSTRAINT_97</RefKeyName>
       <RefTableName>DELIVERER</RefTableName>
     </foreign-key>
-    <index id="283" parent="177" name="PRIMARY_KEY_E8">
+    <index id="266" parent="175" name="PRIMARY_KEY_4">
       <ColNames>ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <index id="284" parent="177" name="CONSTRAINT_INDEX_E">
+    <index id="267" parent="175" name="CONSTRAINT_INDEX_4A">
       <ColNames>RESTAURANT_ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
     </index>
-    <index id="285" parent="177" name="CONSTRAINT_INDEX_E8">
+    <index id="268" parent="175" name="CONSTRAINT_INDEX_4">
       <ColNames>DELIVERER_ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
     </index>
-    <key id="286" parent="177" name="CONSTRAINT_E8">
+    <key id="269" parent="175" name="CONSTRAINT_4">
       <ColNames>ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
     </key>
-    <column id="287" parent="178" name="ID">
+    <column id="270" parent="176" name="ID">
       <ColumnKind>generated-virtual</ColumnKind>
       <NotNull>1</NotNull>
       <Position>1</Position>
@@ -823,25 +720,25 @@
       <SequenceStartValue>1</SequenceStartValue>
       <SequenceStoredType>BIGINT|0s</SequenceStoredType>
     </column>
-    <column id="288" parent="178" name="RESTAURANT_ORDER_ID">
+    <column id="271" parent="176" name="RESTAURANT_ID">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>BIGINT|0s</StoredType>
     </column>
-    <column id="289" parent="178" name="MEAL_ID">
+    <column id="272" parent="176" name="MEAL_ID">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>BIGINT|0s</StoredType>
     </column>
-    <foreign-key id="290" parent="178" name="CONSTRAINT_E6B">
-      <ColNames>RESTAURANT_ORDER_ID</ColNames>
+    <foreign-key id="273" parent="176" name="CONSTRAINT_FF">
+      <ColNames>RESTAURANT_ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <OnDelete>restrict</OnDelete>
       <OnUpdate>restrict</OnUpdate>
-      <RefKeyName>CONSTRAINT_E8</RefKeyName>
-      <RefTableName>RESTAURANT_ORDER</RefTableName>
+      <RefKeyName>CONSTRAINT_B</RefKeyName>
+      <RefTableName>RESTAURANT</RefTableName>
     </foreign-key>
-    <foreign-key id="291" parent="178" name="CONSTRAINT_E6B5">
+    <foreign-key id="274" parent="176" name="CONSTRAINT_FF3">
       <ColNames>MEAL_ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <OnDelete>restrict</OnDelete>
@@ -849,25 +746,25 @@
       <RefKeyName>CONSTRAINT_2</RefKeyName>
       <RefTableName>MEAL</RefTableName>
     </foreign-key>
-    <index id="292" parent="178" name="PRIMARY_KEY_E6">
+    <index id="275" parent="176" name="PRIMARY_KEY_F">
       <ColNames>ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <index id="293" parent="178" name="CONSTRAINT_INDEX_E6">
-      <ColNames>RESTAURANT_ORDER_ID</ColNames>
+    <index id="276" parent="176" name="CONSTRAINT_INDEX_F">
+      <ColNames>RESTAURANT_ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
     </index>
-    <index id="294" parent="178" name="CONSTRAINT_INDEX_E6B">
+    <index id="277" parent="176" name="CONSTRAINT_INDEX_FF">
       <ColNames>MEAL_ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
     </index>
-    <key id="295" parent="178" name="CONSTRAINT_E6">
+    <key id="278" parent="176" name="CONSTRAINT_F">
       <ColNames>ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
     </key>
-    <column id="296" parent="179" name="ID">
+    <column id="279" parent="177" name="ID">
       <ColumnKind>generated-virtual</ColumnKind>
       <NotNull>1</NotNull>
       <Position>1</Position>
@@ -877,22 +774,22 @@
       <SequenceStartValue>1</SequenceStartValue>
       <SequenceStoredType>BIGINT|0s</SequenceStoredType>
     </column>
-    <column id="297" parent="179" name="RESTAURANT_ID">
+    <column id="280" parent="177" name="RESTAURANT_ID">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>BIGINT|0s</StoredType>
     </column>
-    <column id="298" parent="179" name="WAITER_ID">
+    <column id="281" parent="177" name="DELIVERER_ID">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>BIGINT|0s</StoredType>
     </column>
-    <column id="299" parent="179" name="CONTRACT_ID">
+    <column id="282" parent="177" name="DATE_AND_TIME">
       <NotNull>1</NotNull>
       <Position>4</Position>
-      <StoredType>BIGINT|0s</StoredType>
+      <StoredType>TIMESTAMP|0s</StoredType>
     </column>
-    <foreign-key id="300" parent="179" name="CONSTRAINT_3323">
+    <foreign-key id="283" parent="177" name="CONSTRAINT_E87">
       <ColNames>RESTAURANT_ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <OnDelete>restrict</OnDelete>
@@ -900,21 +797,121 @@
       <RefKeyName>CONSTRAINT_B</RefKeyName>
       <RefTableName>RESTAURANT</RefTableName>
     </foreign-key>
-    <foreign-key id="301" parent="179" name="CONSTRAINT_332">
+    <foreign-key id="284" parent="177" name="CONSTRAINT_E877">
+      <ColNames>DELIVERER_ID</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <OnDelete>restrict</OnDelete>
+      <OnUpdate>restrict</OnUpdate>
+      <RefKeyName>CONSTRAINT_97</RefKeyName>
+      <RefTableName>DELIVERER</RefTableName>
+    </foreign-key>
+    <index id="285" parent="177" name="PRIMARY_KEY_E8">
+      <ColNames>ID</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <Unique>1</Unique>
+    </index>
+    <index id="286" parent="177" name="CONSTRAINT_INDEX_E">
+      <ColNames>RESTAURANT_ID</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+    </index>
+    <index id="287" parent="177" name="CONSTRAINT_INDEX_E8">
+      <ColNames>DELIVERER_ID</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+    </index>
+    <key id="288" parent="177" name="CONSTRAINT_E8">
+      <ColNames>ID</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <Primary>1</Primary>
+    </key>
+    <column id="289" parent="178" name="ID">
+      <ColumnKind>generated-virtual</ColumnKind>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StoredType>BIGINT|0s</StoredType>
+      <SequenceInline>1</SequenceInline>
+      <SequenceSequenceIdentity>1(3)</SequenceSequenceIdentity>
+      <SequenceStartValue>1</SequenceStartValue>
+      <SequenceStoredType>BIGINT|0s</SequenceStoredType>
+    </column>
+    <column id="290" parent="178" name="RESTAURANT_ORDER_ID">
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StoredType>BIGINT|0s</StoredType>
+    </column>
+    <column id="291" parent="178" name="MEAL_ID">
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+      <StoredType>BIGINT|0s</StoredType>
+    </column>
+    <foreign-key id="292" parent="178" name="CONSTRAINT_E6B">
+      <ColNames>RESTAURANT_ORDER_ID</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <OnDelete>restrict</OnDelete>
+      <OnUpdate>restrict</OnUpdate>
+      <RefKeyName>CONSTRAINT_E8</RefKeyName>
+      <RefTableName>RESTAURANT_ORDER</RefTableName>
+    </foreign-key>
+    <foreign-key id="293" parent="178" name="CONSTRAINT_E6B5">
+      <ColNames>MEAL_ID</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <OnDelete>restrict</OnDelete>
+      <OnUpdate>restrict</OnUpdate>
+      <RefKeyName>CONSTRAINT_2</RefKeyName>
+      <RefTableName>MEAL</RefTableName>
+    </foreign-key>
+    <index id="294" parent="178" name="PRIMARY_KEY_E6">
+      <ColNames>ID</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <Unique>1</Unique>
+    </index>
+    <index id="295" parent="178" name="CONSTRAINT_INDEX_E6">
+      <ColNames>RESTAURANT_ORDER_ID</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+    </index>
+    <index id="296" parent="178" name="CONSTRAINT_INDEX_E6B">
+      <ColNames>MEAL_ID</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+    </index>
+    <key id="297" parent="178" name="CONSTRAINT_E6">
+      <ColNames>ID</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <Primary>1</Primary>
+    </key>
+    <column id="298" parent="179" name="ID">
+      <ColumnKind>generated-virtual</ColumnKind>
+      <NotNull>1</NotNull>
+      <Position>1</Position>
+      <StoredType>BIGINT|0s</StoredType>
+      <SequenceInline>1</SequenceInline>
+      <SequenceSequenceIdentity>1(2)</SequenceSequenceIdentity>
+      <SequenceStartValue>1</SequenceStartValue>
+      <SequenceStoredType>BIGINT|0s</SequenceStoredType>
+    </column>
+    <column id="299" parent="179" name="RESTAURANT_ID">
+      <NotNull>1</NotNull>
+      <Position>2</Position>
+      <StoredType>BIGINT|0s</StoredType>
+    </column>
+    <column id="300" parent="179" name="WAITER_ID">
+      <NotNull>1</NotNull>
+      <Position>3</Position>
+      <StoredType>BIGINT|0s</StoredType>
+    </column>
+    <foreign-key id="301" parent="179" name="CONSTRAINT_3323">
+      <ColNames>RESTAURANT_ID</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <OnDelete>restrict</OnDelete>
+      <OnUpdate>restrict</OnUpdate>
+      <RefKeyName>CONSTRAINT_B</RefKeyName>
+      <RefTableName>RESTAURANT</RefTableName>
+    </foreign-key>
+    <foreign-key id="302" parent="179" name="CONSTRAINT_332">
       <ColNames>WAITER_ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <OnDelete>restrict</OnDelete>
       <OnUpdate>restrict</OnUpdate>
-      <RefKeyName>CONSTRAINT_1F</RefKeyName>
-      <RefTableName>CHEF</RefTableName>
-    </foreign-key>
-    <foreign-key id="302" parent="179" name="CONSTRAINT_3323A">
-      <ColNames>CONTRACT_ID</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-      <OnDelete>restrict</OnDelete>
-      <OnUpdate>restrict</OnUpdate>
-      <RefKeyName>CONSTRAINT_C</RefKeyName>
-      <RefTableName>CONTRACT</RefTableName>
+      <RefKeyName>CONSTRAINT_9</RefKeyName>
+      <RefTableName>WAITER</RefTableName>
     </foreign-key>
     <index id="303" parent="179" name="PRIMARY_KEY_33">
       <ColNames>ID</ColNames>
@@ -929,16 +926,12 @@
       <ColNames>WAITER_ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
     </index>
-    <index id="306" parent="179" name="CONSTRAINT_INDEX_332">
-      <ColNames>CONTRACT_ID</ColNames>
-      <NameSurrogate>1</NameSurrogate>
-    </index>
-    <key id="307" parent="179" name="CONSTRAINT_33">
+    <key id="306" parent="179" name="CONSTRAINT_33">
       <ColNames>ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>
     </key>
-    <column id="308" parent="180" name="ID">
+    <column id="307" parent="180" name="ID">
       <ColumnKind>generated-virtual</ColumnKind>
       <NotNull>1</NotNull>
       <Position>1</Position>
@@ -948,22 +941,44 @@
       <SequenceStartValue>1</SequenceStartValue>
       <SequenceStoredType>BIGINT|0s</SequenceStoredType>
     </column>
-    <column id="309" parent="180" name="FIRST_NAME">
+    <column id="308" parent="180" name="FIRST_NAME">
       <NotNull>1</NotNull>
       <Position>2</Position>
       <StoredType>CHARACTER VARYING(30)|0s</StoredType>
     </column>
-    <column id="310" parent="180" name="LAST_NAME">
+    <column id="309" parent="180" name="LAST_NAME">
       <NotNull>1</NotNull>
       <Position>3</Position>
       <StoredType>CHARACTER VARYING(30)|0s</StoredType>
     </column>
-    <index id="311" parent="180" name="PRIMARY_KEY_9">
+    <column id="310" parent="180" name="BONUS">
+      <NotNull>1</NotNull>
+      <Position>4</Position>
+      <StoredType>NUMERIC(6,2)|0s</StoredType>
+    </column>
+    <column id="311" parent="180" name="CONTRACT_ID">
+      <NotNull>1</NotNull>
+      <Position>5</Position>
+      <StoredType>BIGINT|0s</StoredType>
+    </column>
+    <foreign-key id="312" parent="180" name="CONSTRAINT_98">
+      <ColNames>CONTRACT_ID</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+      <OnDelete>restrict</OnDelete>
+      <OnUpdate>restrict</OnUpdate>
+      <RefKeyName>CONSTRAINT_C</RefKeyName>
+      <RefTableName>CONTRACT</RefTableName>
+    </foreign-key>
+    <index id="313" parent="180" name="PRIMARY_KEY_9">
       <ColNames>ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <key id="312" parent="180" name="CONSTRAINT_9">
+    <index id="314" parent="180" name="CONSTRAINT_INDEX_9">
+      <ColNames>CONTRACT_ID</ColNames>
+      <NameSurrogate>1</NameSurrogate>
+    </index>
+    <key id="315" parent="180" name="CONSTRAINT_9">
       <ColNames>ID</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Primary>1</Primary>

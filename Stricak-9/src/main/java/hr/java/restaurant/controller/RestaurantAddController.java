@@ -33,7 +33,7 @@ public class RestaurantAddController implements AddController {
     private final AddressDatabaseRepository addressRepository = new AddressDatabaseRepository();
     private final RestaurantRepository<Restaurant> restaurantRepository = new RestaurantRepository<>();
     private final MealDatabaseRepository mealRepository = new MealDatabaseRepository();
-    private final ChefRepository<Chef> chefRepository = new ChefRepository<>();
+    private final ChefDatabaseRepository chefRepository = new ChefDatabaseRepository();
     private final WaiterRepository<Waiter> waiterRepository = new WaiterRepository<>();
     private final DelivererRepository<Deliverer> delivererRepository = new DelivererRepository<>();
 

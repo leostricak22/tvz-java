@@ -60,11 +60,6 @@ public abstract class PersonAddController<T extends Person> implements AddContro
 
         Bonus bonusObject = new Bonus(new BigDecimal(bonus));
 
-        System.out.println("Adding person");
-        System.out.println("First name: " + firstName);
-        System.out.println("Last name: " + lastName);
-        System.out.println("Contract: " + contract);
-        System.out.println("Bonus: " + bonusObject);
         T newPerson = addPerson(firstName, lastName, contract, bonusObject);
 
         savePerson(newPerson);

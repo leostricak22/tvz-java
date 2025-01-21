@@ -16,6 +16,8 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+import static java.util.Objects.isNull;
+
 public abstract class PersonSearchController<T extends Person> implements SearchController {
 
     @FXML
@@ -87,8 +89,7 @@ public abstract class PersonSearchController<T extends Person> implements Search
                         .format(Localization.DateFormatter())));
 
         personContractEndDateColumn.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getContract().getEndDate()
-                        .format(Localization.DateFormatter())));
+                new SimpleStringProperty(isNull(cellData.getValue().getContract().getEndDate()) ? "-" : cellData.getValue().getContract().getEndDate().format(Localization.DateFormatter())));
 
         personContractSalaryColumn.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getContract().getSalary().toString()));
