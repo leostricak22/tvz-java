@@ -1,7 +1,7 @@
 package hr.java.restaurant.controller;
 
 import hr.java.restaurant.model.Address;
-import hr.java.restaurant.repository.AddressDatabaseRepository;
+import hr.java.restaurant.repository.AddressRepository;
 import hr.java.restaurant.util.AlertDialog;
 import hr.java.restaurant.util.SceneLoader;
 import javafx.fxml.FXML;
@@ -16,7 +16,7 @@ public class AddressAddController implements AddController {
     @FXML private TextField cityTextField;
     @FXML private TextField postalCodeTextField;
 
-    private final AddressDatabaseRepository addressRepository = new AddressDatabaseRepository();
+    private final AddressRepository addressRepository = new AddressRepository();
     private static final Logger logger = LoggerFactory.getLogger(AddressAddController.class);
 
     @Override

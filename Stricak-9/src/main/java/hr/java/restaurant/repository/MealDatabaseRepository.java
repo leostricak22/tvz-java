@@ -20,7 +20,19 @@ public class MealDatabaseRepository extends AbstractRepository<Meal> {
 
     @Override
     public Meal findById(Long id) throws RepositoryAccessException {
-        return null;
+        try (Connection connection = DatabaseUtil.connectToDatabase()) {
+            PreparedStatement stmt = connection.prepareStatement("SELECT * FROM MEAL WHERE ID = ?;");
+            stmt.setLong(1, id);
+            ResultSet resultSet = stmt.executeQuery();
+
+            if (resultSet.next()) {
+                return mapResultSetToMeal(resultSet);
+            } else {
+                throw new EmptyRepositoryResultException("Meal with id " + id + " not found");
+            }
+        } catch (IOException | SQLException e) {
+            throw new RepositoryAccessException(e);
+        }
     }
 
     @Override

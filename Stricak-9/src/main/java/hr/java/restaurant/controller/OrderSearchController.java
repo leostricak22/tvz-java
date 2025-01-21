@@ -1,10 +1,7 @@
 package hr.java.restaurant.controller;
 
 import hr.java.restaurant.model.*;
-import hr.java.restaurant.repository.DelivererDatabaseRepository;
-import hr.java.restaurant.repository.MealDatabaseRepository;
-import hr.java.restaurant.repository.OrderRepository;
-import hr.java.restaurant.repository.RestaurantDatabaseRepository;
+import hr.java.restaurant.repository.*;
 import hr.java.restaurant.util.ComboBoxUtil;
 import hr.java.restaurant.util.Localization;
 import javafx.beans.property.SimpleLongProperty;
@@ -59,7 +56,7 @@ public class OrderSearchController implements SearchController {
     @FXML
     private Label removeFilterLabel;
 
-    private static final OrderRepository<Order> orderRepository = new OrderRepository<>();
+    private static final OrderDatabaseRepository orderRepository = new OrderDatabaseRepository();
     private static final RestaurantDatabaseRepository restaurantRepository = new RestaurantDatabaseRepository();
     private static final MealDatabaseRepository mealRepository = new MealDatabaseRepository();
     private final DelivererDatabaseRepository delivererRepository = new DelivererDatabaseRepository();

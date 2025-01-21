@@ -1,5 +1,6 @@
 package hr.java.restaurant.repository;
 
+import hr.java.restaurant.exception.EmptyRepositoryResultException;
 import hr.java.restaurant.exception.RepositoryAccessException;
 import hr.java.restaurant.model.*;
 import hr.java.restaurant.util.DatabaseUtil;
@@ -11,7 +12,7 @@ import java.util.Set;
 
 public class RestaurantDatabaseRepository extends AbstractRepository<Restaurant> {
 
-    private final AddressDatabaseRepository addressRepository = new AddressDatabaseRepository();
+    private final AddressRepository addressRepository = new AddressRepository();
     private final MealDatabaseRepository mealRepository = new MealDatabaseRepository();
     private final ChefDatabaseRepository chefRepository = new ChefDatabaseRepository();
     private final WaiterDatabaseRepository waiterRepository = new WaiterDatabaseRepository();
@@ -19,7 +20,19 @@ public class RestaurantDatabaseRepository extends AbstractRepository<Restaurant>
 
     @Override
     public Restaurant findById(Long id) throws RepositoryAccessException {
-        return null;
+        try (Connection connection = DatabaseUtil.connectToDatabase()) {
+            PreparedStatement stmt = connection.prepareStatement("SELECT * FROM RESTAURANT WHERE ID = ?;");
+            stmt.setLong(1, id);
+            ResultSet resultSet = stmt.executeQuery();
+
+            if (resultSet.next()) {
+                return mapResultSetToRestaurant(resultSet);
+            } else {
+                throw new EmptyRepositoryResultException("Restaurant with id " + id + " not found");
+            }
+        } catch (IOException | SQLException e) {
+            throw new RepositoryAccessException(e);
+        }
     }
 
     public Restaurant findByName(String name) throws RepositoryAccessException {
@@ -70,8 +83,7 @@ public class RestaurantDatabaseRepository extends AbstractRepository<Restaurant>
 
                 ResultSet generatedKeys = stmt.getGeneratedKeys();
                 if (generatedKeys.next()) {
-                    Long key = generatedKeys.getLong(1);
-                    restaurant.setId(key);
+                    restaurant.setId(generatedKeys.getLong(1));
                 }
 
                 saveMealsForRestaurant(restaurant);

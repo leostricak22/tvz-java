@@ -4,22 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4f528465-ba8d-46d2-beb3-c46214f220ac" name="Changes" comment="feat: add deliverer database repository">
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/RestaurantDatabaseRepository.java" afterDir="false" />
+    <list default="true" id="4f528465-ba8d-46d2-beb3-c46214f220ac" name="Changes" comment="feat: add restaurant database repository">
+      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/OrderDatabaseRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/ffd2ffe2-b50c-4edb-afae-c68619174ec1.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/ffd2ffe2-b50c-4edb-afae-c68619174ec1.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/AddressAddController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/AddressAddController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/AddressSearchController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/AddressSearchController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/OrderAddController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/OrderAddController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/OrderSearchController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/OrderSearchController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/RestaurantAddController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/RestaurantAddController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/RestaurantSearchController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/RestaurantSearchController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Restaurant.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Restaurant.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/CategoryDatabaseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/CategoryDatabaseRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/ChefDatabaseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/ChefDatabaseRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/DelivererDatabaseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/DelivererDatabaseRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/AddressDatabaseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/AddressRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/MealDatabaseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/MealDatabaseRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/OrderRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/OrderRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/RestaurantRepository.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/WaiterDatabaseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/WaiterDatabaseRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/EntityFinder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/EntityFinder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/OrderRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/RestaurantDatabaseRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/RestaurantDatabaseRepository.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -222,7 +219,7 @@
       <workItem from="1737151941985" duration="2107000" />
       <workItem from="1737194941251" duration="4567000" />
       <workItem from="1737224030650" duration="1509000" />
-      <workItem from="1737404095574" duration="17872000" />
+      <workItem from="1737404095574" duration="19028000" />
     </task>
     <task id="LOCAL−00001" summary="feat: Add JavaFX project and add category searching and filtering">
       <option name="closed" value="true" />
@@ -441,7 +438,14 @@
       <option name="presentableId" value="LOCAL−00031" />
       <updated>1737420606701</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL−00032" summary="feat: add restaurant database repository">
+      <option name="closed" value="true" />
+      <created>1737422744134</created>
+      <option name="number" value="LOCAL−00032" />
+      <option name="presentableId" value="LOCAL−00032" />
+      <updated>1737422744134</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -459,7 +463,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="feat: Add Abstract PersonSearchController and Deliverer and Waiter search and filtering" />
     <MESSAGE value="feat: Add restaurant search and filtering" />
     <MESSAGE value="feat: Add order search and filtering" />
     <MESSAGE value="feat: Filter orders for selected restaurant" />
@@ -484,6 +487,7 @@
     <MESSAGE value="feat: add chef database repository" />
     <MESSAGE value="feat: add waiter database repository" />
     <MESSAGE value="feat: add deliverer database repository" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: add deliverer database repository" />
+    <MESSAGE value="feat: add restaurant database repository" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: add restaurant database repository" />
   </component>
 </project>

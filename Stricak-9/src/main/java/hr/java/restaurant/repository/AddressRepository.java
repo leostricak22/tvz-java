@@ -3,7 +3,6 @@ package hr.java.restaurant.repository;
 import hr.java.restaurant.exception.EmptyRepositoryResultException;
 import hr.java.restaurant.exception.RepositoryAccessException;
 import hr.java.restaurant.model.Address;
-import hr.java.restaurant.model.Category;
 import hr.java.restaurant.util.DatabaseUtil;
 
 import java.io.IOException;
@@ -11,7 +10,7 @@ import java.sql.*;
 import java.util.HashSet;
 import java.util.Set;
 
-public class AddressDatabaseRepository extends AbstractRepository<Address> {
+public class AddressRepository extends AbstractRepository<Address> {
     @Override
     public Address findById(Long id) throws RepositoryAccessException {
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
