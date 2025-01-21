@@ -17,7 +17,7 @@ public class RestaurantRepository<T extends Restaurant> extends AbstractReposito
 
     private final ChefDatabaseRepository chefRepository = new ChefDatabaseRepository();
     private final WaiterDatabaseRepository waiterRepository = new WaiterDatabaseRepository();
-    private final DelivererRepository<Deliverer> delivererRepository = new DelivererRepository<>();
+    private final DelivererDatabaseRepository delivererRepository = new DelivererDatabaseRepository();
     private final AddressDatabaseRepository addressRepository = new AddressDatabaseRepository();
 
     @Override

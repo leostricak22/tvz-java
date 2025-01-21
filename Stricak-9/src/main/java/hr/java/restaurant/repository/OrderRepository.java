@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 public class OrderRepository<T extends Order> extends AbstractRepository<T> {
     public final static String FILE_PATH = "dat/orders.txt";
 
-    private final DelivererRepository<Deliverer> delivererRepository = new DelivererRepository<>();
+    private final DelivererDatabaseRepository delivererRepository = new DelivererDatabaseRepository();
     private final RestaurantRepository<Restaurant> restaurantRepository = new RestaurantRepository<>();
 
     @Override
