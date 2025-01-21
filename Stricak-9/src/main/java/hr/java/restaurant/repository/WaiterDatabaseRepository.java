@@ -86,7 +86,7 @@ public class WaiterDatabaseRepository extends AbstractRepository<Waiter> {
         }
     }
 
-    private Waiter mapResultSetToWaiter(ResultSet resultSet) throws SQLException {
+    public Waiter mapResultSetToWaiter(ResultSet resultSet) throws SQLException {
         return new Waiter.Builder(resultSet.getLong("ID"))
                 .setFirstName(resultSet.getString("FIRST_NAME"))
                 .setLastName(resultSet.getString("LAST_NAME"))

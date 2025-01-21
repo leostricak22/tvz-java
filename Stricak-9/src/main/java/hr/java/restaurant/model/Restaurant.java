@@ -1,6 +1,6 @@
 package hr.java.restaurant.model;
 
-import hr.java.restaurant.repository.RestaurantRepository;
+import hr.java.restaurant.repository.RestaurantDatabaseRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,7 +19,7 @@ public class Restaurant extends Entity implements Serializable {
     private Set<Waiter> waiters;
     private Set<Deliverer> deliverers;
 
-    private static final RestaurantRepository<Restaurant> restaurantRepository = new RestaurantRepository<>();
+    private static final RestaurantDatabaseRepository restaurantRepository = new RestaurantDatabaseRepository();
 
     /**
      * Constructs a Restaurant object from provided data.

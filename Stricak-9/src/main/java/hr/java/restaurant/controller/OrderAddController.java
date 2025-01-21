@@ -5,7 +5,7 @@ import hr.java.restaurant.model.Meal;
 import hr.java.restaurant.model.Order;
 import hr.java.restaurant.model.Restaurant;
 import hr.java.restaurant.repository.OrderRepository;
-import hr.java.restaurant.repository.RestaurantRepository;
+import hr.java.restaurant.repository.RestaurantDatabaseRepository;
 import hr.java.restaurant.util.AlertDialog;
 import hr.java.restaurant.util.ComboBoxUtil;
 import hr.java.restaurant.util.MultipleCheckBoxSelectUtil;
@@ -37,7 +37,7 @@ public class OrderAddController implements AddController {
     private static final Logger logger = LoggerFactory.getLogger(OrderAddController.class);
 
     private final OrderRepository<Order> orderRepository = new OrderRepository<>();
-    private final RestaurantRepository<Restaurant> restaurantRepository = new RestaurantRepository<>();
+    private static final RestaurantDatabaseRepository restaurantRepository = new RestaurantDatabaseRepository();
 
     private Set<Meal> selectedMeals = new HashSet<>();
 

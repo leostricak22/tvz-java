@@ -85,7 +85,7 @@ public class ChefDatabaseRepository extends AbstractRepository<Chef> {
         }
     }
 
-    private Chef mapResultSetToChef(ResultSet resultSet) throws SQLException {
+    public Chef mapResultSetToChef(ResultSet resultSet) throws SQLException {
         return new Chef.Builder(resultSet.getLong("ID"))
                 .setFirstName(resultSet.getString("FIRST_NAME"))
                 .setLastName(resultSet.getString("LAST_NAME"))

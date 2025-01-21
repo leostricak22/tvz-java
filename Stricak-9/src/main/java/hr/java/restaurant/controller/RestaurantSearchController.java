@@ -92,7 +92,7 @@ public class RestaurantSearchController implements SearchController {
     @FXML
     private Button getOrdersButton;
 
-    private final RestaurantRepository<Restaurant> restaurantRepository = new RestaurantRepository<>();
+    private final RestaurantDatabaseRepository restaurantRepository = new RestaurantDatabaseRepository();
     private final MealDatabaseRepository mealRepository = new MealDatabaseRepository();
     private final ChefDatabaseRepository chefRepository = new ChefDatabaseRepository();
     private final WaiterDatabaseRepository waiterRepository = new WaiterDatabaseRepository();

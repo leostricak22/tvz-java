@@ -3,7 +3,6 @@ package hr.java.restaurant.repository;
 import hr.java.restaurant.exception.RepositoryAccessException;
 import hr.java.restaurant.model.Bonus;
 import hr.java.restaurant.model.Deliverer;
-import hr.java.restaurant.model.Deliverer;
 import hr.java.restaurant.util.DatabaseUtil;
 
 import java.io.IOException;
@@ -86,7 +85,7 @@ public class DelivererDatabaseRepository extends AbstractRepository<Deliverer> {
         }
     }
 
-    private Deliverer mapResultSetToDeliverer(ResultSet resultSet) throws SQLException {
+    public Deliverer mapResultSetToDeliverer(ResultSet resultSet) throws SQLException {
         return new Deliverer.Builder(resultSet.getLong("ID"))
                 .setFirstName(resultSet.getString("FIRST_NAME"))
                 .setLastName(resultSet.getString("LAST_NAME"))

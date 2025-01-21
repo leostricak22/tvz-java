@@ -47,7 +47,7 @@ public class MealDatabaseRepository extends AbstractRepository<Meal> {
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             PreparedStatement stmt = connection.prepareStatement("""
                 INSERT INTO MEAL (NAME, CATEGORY_ID, PRICE) VALUES (?, ?, ?);
-                """);
+                """, Statement.RETURN_GENERATED_KEYS);
 
             for (Meal meal : entities) {
                 stmt.setString(1, meal.getName());
@@ -124,7 +124,7 @@ public class MealDatabaseRepository extends AbstractRepository<Meal> {
         }
     }
 
-    private Meal mapResultSetToMeal(ResultSet resultSet) throws SQLException, IOException {
+    public Meal mapResultSetToMeal(ResultSet resultSet) throws SQLException, IOException {
         Long id = resultSet.getLong("ID");
         String name = resultSet.getString("NAME");
         Category category = categoryRepository.findById(resultSet.getLong("CATEGORY_ID"));

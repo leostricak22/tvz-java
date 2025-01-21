@@ -31,7 +31,7 @@ public class RestaurantAddController implements AddController {
     @FXML private Label delivererNameArrayLabel;
 
     private final AddressDatabaseRepository addressRepository = new AddressDatabaseRepository();
-    private final RestaurantRepository<Restaurant> restaurantRepository = new RestaurantRepository<>();
+    private static final RestaurantDatabaseRepository restaurantRepository = new RestaurantDatabaseRepository();
     private final MealDatabaseRepository mealRepository = new MealDatabaseRepository();
     private final ChefDatabaseRepository chefRepository = new ChefDatabaseRepository();
     private final WaiterDatabaseRepository waiterRepository = new WaiterDatabaseRepository();
@@ -64,7 +64,7 @@ public class RestaurantAddController implements AddController {
             return;
         }
 
-        Restaurant restaurant = new Restaurant(restaurantRepository.findNextId(), name, address, selectedMeals, selectedChefs, selectedWaiters, selectedDeliverers);
+        Restaurant restaurant = new Restaurant(0L, name, address, selectedMeals, selectedChefs, selectedWaiters, selectedDeliverers);
 
         restaurantRepository.save(restaurant);
         logger.info("Restaurant {} added", restaurant.getName());
