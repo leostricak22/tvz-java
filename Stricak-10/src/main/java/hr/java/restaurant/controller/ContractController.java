@@ -91,7 +91,7 @@ public class ContractController implements SearchController {
 
         Task<Void> task = new Task<>() {
             @Override
-            protected Void call() throws Exception {
+            protected Void call() {
                 BigDecimal counter = BigDecimal.ZERO;
 
                 while (runner.isAlive()) {

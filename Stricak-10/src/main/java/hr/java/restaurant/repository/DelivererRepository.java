@@ -1,7 +1,6 @@
 package hr.java.restaurant.repository;
 
 import hr.java.restaurant.exception.RepositoryAccessException;
-import hr.java.restaurant.model.Bonus;
 import hr.java.restaurant.model.Deliverer;
 import hr.java.restaurant.util.DatabaseUtil;
 import hr.java.restaurant.util.ObjectMapper;
@@ -9,6 +8,7 @@ import hr.java.restaurant.util.ObjectMapper;
 import java.io.IOException;
 import java.sql.*;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 public class DelivererRepository extends AbstractRepository<Deliverer> {
@@ -82,5 +82,13 @@ public class DelivererRepository extends AbstractRepository<Deliverer> {
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
         }
+    }
+
+    public Optional<Deliverer> findHighestPaidDeliverer() {
+        Set<Deliverer> deliverers = findAll();
+
+        return deliverers.stream()
+                .max((deliverer1, deliverer) -> (deliverer1.getContract().getSalary().add(deliverer1.getBonus().amount()))
+                        .compareTo(deliverer.getContract().getSalary().add(deliverer.getBonus().amount())));
     }
 }

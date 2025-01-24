@@ -5,6 +5,7 @@ import hr.java.restaurant.model.Chef;
 import hr.java.restaurant.model.Person;
 import hr.java.restaurant.util.FXMLLoaderHelper;
 import hr.java.restaurant.util.Constants;
+import hr.java.restaurant.util.SceneLoader;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,26 +17,14 @@ import java.io.IOException;
 
 public class MenuController {
 
-    public void showSearchScreen(ActionEvent event) throws IOException {
+    public void showSearchScreen(ActionEvent event) {
         MenuItem menuItem = (MenuItem) event.getSource();
-        FXMLLoader fxmlLoader = FXMLLoaderHelper.fxmlFilePath(menuItem.getId() + ".fxml");
-
-        Scene scene = new Scene(fxmlLoader.load(), Constants.SCENE_WIDTH, Constants.SCENE_HEIGHT);
-
-        RestaurantApplication.getMainStage().setTitle("Search");
-        RestaurantApplication.getMainStage().setScene(scene);
-        RestaurantApplication.getMainStage().show();
+        SceneLoader.loadScene(menuItem.getId(), "Search");
     }
 
-    public void showAddScreen(ActionEvent event) throws IOException {
+    public void showAddScreen(ActionEvent event) {
         MenuItem menuItem = (MenuItem) event.getSource();
-        FXMLLoader fxmlLoader = FXMLLoaderHelper.fxmlFilePath(menuItem.getId() + ".fxml");
-
-        Scene scene = new Scene(fxmlLoader.load(), Constants.SCENE_WIDTH, Constants.SCENE_HEIGHT);
-
-        RestaurantApplication.getMainStage().setTitle("Add");
-        RestaurantApplication.getMainStage().setScene(scene);
-        RestaurantApplication.getMainStage().show();
+        SceneLoader.loadScene(menuItem.getId(), "Add");
     }
 
     public void showAddPersonScreen(ActionEvent event) throws IOException {

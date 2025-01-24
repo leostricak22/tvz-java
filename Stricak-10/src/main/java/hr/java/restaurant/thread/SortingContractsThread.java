@@ -7,8 +7,8 @@ import java.util.*;
 
 public class SortingContractsThread implements Runnable {
 
-    private ContractRepository contractRepository;
-    private List<Contract> contracts;
+    private final ContractRepository contractRepository;
+    private final List<Contract> contracts;
 
     public SortingContractsThread(ContractRepository contractRepository, List<Contract> contracts) {
         this.contractRepository = contractRepository;
@@ -20,11 +20,5 @@ public class SortingContractsThread implements Runnable {
         List<Contract> sortedContracts = contractRepository.findAllSortedBySalary();
         contracts.clear();
         contracts.addAll(sortedContracts);
-        try {
-            Thread.sleep(4000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
     }
 }

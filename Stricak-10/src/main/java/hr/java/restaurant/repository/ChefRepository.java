@@ -8,6 +8,7 @@ import hr.java.restaurant.util.ObjectMapper;
 import java.io.IOException;
 import java.sql.*;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 public class ChefRepository extends AbstractRepository<Chef> {
@@ -81,5 +82,13 @@ public class ChefRepository extends AbstractRepository<Chef> {
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
         }
+    }
+
+    public Optional<Chef> findHighestPaidChef() {
+        Set<Chef> chefs = findAll();
+
+        return chefs.stream()
+                .max((chef1, chef2) -> (chef1.getContract().getSalary().add(chef1.getBonus().amount()))
+                        .compareTo(chef2.getContract().getSalary().add(chef2.getBonus().amount())));
     }
 }
