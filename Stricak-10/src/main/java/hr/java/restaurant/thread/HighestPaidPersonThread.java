@@ -10,7 +10,6 @@ import hr.java.restaurant.repository.DelivererRepository;
 import hr.java.restaurant.repository.WaiterRepository;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.math.BigDecimal;
@@ -24,41 +23,41 @@ public class HighestPaidPersonThread {
 
     public static void start() {
         Timeline highestPersonTimeLine = new Timeline(
-                new KeyFrame(Duration.ZERO, e -> {
-                    Optional<Chef> chef = chefRepository.findHighestPaidChef();
-                    Optional<Deliverer> deliverer = delivererRepository.findHighestPaidDeliverer();
-                    Optional<Waiter> waiter = waiterRepository.findHighestPaidWaiter();
+            new KeyFrame(Duration.ZERO, e -> {
+                Optional<Chef> chef = chefRepository.findHighestPaidChef();
+                Optional<Deliverer> deliverer = delivererRepository.findHighestPaidDeliverer();
+                Optional<Waiter> waiter = waiterRepository.findHighestPaidWaiter();
 
-                    BigDecimal highestSalary = BigDecimal.ZERO;
-                    Optional<Person> highestPaidPerson = Optional.empty();
+                BigDecimal highestSalary = BigDecimal.ZERO;
+                Optional<Person> highestPaidPerson = Optional.empty();
 
-                    if (chef.isPresent() &&
-                            (chef.get().getContract().getSalary().add(chef.get().getBonus().amount()))
-                                    .compareTo(highestSalary) > 0) {
-                        highestSalary = chef.get().getSalary().add(chef.get().getBonus().amount());
-                        highestPaidPerson = Optional.of(chef.get());
-                    }
+                if (chef.isPresent() &&
+                        (chef.get().getContract().getSalary().add(chef.get().getBonus().amount()))
+                                .compareTo(highestSalary) > 0) {
+                    highestSalary = chef.get().getSalary().add(chef.get().getBonus().amount());
+                    highestPaidPerson = Optional.of(chef.get());
+                }
 
-                    if (waiter.isPresent() &&
-                            (waiter.get().getContract().getSalary().add(waiter.get().getBonus().amount()))
-                                    .compareTo(highestSalary) > 0) {
-                        highestSalary = waiter.get().getSalary().add(waiter.get().getBonus().amount());
-                        highestPaidPerson = Optional.of(waiter.get());
-                    }
+                if (waiter.isPresent() &&
+                        (waiter.get().getContract().getSalary().add(waiter.get().getBonus().amount()))
+                                .compareTo(highestSalary) > 0) {
+                    highestSalary = waiter.get().getSalary().add(waiter.get().getBonus().amount());
+                    highestPaidPerson = Optional.of(waiter.get());
+                }
 
-                    if (deliverer.isPresent() &&
-                            (deliverer.get().getContract().getSalary().add(deliverer.get().getBonus().amount()))
-                                    .compareTo(highestSalary) > 0) {
-                        highestSalary = deliverer.get().getSalary().add(deliverer.get().getBonus().amount());
-                        highestPaidPerson = Optional.of(deliverer.get());
-                    }
+                if (deliverer.isPresent() &&
+                        (deliverer.get().getContract().getSalary().add(deliverer.get().getBonus().amount()))
+                                .compareTo(highestSalary) > 0) {
+                    highestSalary = deliverer.get().getSalary().add(deliverer.get().getBonus().amount());
+                    highestPaidPerson = Optional.of(deliverer.get());
+                }
 
-                    if (highestPaidPerson.isPresent()) {
-                        System.out.println("Highest Paid Person: " + highestPaidPerson.get().getName());
-                        RestaurantApplication.getMainStage().setTitle("Highest Paid Person: " + highestPaidPerson.get().getName());
-                    }
-                }),
-                new KeyFrame(Duration.seconds(1))
+                if (highestPaidPerson.isPresent()) {
+                    System.out.println("Highest Paid Person: " + highestPaidPerson.get().getName());
+                    RestaurantApplication.getMainStage().setTitle("Highest Paid Person: " + highestPaidPerson.get().getName());
+                }
+            }),
+            new KeyFrame(Duration.seconds(1))
         );
 
         highestPersonTimeLine.setCycleCount(Timeline.INDEFINITE);

@@ -9,6 +9,8 @@ import java.util.Properties;
 
 public class DatabaseUtil {
 
+    public static Boolean activeConnectionWithDatabase = false;
+
     public static Connection connectToDatabase() throws IOException, SQLException {
         Properties props = new Properties();
         props.load(new FileReader(Constants.DATABASE_PROPERTIES_FILE));

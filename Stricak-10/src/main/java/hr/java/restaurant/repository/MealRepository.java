@@ -3,6 +3,7 @@ package hr.java.restaurant.repository;
 import hr.java.restaurant.exception.EmptyRepositoryResultException;
 import hr.java.restaurant.exception.RepositoryAccessException;
 import hr.java.restaurant.model.Meal;
+import hr.java.restaurant.model.dbo.MealDatabaseResponse;
 import hr.java.restaurant.util.DatabaseUtil;
 import hr.java.restaurant.util.ObjectMapper;
 
@@ -14,43 +15,80 @@ import java.util.Set;
 public class MealRepository extends AbstractRepository<Meal> {
 
     @Override
-    public Meal findById(Long id) throws RepositoryAccessException {
+    public synchronized Meal findById(Long id) throws RepositoryAccessException {
+        while (DatabaseUtil.activeConnectionWithDatabase) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        DatabaseUtil.activeConnectionWithDatabase = true;
+        MealDatabaseResponse mealDatabaseResponse;
+
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             PreparedStatement stmt = connection.prepareStatement("SELECT * FROM MEAL WHERE ID = ?;");
             stmt.setLong(1, id);
             ResultSet resultSet = stmt.executeQuery();
 
             if (resultSet.next()) {
-                return ObjectMapper.mapResultSetToMeal(resultSet);
+                mealDatabaseResponse = ObjectMapper.mapResultSetToMealDatabaseResponse(resultSet);
             } else {
                 throw new EmptyRepositoryResultException("Meal with id " + id + " not found");
             }
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
+        } finally {
+            DatabaseUtil.activeConnectionWithDatabase = false;
+            notifyAll();
         }
+
+        return ObjectMapper.mapMealDatabaseResponseToMeal(mealDatabaseResponse);
     }
 
     @Override
-    public Set<Meal> findAll() throws RepositoryAccessException {
-        Set<Meal> meals = new HashSet<>();
+    public synchronized Set<Meal> findAll() throws RepositoryAccessException {
+        while (DatabaseUtil.activeConnectionWithDatabase) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        DatabaseUtil.activeConnectionWithDatabase = true;
+        Set<MealDatabaseResponse> mealDatabaseResponses = new HashSet<>();
 
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             Statement stmt = connection.createStatement();
             ResultSet resultSet = stmt.executeQuery("SELECT * FROM MEAL;");
 
             while (resultSet.next()) {
-                Meal meal = ObjectMapper.mapResultSetToMeal(resultSet);
-                meals.add(meal);
+                mealDatabaseResponses.add(ObjectMapper.mapResultSetToMealDatabaseResponse(resultSet));
             }
-
-            return meals;
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
+        } finally {
+            DatabaseUtil.activeConnectionWithDatabase = false;
+            notifyAll();
         }
+
+        return ObjectMapper.mapMealDatabaseResponsesToMeals(mealDatabaseResponses);
     }
 
     @Override
-    public void save(Set<Meal> entities) throws RepositoryAccessException {
+    public synchronized void save(Set<Meal> entities) throws RepositoryAccessException {
+        while (DatabaseUtil.activeConnectionWithDatabase) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        DatabaseUtil.activeConnectionWithDatabase = true;
+
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             PreparedStatement stmt = connection.prepareStatement("""
                 INSERT INTO MEAL (NAME, CATEGORY_ID, PRICE) VALUES (?, ?, ?);
@@ -71,22 +109,14 @@ public class MealRepository extends AbstractRepository<Meal> {
             }
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
+        } finally {
+            DatabaseUtil.activeConnectionWithDatabase = false;
+            notifyAll();
         }
     }
 
     @Override
-    public Long findNextId() throws RepositoryAccessException {
-        try (Connection connection = DatabaseUtil.connectToDatabase()) {
-            Statement stmt = connection.createStatement();
-            ResultSet resultSet = stmt.executeQuery("SELECT MAX(ID) FROM MEAL;");
-
-            if (resultSet.next()) {
-                return resultSet.getLong(1) + 1;
-            } else {
-                return 1L;
-            }
-        } catch (IOException | SQLException e) {
-            throw new RepositoryAccessException(e);
-        }
+    public synchronized Long findNextId() throws RepositoryAccessException {
+       return 0L;
     }
 }

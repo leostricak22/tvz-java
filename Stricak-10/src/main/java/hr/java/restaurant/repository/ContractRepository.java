@@ -17,7 +17,17 @@ import java.util.Set;
 public class ContractRepository extends AbstractRepository<Contract> {
 
     @Override
-    public Contract findById(Long id) throws RepositoryAccessException {
+    public synchronized Contract findById(Long id) throws RepositoryAccessException {
+        while (DatabaseUtil.activeConnectionWithDatabase) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        DatabaseUtil.activeConnectionWithDatabase = true;
+
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             PreparedStatement stmt = connection.prepareStatement(
                     "SELECT * FROM CONTRACT WHERE ID = ?;");
@@ -31,11 +41,24 @@ public class ContractRepository extends AbstractRepository<Contract> {
             }
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
+        } finally {
+            DatabaseUtil.activeConnectionWithDatabase = false;
+            notifyAll();
         }
     }
 
     @Override
-    public Set<Contract> findAll() throws RepositoryAccessException {
+    public synchronized Set<Contract> findAll() throws RepositoryAccessException {
+        while (DatabaseUtil.activeConnectionWithDatabase) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        DatabaseUtil.activeConnectionWithDatabase = true;
+
         Set<Contract> contracts = new HashSet<>();
 
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
@@ -50,11 +73,24 @@ public class ContractRepository extends AbstractRepository<Contract> {
             return contracts;
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
+        } finally {
+            DatabaseUtil.activeConnectionWithDatabase = false;
+            notifyAll();
         }
     }
 
     @Override
-    public void save(Set<Contract> entities) throws RepositoryAccessException {
+    public synchronized void save(Set<Contract> entities) throws RepositoryAccessException {
+        while (DatabaseUtil.activeConnectionWithDatabase) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        DatabaseUtil.activeConnectionWithDatabase = true;
+
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             PreparedStatement stmt = connection.prepareStatement(
                     "INSERT INTO CONTRACT (SALARY, BONUS, START_DATE, END_DATE, TYPE) VALUES (?, ?, ?, ?, ?);");
@@ -69,11 +105,24 @@ public class ContractRepository extends AbstractRepository<Contract> {
             }
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
+        } finally {
+            DatabaseUtil.activeConnectionWithDatabase = false;
+            notifyAll();
         }
     }
 
     @Override
-    public Long findNextId() throws RepositoryAccessException {
+    public synchronized Long findNextId() throws RepositoryAccessException {
+        while (DatabaseUtil.activeConnectionWithDatabase) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        DatabaseUtil.activeConnectionWithDatabase = true;
+
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             Statement stmt = connection.createStatement();
             ResultSet resultSet = stmt.executeQuery("SELECT MAX(ID) FROM CONTRACT;");
@@ -85,10 +134,23 @@ public class ContractRepository extends AbstractRepository<Contract> {
             }
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
+        } finally {
+            DatabaseUtil.activeConnectionWithDatabase = false;
+            notifyAll();
         }
     }
 
-    public List<Contract> findAllSortedBySalary() throws RepositoryAccessException {
+    public synchronized List<Contract> findAllSortedBySalary() throws RepositoryAccessException {
+        while (DatabaseUtil.activeConnectionWithDatabase) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        DatabaseUtil.activeConnectionWithDatabase = true;
+
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             Statement stmt = connection.createStatement();
             ResultSet resultSet = stmt.executeQuery("SELECT * FROM CONTRACT ORDER BY SALARY DESC");
@@ -102,6 +164,9 @@ public class ContractRepository extends AbstractRepository<Contract> {
             return contracts;
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
+        } finally {
+            DatabaseUtil.activeConnectionWithDatabase = false;
+            notifyAll();
         }
     }
 }

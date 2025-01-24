@@ -3,6 +3,7 @@ package hr.java.restaurant.repository;
 import hr.java.restaurant.exception.EmptyRepositoryResultException;
 import hr.java.restaurant.exception.RepositoryAccessException;
 import hr.java.restaurant.model.*;
+import hr.java.restaurant.model.dbo.RestaurantDatabaseResponse;
 import hr.java.restaurant.util.DatabaseUtil;
 import hr.java.restaurant.util.ObjectMapper;
 
@@ -14,58 +15,112 @@ import java.util.Set;
 public class RestaurantRepository extends AbstractRepository<Restaurant> {
 
     @Override
-    public Restaurant findById(Long id) throws RepositoryAccessException {
+    public synchronized Restaurant findById(Long id) throws RepositoryAccessException {
+        while (DatabaseUtil.activeConnectionWithDatabase) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        DatabaseUtil.activeConnectionWithDatabase = true;
+        RestaurantDatabaseResponse restaurantDatabaseResponse;
+
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             PreparedStatement stmt = connection.prepareStatement("SELECT * FROM RESTAURANT WHERE ID = ?;");
             stmt.setLong(1, id);
             ResultSet resultSet = stmt.executeQuery();
 
             if (resultSet.next()) {
-                return ObjectMapper.mapResultSetToRestaurant(resultSet);
+                restaurantDatabaseResponse = ObjectMapper.mapResultSetToRestaurantDatabaseResponse(resultSet);
             } else {
                 throw new EmptyRepositoryResultException("Restaurant with id " + id + " not found");
             }
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
+        } finally {
+            DatabaseUtil.activeConnectionWithDatabase = false;
+            notifyAll();
         }
+
+        return ObjectMapper.mapRestaurantDatabaseResponseToRestaurant(restaurantDatabaseResponse);
     }
 
-    public Restaurant findByName(String name) throws RepositoryAccessException {
+    public synchronized Restaurant findByName(String name) throws RepositoryAccessException {
+        while (DatabaseUtil.activeConnectionWithDatabase) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        DatabaseUtil.activeConnectionWithDatabase = true;
+        RestaurantDatabaseResponse restaurantDatabaseResponse;
+
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             PreparedStatement stmt = connection.prepareStatement("SELECT * FROM RESTAURANT WHERE NAME = ?;");
             stmt.setString(1, name);
             ResultSet resultSet = stmt.executeQuery();
 
             if (resultSet.next()) {
-                return ObjectMapper.mapResultSetToRestaurant(resultSet);
+                restaurantDatabaseResponse = ObjectMapper.mapResultSetToRestaurantDatabaseResponse(resultSet);
             } else {
                 return null;
             }
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
+        } finally {
+            DatabaseUtil.activeConnectionWithDatabase = false;
+            notifyAll();
         }
+
+        return ObjectMapper.mapRestaurantDatabaseResponseToRestaurant(restaurantDatabaseResponse);
     }
 
     @Override
-    public Set<Restaurant> findAll() throws RepositoryAccessException {
-        Set<Restaurant> restaurants = new HashSet<>();
+    public synchronized Set<Restaurant> findAll() throws RepositoryAccessException {
+        while (DatabaseUtil.activeConnectionWithDatabase) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        DatabaseUtil.activeConnectionWithDatabase = true;
+        Set<RestaurantDatabaseResponse> restaurantDatabaseResponse = new HashSet<>();
 
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             Statement stmt = connection.createStatement();
             ResultSet resultSet = stmt.executeQuery("SELECT * FROM RESTAURANT;");
 
             while (resultSet.next()) {
-                Restaurant restaurant = ObjectMapper.mapResultSetToRestaurant(resultSet);
-                restaurants.add(restaurant);
+                restaurantDatabaseResponse.add(ObjectMapper.mapResultSetToRestaurantDatabaseResponse(resultSet));
             }
-            return restaurants;
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
+        } finally {
+            DatabaseUtil.activeConnectionWithDatabase = false;
+            notifyAll();
         }
+
+        return ObjectMapper.mapRestaurantDatabaseResponsesToRestaurants(restaurantDatabaseResponse);
     }
 
     @Override
-    public void save(Set<Restaurant> entities) throws RepositoryAccessException {
+    public synchronized void save(Set<Restaurant> entities) throws RepositoryAccessException {
+        while (DatabaseUtil.activeConnectionWithDatabase) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        DatabaseUtil.activeConnectionWithDatabase = true;
+
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             PreparedStatement stmt = connection.prepareStatement("""
                 INSERT INTO RESTAURANT (NAME, ADDRESS_ID) VALUES (?, ?);
@@ -88,22 +143,14 @@ public class RestaurantRepository extends AbstractRepository<Restaurant> {
             }
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
+        } finally {
+            DatabaseUtil.activeConnectionWithDatabase = false;
+            notifyAll();
         }
     }
 
     @Override
-    public Long findNextId() throws RepositoryAccessException {
-        try (Connection connection = DatabaseUtil.connectToDatabase()) {
-            Statement stmt = connection.createStatement();
-            ResultSet resultSet = stmt.executeQuery("SELECT MAX(ID) FROM RESTAURANT;");
-
-            if (resultSet.next()) {
-                return resultSet.getLong(1) + 1;
-            } else {
-                return 1L;
-            }
-        } catch (IOException | SQLException e) {
-            throw new RepositoryAccessException(e);
-        }
+    public synchronized Long findNextId() throws RepositoryAccessException {
+        return 0L;
     }
 }

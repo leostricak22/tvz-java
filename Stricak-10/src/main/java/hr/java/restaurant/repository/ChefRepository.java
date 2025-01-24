@@ -2,6 +2,7 @@ package hr.java.restaurant.repository;
 
 import hr.java.restaurant.exception.RepositoryAccessException;
 import hr.java.restaurant.model.Chef;
+import hr.java.restaurant.model.dbo.PersonDatabaseResponse;
 import hr.java.restaurant.util.DatabaseUtil;
 import hr.java.restaurant.util.ObjectMapper;
 
@@ -14,7 +15,18 @@ import java.util.Set;
 public class ChefRepository extends AbstractRepository<Chef> {
 
     @Override
-    public Chef findById(Long id) throws RepositoryAccessException {
+    public synchronized Chef findById(Long id) throws RepositoryAccessException {
+        while (DatabaseUtil.activeConnectionWithDatabase) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        DatabaseUtil.activeConnectionWithDatabase = true;
+        PersonDatabaseResponse chefDatabaseResponse;
+
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             PreparedStatement stmt = connection.prepareStatement(
                     "SELECT * FROM CHEF WHERE ID = ?;");
@@ -22,36 +34,62 @@ public class ChefRepository extends AbstractRepository<Chef> {
             ResultSet resultSet = stmt.executeQuery();
 
             if (resultSet.next()) {
-                return ObjectMapper.mapResultSetToChef(resultSet);
+                chefDatabaseResponse = ObjectMapper.mapResultSetToPersonDatabaseResponse(resultSet);
             } else {
                 throw new RepositoryAccessException("Chef with id " + id + " not found");
             }
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
+        } finally {
+            DatabaseUtil.activeConnectionWithDatabase = false;
+            notifyAll();
         }
+
+        return ObjectMapper.mapChefDatabaseResponseToChef(chefDatabaseResponse);
     }
 
     @Override
-    public Set<Chef> findAll() throws RepositoryAccessException {
-        Set<Chef> chefs = new HashSet<>();
+    public synchronized Set<Chef> findAll() throws RepositoryAccessException {
+        while (DatabaseUtil.activeConnectionWithDatabase) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        DatabaseUtil.activeConnectionWithDatabase = true;
+        Set<PersonDatabaseResponse> chefDatabaseResponses = new HashSet<>();
 
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             Statement stmt = connection.createStatement();
             ResultSet resultSet = stmt.executeQuery("SELECT * FROM CHEF;");
 
             while (resultSet.next()) {
-                Chef chef = ObjectMapper.mapResultSetToChef(resultSet);
-                chefs.add(chef);
+                chefDatabaseResponses.add(ObjectMapper.mapResultSetToPersonDatabaseResponse(resultSet));
             }
-
-            return chefs;
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
+        } finally {
+            DatabaseUtil.activeConnectionWithDatabase = false;
+            notifyAll();
         }
+
+        return ObjectMapper.mapChefDatabaseResponsesToChefs(chefDatabaseResponses);
     }
 
     @Override
-    public void save(Set<Chef> entities) throws RepositoryAccessException {
+    public synchronized void save(Set<Chef> entities) throws RepositoryAccessException {
+        while (DatabaseUtil.activeConnectionWithDatabase) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        DatabaseUtil.activeConnectionWithDatabase = true;
+
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             PreparedStatement stmt = connection.prepareStatement(
                     "INSERT INTO CHEF (FIRST_NAME, LAST_NAME, CONTRACT_ID, BONUS) VALUES (?, ?, ?, ?);");
@@ -65,23 +103,15 @@ public class ChefRepository extends AbstractRepository<Chef> {
             }
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
+        } finally {
+            DatabaseUtil.activeConnectionWithDatabase = false;
+            notifyAll();
         }
     }
 
     @Override
-    public Long findNextId() throws RepositoryAccessException {
-        try (Connection connection = DatabaseUtil.connectToDatabase()) {
-            Statement stmt = connection.createStatement();
-            ResultSet resultSet = stmt.executeQuery("SELECT MAX(ID) FROM CHEF;");
-
-            if (resultSet.next()) {
-                return resultSet.getLong(1) + 1;
-            } else {
-                return 1L;
-            }
-        } catch (IOException | SQLException e) {
-            throw new RepositoryAccessException(e);
-        }
+    public synchronized Long findNextId() throws RepositoryAccessException {
+        return 0L;
     }
 
     public Optional<Chef> findHighestPaidChef() {

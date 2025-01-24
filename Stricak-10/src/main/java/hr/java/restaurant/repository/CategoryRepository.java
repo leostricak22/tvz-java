@@ -14,7 +14,17 @@ import java.util.Set;
 public class CategoryRepository extends AbstractRepository<Category> {
 
     @Override
-    public Category findById(Long id) {
+    public synchronized Category findById(Long id) {
+        while (DatabaseUtil.activeConnectionWithDatabase) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        DatabaseUtil.activeConnectionWithDatabase = true;
+
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             PreparedStatement stmt = connection.prepareStatement(
                     "SELECT * FROM CATEGORY WHERE ID = ?;");
@@ -28,11 +38,24 @@ public class CategoryRepository extends AbstractRepository<Category> {
             }
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
+        } finally {
+            DatabaseUtil.activeConnectionWithDatabase = false;
+            notifyAll();
         }
     }
 
     @Override
-    public Set<Category> findAll() throws RepositoryAccessException {
+    public synchronized Set<Category> findAll() throws RepositoryAccessException {
+        while (DatabaseUtil.activeConnectionWithDatabase) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        DatabaseUtil.activeConnectionWithDatabase = true;
+
         Set<Category> categories = new HashSet<>();
 
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
@@ -47,11 +70,24 @@ public class CategoryRepository extends AbstractRepository<Category> {
             return categories;
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
+        } finally {
+            DatabaseUtil.activeConnectionWithDatabase = false;
+            notifyAll();
         }
     }
 
     @Override
-    public void save(Set<Category> entities) {
+    public synchronized void save(Set<Category> entities) {
+        while (DatabaseUtil.activeConnectionWithDatabase) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        DatabaseUtil.activeConnectionWithDatabase = true;
+
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             PreparedStatement stmt = connection.prepareStatement(
                     "INSERT INTO CATEGORY (NAME, DESCRIPTION) VALUES (?, ?);");
@@ -64,11 +100,24 @@ public class CategoryRepository extends AbstractRepository<Category> {
             }
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
+        } finally {
+            DatabaseUtil.activeConnectionWithDatabase = false;
+            notifyAll();
         }
     }
 
     @Override
-    public Long findNextId() {
+    public synchronized Long findNextId() {
+        while (DatabaseUtil.activeConnectionWithDatabase) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        DatabaseUtil.activeConnectionWithDatabase = true;
+
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             Statement stmt = connection.createStatement();
             ResultSet resultSet = stmt.executeQuery("SELECT MAX(ID) FROM CATEGORY;");
@@ -80,6 +129,9 @@ public class CategoryRepository extends AbstractRepository<Category> {
             }
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
+        } finally {
+            DatabaseUtil.activeConnectionWithDatabase = false;
+            notifyAll();
         }
     }
 

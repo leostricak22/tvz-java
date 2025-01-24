@@ -4,19 +4,33 @@ import hr.java.restaurant.exception.EmptyRepositoryResultException;
 import hr.java.restaurant.exception.RepositoryAccessException;
 import hr.java.restaurant.model.Category;
 import hr.java.restaurant.model.Ingredient;
+import hr.java.restaurant.model.dbo.IngredientDatabaseResponse;
 import hr.java.restaurant.util.DatabaseUtil;
 import hr.java.restaurant.util.ObjectMapper;
 
+import javax.xml.transform.Result;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 public class IngredientRepository extends AbstractRepository<Ingredient> {
 
     @Override
-    public Ingredient findById(Long id) throws RepositoryAccessException {
+    public synchronized Ingredient findById(Long id) throws RepositoryAccessException {
+        while (DatabaseUtil.activeConnectionWithDatabase) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        DatabaseUtil.activeConnectionWithDatabase = true;
+        IngredientDatabaseResponse ingredientDatabaseResponse;
+
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             PreparedStatement stmt = connection.prepareStatement(
                     "SELECT * FROM INGREDIENT WHERE ID = ?;");
@@ -24,36 +38,65 @@ public class IngredientRepository extends AbstractRepository<Ingredient> {
             ResultSet resultSet = stmt.executeQuery();
 
             if (resultSet.next()) {
-                return ObjectMapper.mapResultSetToIngredient(resultSet);
+                ingredientDatabaseResponse = ObjectMapper.mapResultSetToIngredientDatabaseResponse(resultSet);
             } else {
                 throw new EmptyRepositoryResultException("Ingredient with id " + id + " not found");
             }
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
+        } finally {
+            DatabaseUtil.activeConnectionWithDatabase = false;
+            notifyAll();
         }
+
+        return ObjectMapper.mapIngredientDatabaseResponseToIngredient(ingredientDatabaseResponse);
     }
 
     @Override
-    public Set<Ingredient> findAll() throws RepositoryAccessException {
-        Set<Ingredient> ingredients = new HashSet<>();
+    public synchronized Set<Ingredient> findAll() throws RepositoryAccessException {
+        while (DatabaseUtil.activeConnectionWithDatabase) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        DatabaseUtil.activeConnectionWithDatabase = true;
+        Set<IngredientDatabaseResponse> ingredientDatabaseResponses = new HashSet<>();
 
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             Statement stmt = connection.createStatement();
             ResultSet resultSet = stmt.executeQuery("SELECT * FROM INGREDIENT;");
 
             while (resultSet.next()) {
-                Ingredient ingredient = ObjectMapper.mapResultSetToIngredient(resultSet);
-                ingredients.add(ingredient);
+                IngredientDatabaseResponse ingredientDatabaseResponse =
+                        ObjectMapper.mapResultSetToIngredientDatabaseResponse(resultSet);
+                ingredientDatabaseResponses.add(ingredientDatabaseResponse);
             }
 
-            return ingredients;
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
+        } finally {
+            DatabaseUtil.activeConnectionWithDatabase = false;
+            notifyAll();
         }
+
+        return ObjectMapper.mapIngredientDatabaseResponsesToIngredients(ingredientDatabaseResponses);
     }
 
     @Override
-    public void save(Set<Ingredient> ingredients) throws RepositoryAccessException {
+    public synchronized void save(Set<Ingredient> ingredients) throws RepositoryAccessException {
+        while (DatabaseUtil.activeConnectionWithDatabase) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        DatabaseUtil.activeConnectionWithDatabase = true;
+
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             PreparedStatement stmt = connection.prepareStatement(
                     "INSERT INTO INGREDIENT (NAME, CATEGORY_ID, KCAL, PREPARATION_METHOD) VALUES (?, ?, ?, ?);");
@@ -67,22 +110,14 @@ public class IngredientRepository extends AbstractRepository<Ingredient> {
             }
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
+        } finally {
+            DatabaseUtil.activeConnectionWithDatabase = false;
+            notifyAll();
         }
     }
 
     @Override
-    public Long findNextId() throws RepositoryAccessException {
-        try (Connection connection = DatabaseUtil.connectToDatabase()) {
-            Statement stmt = connection.createStatement();
-            ResultSet resultSet = stmt.executeQuery("SELECT MAX(ID) FROM INGREDIENT;");
-
-            if (resultSet.next()) {
-                return resultSet.getLong(1) + 1;
-            } else {
-                return 1L;
-            }
-        } catch (IOException | SQLException e) {
-            throw new RepositoryAccessException(e);
-        }
+    public synchronized Long findNextId() throws RepositoryAccessException {
+        return 0L;
     }
 }

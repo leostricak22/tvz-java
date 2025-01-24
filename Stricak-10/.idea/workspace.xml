@@ -4,17 +4,30 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4f528465-ba8d-46d2-beb3-c46214f220ac" name="Changes" comment="feat: add Contract sorting and Progress bar">
-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/thread/HighestPaidPersonThread.java" afterDir="false" />
+    <list default="true" id="4f528465-ba8d-46d2-beb3-c46214f220ac" name="Changes" comment="feat: add a TimeLine thread to find the person with the highest salary">
+      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/dbo/IngredientDatabaseResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/dbo/MealDatabaseResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/dbo/OrderDatabaseResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/dbo/PersonDatabaseResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/dbo/RestaurantDatabaseResponse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/ContractController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/ContractController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/MenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/MenuController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/main/RestaurantApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/main/RestaurantApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/AddressRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/AddressRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/CategoryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/CategoryRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/ChefRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/ChefRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/ContractRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/ContractRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/DelivererRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/DelivererRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/IngredientRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/IngredientRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/MealIngredientsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/MealIngredientsRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/MealRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/MealRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/OrderMealsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/OrderMealsRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/OrderRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/OrderRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/RestaurantMealsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/RestaurantMealsRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/RestaurantRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/RestaurantRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/WaiterRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/WaiterRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/thread/SortingContractsThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/thread/SortingContractsThread.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/SceneLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/SceneLoader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/thread/HighestPaidPersonThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/thread/HighestPaidPersonThread.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/DatabaseUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/DatabaseUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/ObjectMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/ObjectMapper.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -223,7 +236,7 @@
       <workItem from="1737194941251" duration="4567000" />
       <workItem from="1737224030650" duration="1509000" />
       <workItem from="1737404095574" duration="21083000" />
-      <workItem from="1737727151975" duration="10752000" />
+      <workItem from="1737727151975" duration="22855000" />
     </task>
     <task id="LOCAL−00001" summary="feat: Add JavaFX project and add category searching and filtering">
       <option name="closed" value="true" />
@@ -463,7 +476,14 @@
       <option name="presentableId" value="LOCAL−00034" />
       <updated>1737734077916</updated>
     </task>
-    <option name="localTasksCounter" value="35" />
+    <task id="LOCAL−00035" summary="feat: add a TimeLine thread to find the person with the highest salary">
+      <option name="closed" value="true" />
+      <created>1737740540779</created>
+      <option name="number" value="LOCAL−00035" />
+      <option name="presentableId" value="LOCAL−00035" />
+      <updated>1737740540779</updated>
+    </task>
+    <option name="localTasksCounter" value="36" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -481,7 +501,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="feat: Filter orders for selected restaurant" />
     <MESSAGE value="refactor: Code cleanup" />
     <MESSAGE value="feat: Add Category Add scene" />
     <MESSAGE value="feat: Add Ingredient Add scene" />
@@ -506,6 +525,7 @@
     <MESSAGE value="feat: add restaurant database repository" />
     <MESSAGE value="feat: add order database repository" />
     <MESSAGE value="feat: add Contract sorting and Progress bar" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: add Contract sorting and Progress bar" />
+    <MESSAGE value="feat: add a TimeLine thread to find the person with the highest salary" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: add a TimeLine thread to find the person with the highest salary" />
   </component>
 </project>

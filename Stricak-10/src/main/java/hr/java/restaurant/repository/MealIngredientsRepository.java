@@ -3,6 +3,7 @@ package hr.java.restaurant.repository;
 import hr.java.restaurant.exception.RepositoryAccessException;
 import hr.java.restaurant.model.Ingredient;
 import hr.java.restaurant.model.Meal;
+import hr.java.restaurant.model.dbo.IngredientDatabaseResponse;
 import hr.java.restaurant.util.DatabaseUtil;
 import hr.java.restaurant.util.ObjectMapper;
 
@@ -17,7 +18,7 @@ import java.util.Set;
 public class MealIngredientsRepository {
 
     public static Set<Ingredient> getIngredientsForMeal(Long mealId) {
-        Set<Ingredient> ingredients = new HashSet<>();
+        Set<IngredientDatabaseResponse> ingredientDatabaseResponses = new HashSet<>();
 
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             PreparedStatement stmt = connection.prepareStatement("""
@@ -31,14 +32,13 @@ public class MealIngredientsRepository {
             ResultSet resultSet = stmt.executeQuery();
 
             while (resultSet.next()) {
-                Ingredient ingredient = ObjectMapper.mapResultSetToIngredient(resultSet);
-                ingredients.add(ingredient);
+                ingredientDatabaseResponses.add(ObjectMapper.mapResultSetToIngredientDatabaseResponse(resultSet));
             }
-
-            return ingredients;
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
         }
+
+        return ObjectMapper.mapIngredientDatabaseResponsesToIngredients(ingredientDatabaseResponses);
     }
 
     public static void saveIngredientsForMeal(Meal meal) {

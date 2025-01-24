@@ -2,6 +2,7 @@ package hr.java.restaurant.repository;
 
 import hr.java.restaurant.exception.RepositoryAccessException;
 import hr.java.restaurant.model.*;
+import hr.java.restaurant.model.dbo.OrderDatabaseResponse;
 import hr.java.restaurant.util.DatabaseUtil;
 import hr.java.restaurant.util.ObjectMapper;
 
@@ -13,42 +14,80 @@ import java.util.Set;
 public class OrderRepository extends AbstractRepository<Order> {
 
     @Override
-    public Order findById(Long id) throws RepositoryAccessException {
+    public  synchronized Order findById(Long id) throws RepositoryAccessException {
+        while (DatabaseUtil.activeConnectionWithDatabase) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        DatabaseUtil.activeConnectionWithDatabase = true;
+        OrderDatabaseResponse orderDatabaseResponse;
+
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             PreparedStatement stmt = connection.prepareStatement("SELECT * FROM RESTAURANT_ORDER WHERE ID = ?;");
             stmt.setLong(1, id);
             ResultSet resultSet = stmt.executeQuery();
 
             if (resultSet.next()) {
-                return ObjectMapper.mapResultSetToOrder(resultSet);
+                orderDatabaseResponse = ObjectMapper.mapResultSetToOrderDatabaseResponse(resultSet);
             } else {
                 throw new RepositoryAccessException("Order with id " + id + " not found");
             }
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
+        } finally {
+            DatabaseUtil.activeConnectionWithDatabase = false;
+            notifyAll();
         }
+
+        return ObjectMapper.mapOrderDatabaseResponseToOrder(orderDatabaseResponse);
     }
 
     @Override
-    public Set<Order> findAll() throws RepositoryAccessException {
-        Set<Order> meals = new HashSet<>();
+    public synchronized Set<Order> findAll() throws RepositoryAccessException {
+        while (DatabaseUtil.activeConnectionWithDatabase) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        DatabaseUtil.activeConnectionWithDatabase = true;
+        Set<OrderDatabaseResponse> orderDatabaseResponses = new HashSet<>();
 
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             Statement stmt = connection.createStatement();
             ResultSet resultSet = stmt.executeQuery("SELECT * FROM RESTAURANT_ORDER;");
 
             while (resultSet.next()) {
-                Order order = ObjectMapper.mapResultSetToOrder(resultSet);
-                meals.add(order);
+                orderDatabaseResponses.add(ObjectMapper.mapResultSetToOrderDatabaseResponse(resultSet));
             }
-
-            return meals;
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
-        }    }
+        } finally {
+            DatabaseUtil.activeConnectionWithDatabase = false;
+            notifyAll();
+        }
+
+        return ObjectMapper.mapOrderDatabaseResponsesToOrders(orderDatabaseResponses);
+    }
 
     @Override
-    public void save(Set<Order> entities) throws RepositoryAccessException {
+    public synchronized void save(Set<Order> entities) throws RepositoryAccessException {
+        while (DatabaseUtil.activeConnectionWithDatabase) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        DatabaseUtil.activeConnectionWithDatabase = true;
+
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             PreparedStatement stmt = connection.prepareStatement("""
                 INSERT INTO RESTAURANT_ORDER (RESTAURANT_ID, DELIVERER_ID, DATE_AND_TIME) VALUES (?, ?, ?);
@@ -69,22 +108,14 @@ public class OrderRepository extends AbstractRepository<Order> {
             }
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
+        } finally {
+            DatabaseUtil.activeConnectionWithDatabase = false;
+            notifyAll();
         }
     }
 
     @Override
-    public Long findNextId() throws RepositoryAccessException {
-        try (Connection connection = DatabaseUtil.connectToDatabase()) {
-            Statement stmt = connection.createStatement();
-            ResultSet resultSet = stmt.executeQuery("SELECT MAX(ID) FROM RESTAURANT_ORDER;");
-
-            if (resultSet.next()) {
-                return resultSet.getLong(1) + 1;
-            } else {
-                return 1L;
-            }
-        } catch (IOException | SQLException e) {
-            throw new RepositoryAccessException(e);
-        }
+    public synchronized Long findNextId() throws RepositoryAccessException {
+        return 0L;
     }
 }

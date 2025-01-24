@@ -14,7 +14,17 @@ import java.util.Set;
 public class AddressRepository extends AbstractRepository<Address> {
 
     @Override
-    public Address findById(Long id) throws RepositoryAccessException {
+    public synchronized Address findById(Long id) throws RepositoryAccessException {
+        while (DatabaseUtil.activeConnectionWithDatabase) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        DatabaseUtil.activeConnectionWithDatabase = true;
+
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             PreparedStatement stmt = connection.prepareStatement(
                     "SELECT * FROM ADDRESS WHERE ID = ?;");
@@ -28,11 +38,24 @@ public class AddressRepository extends AbstractRepository<Address> {
             }
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
+        } finally {
+            DatabaseUtil.activeConnectionWithDatabase = false;
+            notifyAll();
         }
     }
 
     @Override
-    public Set<Address> findAll() throws RepositoryAccessException {
+    public synchronized Set<Address> findAll() throws RepositoryAccessException {
+        while (DatabaseUtil.activeConnectionWithDatabase) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        DatabaseUtil.activeConnectionWithDatabase = true;
+
         Set<Address> addresses = new HashSet<>();
 
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
@@ -47,11 +70,24 @@ public class AddressRepository extends AbstractRepository<Address> {
             return addresses;
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
+        } finally {
+            DatabaseUtil.activeConnectionWithDatabase = false;
+            notifyAll();
         }
     }
 
     @Override
-    public void save(Set<Address> entities) throws RepositoryAccessException {
+    public synchronized void save(Set<Address> entities) throws RepositoryAccessException {
+        while (DatabaseUtil.activeConnectionWithDatabase) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        DatabaseUtil.activeConnectionWithDatabase = true;
+
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             PreparedStatement stmt = connection.prepareStatement(
                     "INSERT INTO ADDRESS (STREET, HOUSE_NUMBER, CITY, POSTAL_CODE) VALUES (?, ?, ?, ?);");
@@ -65,11 +101,24 @@ public class AddressRepository extends AbstractRepository<Address> {
             }
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
+        } finally {
+            DatabaseUtil.activeConnectionWithDatabase = false;
+            notifyAll();
         }
     }
 
     @Override
-    public Long findNextId() throws RepositoryAccessException {
+    public synchronized Long findNextId() throws RepositoryAccessException {
+        while (DatabaseUtil.activeConnectionWithDatabase) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        DatabaseUtil.activeConnectionWithDatabase = true;
+
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             Statement stmt = connection.createStatement();
             ResultSet resultSet = stmt.executeQuery("SELECT MAX(ID) FROM ADDRESS;");
@@ -81,6 +130,9 @@ public class AddressRepository extends AbstractRepository<Address> {
             }
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
+        }finally {
+            DatabaseUtil.activeConnectionWithDatabase = false;
+            notifyAll();
         }
     }
 }

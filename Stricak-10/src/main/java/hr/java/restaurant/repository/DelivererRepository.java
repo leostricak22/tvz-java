@@ -2,6 +2,8 @@ package hr.java.restaurant.repository;
 
 import hr.java.restaurant.exception.RepositoryAccessException;
 import hr.java.restaurant.model.Deliverer;
+import hr.java.restaurant.model.Person;
+import hr.java.restaurant.model.dbo.PersonDatabaseResponse;
 import hr.java.restaurant.util.DatabaseUtil;
 import hr.java.restaurant.util.ObjectMapper;
 
@@ -14,7 +16,18 @@ import java.util.Set;
 public class DelivererRepository extends AbstractRepository<Deliverer> {
 
     @Override
-    public Deliverer findById(Long id) throws RepositoryAccessException {
+    public synchronized Deliverer findById(Long id) throws RepositoryAccessException {
+        while (DatabaseUtil.activeConnectionWithDatabase) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        DatabaseUtil.activeConnectionWithDatabase = true;
+        PersonDatabaseResponse delivererDatabaseResponse;
+
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             PreparedStatement stmt = connection.prepareStatement(
                     "SELECT * FROM DELIVERER WHERE ID = ?;");
@@ -22,36 +35,62 @@ public class DelivererRepository extends AbstractRepository<Deliverer> {
             ResultSet resultSet = stmt.executeQuery();
 
             if (resultSet.next()) {
-                return ObjectMapper.mapResultSetToDeliverer(resultSet);
+                delivererDatabaseResponse = ObjectMapper.mapResultSetToPersonDatabaseResponse(resultSet);
             } else {
                 throw new RepositoryAccessException("Deliverer with id " + id + " not found");
             }
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
+        } finally {
+            DatabaseUtil.activeConnectionWithDatabase = false;
+            notifyAll();
         }
+
+        return ObjectMapper.mapDelivererDatabaseResponseToDeliverer(delivererDatabaseResponse);
     }
 
     @Override
-    public Set<Deliverer> findAll() throws RepositoryAccessException {
-        Set<Deliverer> deliverers = new HashSet<>();
+    public synchronized Set<Deliverer> findAll() throws RepositoryAccessException {
+        while (DatabaseUtil.activeConnectionWithDatabase) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        DatabaseUtil.activeConnectionWithDatabase = true;
+        Set<PersonDatabaseResponse> delivererDatabaseResponses = new HashSet<>();
 
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             Statement stmt = connection.createStatement();
             ResultSet resultSet = stmt.executeQuery("SELECT * FROM DELIVERER;");
 
             while (resultSet.next()) {
-                Deliverer deliverer = ObjectMapper.mapResultSetToDeliverer(resultSet);
-                deliverers.add(deliverer);
+                delivererDatabaseResponses.add(ObjectMapper.mapResultSetToPersonDatabaseResponse(resultSet));
             }
-
-            return deliverers;
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
+        } finally {
+            DatabaseUtil.activeConnectionWithDatabase = false;
+            notifyAll();
         }
+
+        return ObjectMapper.mapDelivererDatabaseResponsesToDeliverers(delivererDatabaseResponses);
     }
 
     @Override
-    public void save(Set<Deliverer> entities) throws RepositoryAccessException {
+    public synchronized void save(Set<Deliverer> entities) throws RepositoryAccessException {
+        while (DatabaseUtil.activeConnectionWithDatabase) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        DatabaseUtil.activeConnectionWithDatabase = true;
+
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             PreparedStatement stmt = connection.prepareStatement(
                     "INSERT INTO DELIVERER (FIRST_NAME, LAST_NAME, CONTRACT_ID, BONUS) VALUES (?, ?, ?, ?);");
@@ -65,23 +104,15 @@ public class DelivererRepository extends AbstractRepository<Deliverer> {
             }
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
+        } finally {
+            DatabaseUtil.activeConnectionWithDatabase = false;
+            notifyAll();
         }
     }
 
     @Override
-    public Long findNextId() throws RepositoryAccessException {
-        try (Connection connection = DatabaseUtil.connectToDatabase()) {
-            Statement stmt = connection.createStatement();
-            ResultSet resultSet = stmt.executeQuery("SELECT MAX(ID) FROM DELIVERER;");
-
-            if (resultSet.next()) {
-                return resultSet.getLong(1) + 1;
-            } else {
-                return 1L;
-            }
-        } catch (IOException | SQLException e) {
-            throw new RepositoryAccessException(e);
-        }
+    public synchronized Long findNextId() throws RepositoryAccessException {
+        return 0L;
     }
 
     public Optional<Deliverer> findHighestPaidDeliverer() {

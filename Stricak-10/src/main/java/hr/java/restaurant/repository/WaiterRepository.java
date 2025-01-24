@@ -1,7 +1,9 @@
 package hr.java.restaurant.repository;
 
 import hr.java.restaurant.exception.RepositoryAccessException;
+import hr.java.restaurant.model.Person;
 import hr.java.restaurant.model.Waiter;
+import hr.java.restaurant.model.dbo.PersonDatabaseResponse;
 import hr.java.restaurant.util.DatabaseUtil;
 import hr.java.restaurant.util.ObjectMapper;
 
@@ -14,7 +16,18 @@ import java.util.Set;
 public class WaiterRepository extends AbstractRepository<Waiter> {
 
     @Override
-    public Waiter findById(Long id) throws RepositoryAccessException {
+    public synchronized Waiter findById(Long id) throws RepositoryAccessException {
+        while (DatabaseUtil.activeConnectionWithDatabase) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        DatabaseUtil.activeConnectionWithDatabase = true;
+        PersonDatabaseResponse waiterDatabaseResponse;
+
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             PreparedStatement stmt = connection.prepareStatement(
                     "SELECT * FROM WAITER WHERE ID = ?;");
@@ -22,36 +35,62 @@ public class WaiterRepository extends AbstractRepository<Waiter> {
             ResultSet resultSet = stmt.executeQuery();
 
             if (resultSet.next()) {
-                return ObjectMapper.mapResultSetToWaiter(resultSet);
+                waiterDatabaseResponse = ObjectMapper.mapResultSetToPersonDatabaseResponse(resultSet);
             } else {
                 throw new RepositoryAccessException("Waiter with id " + id + " not found");
             }
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
+        } finally {
+            DatabaseUtil.activeConnectionWithDatabase = false;
+            notifyAll();
         }
+
+        return ObjectMapper.mapWaiterDatabaseResponseToWaiter(waiterDatabaseResponse);
     }
 
     @Override
-    public Set<Waiter> findAll() throws RepositoryAccessException {
-        Set<Waiter> waiters = new HashSet<>();
+    public synchronized Set<Waiter> findAll() throws RepositoryAccessException {
+        while (DatabaseUtil.activeConnectionWithDatabase) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        DatabaseUtil.activeConnectionWithDatabase = true;
+        Set<PersonDatabaseResponse> waiterDatabaseResponses = new HashSet<>();
 
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             Statement stmt = connection.createStatement();
             ResultSet resultSet = stmt.executeQuery("SELECT * FROM WAITER;");
 
             while (resultSet.next()) {
-                Waiter waiter = ObjectMapper.mapResultSetToWaiter(resultSet);
-                waiters.add(waiter);
+                waiterDatabaseResponses.add(ObjectMapper.mapResultSetToPersonDatabaseResponse(resultSet));
             }
-
-            return waiters;
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
+        } finally {
+            DatabaseUtil.activeConnectionWithDatabase = false;
+            notifyAll();
         }
+
+        return ObjectMapper.mapWaiterDatabaseResponsesToWaiters(waiterDatabaseResponses);
     }
 
     @Override
-    public void save(Set<Waiter> entities) throws RepositoryAccessException {
+    public synchronized void save(Set<Waiter> entities) throws RepositoryAccessException {
+        while (DatabaseUtil.activeConnectionWithDatabase) {
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        DatabaseUtil.activeConnectionWithDatabase = true;
+
         try (Connection connection = DatabaseUtil.connectToDatabase()) {
             PreparedStatement stmt = connection.prepareStatement(
                     "INSERT INTO WAITER (FIRST_NAME, LAST_NAME, CONTRACT_ID, BONUS) VALUES (?, ?, ?, ?);");
@@ -65,23 +104,15 @@ public class WaiterRepository extends AbstractRepository<Waiter> {
             }
         } catch (IOException | SQLException e) {
             throw new RepositoryAccessException(e);
+        } finally {
+            DatabaseUtil.activeConnectionWithDatabase = false;
+            notifyAll();
         }
     }
 
     @Override
-    public Long findNextId() throws RepositoryAccessException {
-        try (Connection connection = DatabaseUtil.connectToDatabase()) {
-            Statement stmt = connection.createStatement();
-            ResultSet resultSet = stmt.executeQuery("SELECT MAX(ID) FROM WAITER;");
-
-            if (resultSet.next()) {
-                return resultSet.getLong(1) + 1;
-            } else {
-                return 1L;
-            }
-        } catch (IOException | SQLException e) {
-            throw new RepositoryAccessException(e);
-        }
+    public synchronized Long findNextId() throws RepositoryAccessException {
+        return 0L;
     }
 
     public Optional<Waiter> findHighestPaidWaiter() {
