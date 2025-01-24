@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+
+<MenuBar prefWidth="1065.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+         fx:controller="hr.java.restaurant.controller.MenuController">
+    <Menu mnemonicParsing="false" text="Category">
+        <MenuItem mnemonicParsing="false" onAction="#showSearchScreen" id="categorySearch" text="Search"/>
+        <MenuItem mnemonicParsing="false" onAction="#showAddScreen" id="categoryAdd" text="Add"/>
+    </Menu>
+    <Menu mnemonicParsing="false" text="Ingredient">
+        <MenuItem mnemonicParsing="false" onAction="#showSearchScreen" id="ingredientSearch" text="Search"/>
+        <MenuItem mnemonicParsing="false" onAction="#showAddScreen" id="ingredientAdd" text="Add"/>
+    </Menu>
+    <Menu mnemonicParsing="false" text="Meal">
+        <MenuItem mnemonicParsing="false" onAction="#showSearchScreen" id="mealSearch" text="Search"/>
+        <MenuItem mnemonicParsing="false" onAction="#showAddScreen" id="mealAdd" text="Add"/>
+    </Menu>
+    <Menu mnemonicParsing="false" text="Chef">
+        <MenuItem mnemonicParsing="false" text="Search" onAction="#showSearchScreen" id="chefSearch"/>
+        <MenuItem mnemonicParsing="false" text="Add" onAction="#showAddPersonScreen" id="chefAdd"/>
+    </Menu>
+    <Menu mnemonicParsing="false" text="Waiter">
+        <MenuItem mnemonicParsing="false" text="Search" onAction="#showSearchScreen" id="waiterSearch"/>
+        <MenuItem mnemonicParsing="false" text="Add" onAction="#showAddPersonScreen" id="waiterAdd"/>
+    </Menu>
+    <Menu mnemonicParsing="false" text="Deliverer">
+        <MenuItem mnemonicParsing="false" text="Search" onAction="#showSearchScreen" id="delivererSearch"/>
+        <MenuItem mnemonicParsing="false" text="Add" onAction="#showAddPersonScreen" id="delivererAdd"/>
+    </Menu>
+    <Menu mnemonicParsing="false" text="Contract">
+        <MenuItem mnemonicParsing="false" text="Search" onAction="#showSearchScreen" id="contract"/>
+        <MenuItem mnemonicParsing="false" text="Add" onAction="#showAddScreen" id="contractAddStep1"/>
+    </Menu>
+    <Menu mnemonicParsing="false" text="Address">
+        <MenuItem mnemonicParsing="false" text="Search" onAction="#showSearchScreen" id="addressSearch"/>
+        <MenuItem mnemonicParsing="false" text="Add" onAction="#showAddScreen" id="addressAdd"/>
+    </Menu>
+    <Menu mnemonicParsing="false" text="Restaurant">
+        <MenuItem mnemonicParsing="false" text="Search" onAction="#showSearchScreen" id="restaurantSearch"/>
+        <MenuItem mnemonicParsing="false" text="Add" onAction="#showAddScreen" id="restaurantAdd"/>
+    </Menu>
+    <Menu mnemonicParsing="false" text="Order">
+        <MenuItem mnemonicParsing="false" text="Search" onAction="#showSearchScreen" id="orderSearch"/>
+        <MenuItem mnemonicParsing="false" text="Add" onAction="#showAddScreen" id="orderAdd"/>
+    </Menu>
+</MenuBar>
