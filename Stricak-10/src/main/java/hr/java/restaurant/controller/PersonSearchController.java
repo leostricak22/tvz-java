@@ -3,18 +3,27 @@ package hr.java.restaurant.controller;
 import hr.java.restaurant.enumeration.ContractType;
 import hr.java.restaurant.model.Bonus;
 import hr.java.restaurant.model.Contract;
+import hr.java.restaurant.model.Deliverer;
 import hr.java.restaurant.model.Person;
 import hr.java.restaurant.util.ComboBoxUtil;
+import hr.java.restaurant.util.FXMLLoaderHelper;
 import hr.java.restaurant.util.Localization;
 import javafx.beans.property.SimpleLongProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 import static java.util.Objects.isNull;
 
@@ -66,6 +75,15 @@ public abstract class PersonSearchController<T extends Person> implements Search
     @FXML
     private Label removeFilterLabel;
 
+
+
+    @FXML
+    private TableColumn<Deliverer, String> personOrderWaitingColumn;
+    @FXML
+    private TableColumn<Deliverer, String> personOrderDeliveredColumn;
+    @FXML
+    private TableColumn<Deliverer, String> personOrderDeliverInProcessColumn;
+
     protected abstract List<T> fetchAllPeople();
 
     @Override
@@ -97,13 +115,67 @@ public abstract class PersonSearchController<T extends Person> implements Search
         personContractBonusColumn.setCellValueFactory(cellData ->
                 new SimpleStringProperty(cellData.getValue().getBonus().amount().toString()));
 
+        personOrderDeliveredColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(String.valueOf((cellData.getValue()).getDeliveredOrders().size())));
+
+        personOrderWaitingColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(String.valueOf((cellData.getValue()).getWaitingOrders().size())));
+
+        personOrderDeliverInProcessColumn.setCellValueFactory(cellData ->
+                new SimpleStringProperty(String.valueOf((cellData.getValue()).getDeliverInProcessOrders().size())));
+
         personContractTypeComboBox.setItems(FXCollections.observableArrayList(ContractType.values()));
+
+        personTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            if (newSelection != null) {
+                openDelivererOrderDetails(newSelection);
+            } else {
+                System.out.println("No selection");
+            }
+        });
+
         filter();
+    }
+
+    private void openDelivererOrderDetails(Person person) {
+        if (person instanceof Deliverer deliverer) {
+
+            System.out.println(deliverer.getName());
+
+            try {
+                FXMLLoader loader = FXMLLoaderHelper.fxmlFilePath("delivererOrderDetails.fxml");
+                Parent root = loader.load();
+
+                Stage popupStage = new Stage();
+                popupStage.initModality(Modality.APPLICATION_MODAL);
+                popupStage.setTitle("Deliverer details");
+                popupStage.setScene(new Scene(root, 500, 500));
+
+                DelivererOrderDetailsController controller = loader.getController();
+                controller.initialize(deliverer);
+
+                controller.setOnComplete(this::reset);
+
+                popupStage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void reset() {
+        personTableView.getSelectionModel().clearSelection();
+
+        List<T> people = fetchAllPeople();
+        personTableView.setItems(FXCollections.observableArrayList(people));
+
     }
 
     @Override
     public void filter() {
-        List<T> people = fetchAllPeople();
+        System.out.println("Filtering");
+        reset();
+        /*List<T> people = fetchAllPeople();
         people.sort((c1, c2) -> c1.getId().compareTo(c2.getId()));
 
         String personIdTextFieldValue = personIdTextField.getText();
@@ -170,6 +242,8 @@ public abstract class PersonSearchController<T extends Person> implements Search
                         !personContractBonusToTextFieldValue.isBlank());
 
         personTableView.setItems(FXCollections.observableArrayList(people));
+
+         */
     }
 
     @Override

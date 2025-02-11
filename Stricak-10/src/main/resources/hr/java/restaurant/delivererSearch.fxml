@@ -273,14 +273,17 @@
             </GridPane>
             <TableView fx:id="personTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="4" GridPane.rowIndex="6" GridPane.rowSpan="3">
                 <columns>
-                    <TableColumn fx:id="personIdColumn" prefWidth="75.0" text="ID" />
-                    <TableColumn fx:id="personFirstNameColumn" prefWidth="118.0" text="First name" />
-                    <TableColumn fx:id="personLastNameColumn" prefWidth="116.0" text="Last name" />
-                    <TableColumn fx:id="personContractTypeColumn" prefWidth="105.0" text="Contract type" />
-                    <TableColumn fx:id="personContractStartDateColumn" prefWidth="244.0" text="Contract start date" />
-                    <TableColumn fx:id="personContractEndDateColumn" prefWidth="228.0" text="Contract end date" />
-                    <TableColumn fx:id="personContractBonusColumn" prefWidth="94.0" text="Bonus" />
-                    <TableColumn fx:id="personContractSalaryColumn" prefWidth="84.0" text="Salary" />
+                    <TableColumn fx:id="personIdColumn" prefWidth="41.0" text="ID" />
+                    <TableColumn fx:id="personFirstNameColumn" prefWidth="97.0" text="First name" />
+                    <TableColumn fx:id="personLastNameColumn" prefWidth="78.0" text="Last name" />
+                    <TableColumn fx:id="personContractTypeColumn" prefWidth="102.0" text="Contract type" />
+                    <TableColumn fx:id="personContractStartDateColumn" prefWidth="110.0" text="Contract start date" />
+                    <TableColumn fx:id="personContractEndDateColumn" prefWidth="129.0" text="Contract end date" />
+                    <TableColumn fx:id="personContractBonusColumn" prefWidth="61.0" text="Bonus" />
+                    <TableColumn fx:id="personContractSalaryColumn" text="Salary" />
+               <TableColumn fx:id="personOrderWaitingColumn" prefWidth="59.0" text="waiting" />
+               <TableColumn fx:id="personOrderDeliveredColumn" prefWidth="200.0" text="delivered" />
+               <TableColumn fx:id="personOrderDeliverInProcessColumn" prefWidth="107.0" text="deliver_in_process" />
                 </columns>
             </TableView>
             <Button mnemonicParsing="false" onAction="#filter" text="Search" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" />

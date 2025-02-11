@@ -6,19 +6,28 @@ import hr.java.restaurant.model.Order;
 import hr.java.restaurant.model.Restaurant;
 import hr.java.restaurant.repository.OrderRepository;
 import hr.java.restaurant.repository.RestaurantRepository;
-import hr.java.restaurant.util.AlertDialog;
-import hr.java.restaurant.util.ComboBoxUtil;
-import hr.java.restaurant.util.MultipleCheckBoxSelectUtil;
-import hr.java.restaurant.util.SceneLoader;
+import hr.java.restaurant.util.*;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.util.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -49,8 +58,37 @@ public class OrderAddController implements AddController {
                 FXCollections.observableArrayList(restaurantRepository.findAll()));
     }
 
+    private void showCountdownPopupAndContinue() {
+        try {
+            FXMLLoader loader = FXMLLoaderHelper.fxmlFilePath("orderAddCounterPopup.fxml");
+            Parent root = loader.load();
+
+            Stage popupStage = new Stage();
+            popupStage.initModality(Modality.APPLICATION_MODAL);
+            popupStage.setTitle("Countdown");
+            popupStage.setScene(new Scene(root, 250, 150));
+
+            OrderAddCounterPopupController controller = loader.getController();
+            controller.setPopupStage(popupStage);
+            controller.setOnComplete(this::continueOrderCreation);
+
+            controller.startCountdown();
+
+            popupStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void add() {
+        if(!AlertDialog.showQuestionDialog("Create order", "Are you sure you want to create order?"))
+            return;
+
+        showCountdownPopupAndContinue();
+    }
+
+    private void continueOrderCreation() {
         Restaurant restaurant = restaurantComboBox.getValue();
         Deliverer deliverer = delivererComboBox.getValue();
         String date = dateDatePicker.getValue().toString();
@@ -65,7 +103,6 @@ public class OrderAddController implements AddController {
         Order newOrder = new Order(orderRepository.findNextId(), restaurant, new ArrayList<>(selectedMeals), deliverer, dateDatePicker.getValue().atStartOfDay());
         orderRepository.save(newOrder);
         logger.info("Order created: {}", newOrder);
-        AlertDialog.showInformationDialog("Order created", "Order created successfully.");
 
         SceneLoader.loadScene("orderSearch", "Order search");
     }

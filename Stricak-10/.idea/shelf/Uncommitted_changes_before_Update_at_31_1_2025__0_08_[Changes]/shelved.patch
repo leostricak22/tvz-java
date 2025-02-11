@@ -1,0 +1,897 @@
+Index: src/main/java/hr/java/restaurant/model/Deliverer.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package hr.java.restaurant.model;\r\n\r\nimport org.slf4j.Logger;\r\nimport org.slf4j.LoggerFactory;\r\n\r\nimport java.io.Serializable;\r\nimport java.math.BigDecimal;\r\nimport java.util.*;\r\n\r\n/**\r\n * Represents a deliverer in a restaurant.\r\n */\r\npublic class Deliverer extends Person implements Serializable {\r\n\r\n    private final Contract contract;\r\n    private Bonus bonus;\r\n\r\n    /**\r\n     * Constructs a Deliverer object using the provided builder.\r\n     * @param builder the builder instance containing deliverer information\r\n     */\r\n    private Deliverer(Builder builder) {\r\n        super(builder.id, builder.firstName, builder.lastName, builder.bonus);\r\n        this.contract = builder.contract;\r\n        this.bonus = builder.bonus;\r\n    }\r\n\r\n    @Override\r\n    public Bonus getBonus() {\r\n        return bonus;\r\n    }\r\n\r\n    public void setBonus(Bonus bonus) {\r\n        this.bonus = bonus;\r\n    }\r\n\r\n    @Override\r\n    public BigDecimal getSalary() {\r\n        return contract.getSalary();\r\n    }\r\n\r\n    @Override\r\n    public Contract getContract() {\r\n        return contract;\r\n    }\r\n\r\n    /**\r\n     * Builder class for creating instances of {@link Deliverer}.\r\n     */\r\n    public static class Builder {\r\n        private final Long id;\r\n        private String firstName;\r\n        private String lastName;\r\n        private Contract contract;\r\n        private Bonus bonus;\r\n\r\n        public Builder(Long id) {\r\n            this.id = id;\r\n        }\r\n\r\n        public Builder setFirstName(String firstName) {\r\n            this.firstName = firstName;\r\n            return this;\r\n        }\r\n\r\n        public Builder setLastName(String lastName) {\r\n            this.lastName = lastName;\r\n            return this;\r\n        }\r\n\r\n        public Builder setContract(Contract contract) {\r\n            this.contract = contract;\r\n            return this;\r\n        }\r\n\r\n        public Builder setBonus(Bonus bonus) {\r\n            this.bonus = bonus;\r\n            return this;\r\n        }\r\n\r\n        public Deliverer build() {\r\n            return new Deliverer(this);\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/hr/java/restaurant/model/Deliverer.java b/src/main/java/hr/java/restaurant/model/Deliverer.java
+--- a/src/main/java/hr/java/restaurant/model/Deliverer.java	(revision cb643358ca8f17c6e691da0b08e73eb240b17709)
++++ b/src/main/java/hr/java/restaurant/model/Deliverer.java	(date 1738262913550)
+@@ -1,10 +1,17 @@
+ package hr.java.restaurant.model;
+ 
++import hr.java.restaurant.util.DatabaseUtil;
++import hr.java.restaurant.util.ObjectMapper;
+ import org.slf4j.Logger;
+ import org.slf4j.LoggerFactory;
+ 
++import java.io.IOException;
+ import java.io.Serializable;
+ import java.math.BigDecimal;
++import java.sql.Connection;
++import java.sql.PreparedStatement;
++import java.sql.ResultSet;
++import java.sql.SQLException;
+ import java.util.*;
+ 
+ /**
+@@ -17,6 +24,7 @@
+ 
+     /**
+      * Constructs a Deliverer object using the provided builder.
++     *
+      * @param builder the builder instance containing deliverer information
+      */
+     private Deliverer(Builder builder) {
+@@ -82,4 +90,110 @@
+             return new Deliverer(this);
+         }
+     }
++
++    public Set<Order> getDeliveredOrders() {
++        Set<Order> deliveredOrders = new HashSet<>();
++        String query = """
++                SELECT * FROM RESTAURANT_ORDER WHERE DELIVERED = TRUE AND DELIVERER_ID = ?;
++                """;
++
++        try (Connection connection = DatabaseUtil.connectToDatabase()) {
++            PreparedStatement stmt = connection.prepareStatement(query);
++            stmt.setLong(1, getId());
++
++            ResultSet resultSet = stmt.executeQuery();
++
++            while (resultSet.next()) {
++                Order order = ObjectMapper.mapResultSetToOrder(resultSet);
++                deliveredOrders.add(order);
++            }
++
++        } catch (SQLException | IOException e) {
++            throw new RuntimeException(e);
++        }
++
++        return deliveredOrders;
++    }
++
++    public Set<Order> getWaitingOrders() {
++        Set<Order> waitingOrders = new HashSet<>();
++        String query = """
++                SELECT * FROM RESTAURANT_ORDER WHERE WAITING = TRUE AND DELIVERER_ID = ?;
++                """;
++
++        try (Connection connection = DatabaseUtil.connectToDatabase()) {
++            PreparedStatement stmt = connection.prepareStatement(query);
++            stmt.setLong(1, getId());
++
++            ResultSet resultSet = stmt.executeQuery();
++
++            while (resultSet.next()) {
++                Order order = ObjectMapper.mapResultSetToOrder(resultSet);
++                waitingOrders.add(order);
++            }
++
++        } catch (SQLException | IOException e) {
++            throw new RuntimeException(e);
++        }
++
++        return waitingOrders;
++    }
++
++    public Set<Order> getDeliverInProcessOrders() {
++        Set<Order> deliverInProcessOrders = new HashSet<>();
++        String query = """
++                SELECT * FROM RESTAURANT_ORDER WHERE DELIVER_IN_PROCESS = TRUE AND DELIVERER_ID = ?;
++                """;
++
++        try (Connection connection = DatabaseUtil.connectToDatabase()) {
++            PreparedStatement stmt = connection.prepareStatement(query);
++            stmt.setLong(1, getId());
++
++            ResultSet resultSet = stmt.executeQuery();
++
++            while (resultSet.next()) {
++                Order order = ObjectMapper.mapResultSetToOrder(resultSet);
++                deliverInProcessOrders.add(order);
++            }
++
++        } catch (SQLException | IOException e) {
++            throw new RuntimeException(e);
++        }
++
++        return deliverInProcessOrders;
++    }
++
++    public void deliverInProcessOrder(Order order) {
++        String query = """
++                UPDATE RESTAURANT_ORDER
++                SET WAITING = FALSE, DELIVER_IN_PROCESS = TRUE, DELIVERED = FALSE
++                WHERE ID = ?;
++                """;
++
++        try (Connection connection = DatabaseUtil.connectToDatabase()) {
++            PreparedStatement stmt = connection.prepareStatement(query);
++            stmt.setLong(1, order.getId());
++
++            stmt.executeUpdate();
++        } catch (SQLException | IOException e) {
++            throw new RuntimeException(e);
++        }
++    }
++
++    public void deliverOrder(Order order) {
++        String query = """
++                UPDATE RESTAURANT_ORDER
++                SET WAITING = FALSE, DELIVER_IN_PROCESS = FALSE, DELIVERED = TRUE
++                WHERE ID = ?;
++                """;
++
++        try (Connection connection = DatabaseUtil.connectToDatabase()) {
++            PreparedStatement stmt = connection.prepareStatement(query);
++            stmt.setLong(1, order.getId());
++
++            stmt.executeUpdate();
++        } catch (SQLException | IOException e) {
++            throw new RuntimeException(e);
++        }
++    }
+ }
+Index: src/main/java/hr/java/restaurant/controller/PersonSearchController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package hr.java.restaurant.controller;\r\n\r\nimport hr.java.restaurant.enumeration.ContractType;\r\nimport hr.java.restaurant.model.Bonus;\r\nimport hr.java.restaurant.model.Contract;\r\nimport hr.java.restaurant.model.Person;\r\nimport hr.java.restaurant.util.ComboBoxUtil;\r\nimport hr.java.restaurant.util.Localization;\r\nimport javafx.beans.property.SimpleLongProperty;\r\nimport javafx.beans.property.SimpleStringProperty;\r\nimport javafx.collections.FXCollections;\r\nimport javafx.fxml.FXML;\r\nimport javafx.scene.control.*;\r\n\r\nimport java.math.BigDecimal;\r\nimport java.time.LocalDate;\r\nimport java.util.List;\r\n\r\nimport static java.util.Objects.isNull;\r\n\r\npublic abstract class PersonSearchController<T extends Person> implements SearchController {\r\n\r\n    @FXML\r\n    private TextField personIdTextField;\r\n    @FXML\r\n    private TextField personFirstNameTextField;\r\n    @FXML\r\n    private TextField personLastNameTextField;\r\n    @FXML\r\n    private ComboBox<ContractType> personContractTypeComboBox;\r\n    @FXML\r\n    private DatePicker personContractStartDateFromDatePicker;\r\n    @FXML\r\n    private DatePicker personContractStartDateToDatePicker;\r\n    @FXML\r\n    private DatePicker personContractEndDateFromDatePicker;\r\n    @FXML\r\n    private DatePicker personContractEndDateToDatePicker;\r\n    @FXML\r\n    private TextField personContractSalaryFromTextField;\r\n    @FXML\r\n    private TextField personContractSalaryToTextField;\r\n    @FXML\r\n    private TextField personContractBonusFromTextField;\r\n    @FXML\r\n    private TextField personContractBonusToTextField;\r\n    @FXML\r\n    private TableView<Person> personTableView;\r\n    @FXML\r\n    private TableColumn<Person, Long> personIdColumn;\r\n    @FXML\r\n    private TableColumn<Person, String> personFirstNameColumn;\r\n    @FXML\r\n    private TableColumn<Person, String> personLastNameColumn;\r\n    @FXML\r\n    private TableColumn<Person, String> personContractTypeColumn;\r\n    @FXML\r\n    private TableColumn<Person, String> personContractStartDateColumn;\r\n    @FXML\r\n    private TableColumn<Person, String> personContractEndDateColumn;\r\n    @FXML\r\n    private TableColumn<Person, String> personContractSalaryColumn;\r\n    @FXML\r\n    private TableColumn<Person, String> personContractBonusColumn;\r\n\r\n    @FXML\r\n    private Label removeFilterLabel;\r\n\r\n    protected abstract List<T> fetchAllPeople();\r\n\r\n    @Override\r\n    public void initialize() {\r\n        ComboBoxUtil.comboBoxContractTypeConverter(personContractTypeComboBox);\r\n\r\n        personIdColumn.setCellValueFactory(cellData ->\r\n                new SimpleLongProperty(cellData.getValue().getId()).asObject());\r\n\r\n        personFirstNameColumn.setCellValueFactory(cellData ->\r\n                new SimpleStringProperty(cellData.getValue().getFirstName()));\r\n\r\n        personLastNameColumn.setCellValueFactory(cellData ->\r\n                new SimpleStringProperty(cellData.getValue().getLastName()));\r\n\r\n        personContractTypeColumn.setCellValueFactory(cellData ->\r\n                new SimpleStringProperty(cellData.getValue().getContract().getContractType().getName()));\r\n\r\n        personContractStartDateColumn.setCellValueFactory(cellData ->\r\n                new SimpleStringProperty(cellData.getValue().getContract().getStartDate()\r\n                        .format(Localization.DateFormatter())));\r\n\r\n        personContractEndDateColumn.setCellValueFactory(cellData ->\r\n                new SimpleStringProperty(isNull(cellData.getValue().getContract().getEndDate()) ? \"-\" : cellData.getValue().getContract().getEndDate().format(Localization.DateFormatter())));\r\n\r\n        personContractSalaryColumn.setCellValueFactory(cellData ->\r\n                new SimpleStringProperty(cellData.getValue().getContract().getSalary().toString()));\r\n\r\n        personContractBonusColumn.setCellValueFactory(cellData ->\r\n                new SimpleStringProperty(cellData.getValue().getBonus().amount().toString()));\r\n\r\n        personContractTypeComboBox.setItems(FXCollections.observableArrayList(ContractType.values()));\r\n        filter();\r\n    }\r\n\r\n    @Override\r\n    public void filter() {\r\n        List<T> people = fetchAllPeople();\r\n        people.sort((c1, c2) -> c1.getId().compareTo(c2.getId()));\r\n\r\n        String personIdTextFieldValue = personIdTextField.getText();\r\n        String personFirstNameTextFieldValue = personFirstNameTextField.getText();\r\n        String personLastNameTextFieldValue = personLastNameTextField.getText();\r\n        String personContractTypeComboBoxValue = ComboBoxUtil.getComboBoxValue(personContractTypeComboBox)\r\n                .map(ContractType::getName).orElse(\"\");\r\n        LocalDate personContractStartDateFromValue = personContractStartDateFromDatePicker.getValue();\r\n        LocalDate personContractStartDateToValue = personContractStartDateToDatePicker.getValue();\r\n        LocalDate personContractEndDateFromValue = personContractEndDateFromDatePicker.getValue();\r\n        LocalDate personContractEndDateToValue = personContractEndDateToDatePicker.getValue();\r\n        String personContractSalaryFromTextFieldValue = personContractSalaryFromTextField.getText();\r\n        String personContractSalaryToTextFieldValue = personContractSalaryToTextField.getText();\r\n        String personContractBonusFromTextFieldValue = personContractBonusFromTextField.getText();\r\n        String personContractBonusToTextFieldValue = personContractBonusToTextField.getText();\r\n\r\n        people = people.stream()\r\n                .filter(person -> person.getId().toString().equals(personIdTextFieldValue) || personIdTextFieldValue.isBlank())\r\n                .filter(person -> person.getFirstName().contains(personFirstNameTextFieldValue))\r\n                .filter(person -> person.getLastName().contains(personLastNameTextFieldValue))\r\n                .filter(person -> person.getContract().getContractType().getName().contains(personContractTypeComboBoxValue))\r\n                .filter(person -> {\r\n                    Contract contract = person.getContract();\r\n                    return (personContractStartDateFromValue == null ||\r\n                            contract.getStartDate().isAfter(personContractStartDateFromValue.minusDays(1)))\r\n                            && (personContractStartDateToValue == null ||\r\n                            contract.getStartDate().isBefore(personContractStartDateToValue.plusDays(1)));\r\n                })\r\n                .filter(person -> {\r\n                    Contract contract = person.getContract();\r\n                    return (personContractEndDateFromValue == null ||\r\n                            contract.getEndDate().isAfter(personContractEndDateFromValue.minusDays(1)))\r\n                            && (personContractEndDateToValue == null ||\r\n                            contract.getEndDate().isBefore(personContractEndDateToValue.plusDays(1)));\r\n                })\r\n                .filter(person -> {\r\n                    Contract contract = person.getContract();\r\n                    return (personContractSalaryFromTextFieldValue.isBlank() ||\r\n                            contract.getSalary().compareTo(new BigDecimal(personContractSalaryFromTextFieldValue)) >= 0)\r\n                            && (personContractSalaryToTextFieldValue.isBlank() ||\r\n                            contract.getSalary().compareTo(new BigDecimal(personContractSalaryToTextFieldValue)) <= 0);\r\n                })\r\n                .filter(person -> {\r\n                    Bonus bonus = person.getBonus();\r\n                    return (personContractBonusFromTextFieldValue.isBlank() ||\r\n                            bonus.amount().compareTo(new BigDecimal(personContractBonusFromTextFieldValue)) >= 0)\r\n                            && (personContractBonusToTextFieldValue.isBlank() ||\r\n                            bonus.amount().compareTo(new BigDecimal(personContractBonusToTextFieldValue)) <= 0);\r\n                })\r\n                .toList();\r\n\r\n        removeFilterLabel.setVisible(\r\n                !personIdTextFieldValue.isBlank() ||\r\n                        !personFirstNameTextFieldValue.isBlank() ||\r\n                        !personLastNameTextFieldValue.isBlank() ||\r\n                        !personContractTypeComboBoxValue.isBlank() ||\r\n                        personContractStartDateFromValue != null ||\r\n                        personContractStartDateToValue != null ||\r\n                        personContractEndDateFromValue != null ||\r\n                        personContractEndDateToValue != null ||\r\n                        !personContractSalaryFromTextFieldValue.isBlank() ||\r\n                        !personContractSalaryToTextFieldValue.isBlank() ||\r\n                        !personContractBonusFromTextFieldValue.isBlank() ||\r\n                        !personContractBonusToTextFieldValue.isBlank());\r\n\r\n        personTableView.setItems(FXCollections.observableArrayList(people));\r\n    }\r\n\r\n    @Override\r\n    public void removeFilter() {\r\n        personIdTextField.clear();\r\n        personFirstNameTextField.clear();\r\n        personLastNameTextField.clear();\r\n        personContractTypeComboBox.getSelectionModel().clearSelection();\r\n        personContractStartDateFromDatePicker.setValue(null);\r\n        personContractStartDateToDatePicker.setValue(null);\r\n        personContractEndDateFromDatePicker.setValue(null);\r\n        personContractEndDateToDatePicker.setValue(null);\r\n        personContractSalaryFromTextField.clear();\r\n        personContractSalaryToTextField.clear();\r\n        personContractBonusFromTextField.clear();\r\n        personContractBonusToTextField.clear();\r\n        removeFilterLabel.setVisible(false);\r\n\r\n        filter();\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/hr/java/restaurant/controller/PersonSearchController.java b/src/main/java/hr/java/restaurant/controller/PersonSearchController.java
+--- a/src/main/java/hr/java/restaurant/controller/PersonSearchController.java	(revision cb643358ca8f17c6e691da0b08e73eb240b17709)
++++ b/src/main/java/hr/java/restaurant/controller/PersonSearchController.java	(date 1738263783351)
+@@ -3,18 +3,27 @@
+ import hr.java.restaurant.enumeration.ContractType;
+ import hr.java.restaurant.model.Bonus;
+ import hr.java.restaurant.model.Contract;
++import hr.java.restaurant.model.Deliverer;
+ import hr.java.restaurant.model.Person;
+ import hr.java.restaurant.util.ComboBoxUtil;
++import hr.java.restaurant.util.FXMLLoaderHelper;
+ import hr.java.restaurant.util.Localization;
+ import javafx.beans.property.SimpleLongProperty;
+ import javafx.beans.property.SimpleStringProperty;
+ import javafx.collections.FXCollections;
+ import javafx.fxml.FXML;
++import javafx.fxml.FXMLLoader;
++import javafx.scene.Parent;
++import javafx.scene.Scene;
+ import javafx.scene.control.*;
++import javafx.stage.Modality;
++import javafx.stage.Stage;
+ 
++import java.io.IOException;
+ import java.math.BigDecimal;
+ import java.time.LocalDate;
+ import java.util.List;
++import java.util.Set;
+ 
+ import static java.util.Objects.isNull;
+ 
+@@ -66,6 +75,15 @@
+     @FXML
+     private Label removeFilterLabel;
+ 
++
++
++    @FXML
++    private TableColumn<Deliverer, String> personOrderWaitingColumn;
++    @FXML
++    private TableColumn<Deliverer, String> personOrderDeliveredColumn;
++    @FXML
++    private TableColumn<Deliverer, String> personOrderDeliverInProcessColumn;
++
+     protected abstract List<T> fetchAllPeople();
+ 
+     @Override
+@@ -97,13 +115,67 @@
+         personContractBonusColumn.setCellValueFactory(cellData ->
+                 new SimpleStringProperty(cellData.getValue().getBonus().amount().toString()));
+ 
++        personOrderDeliveredColumn.setCellValueFactory(cellData ->
++                new SimpleStringProperty(String.valueOf((cellData.getValue()).getDeliveredOrders().size())));
++
++        personOrderWaitingColumn.setCellValueFactory(cellData ->
++                new SimpleStringProperty(String.valueOf((cellData.getValue()).getWaitingOrders().size())));
++
++        personOrderDeliverInProcessColumn.setCellValueFactory(cellData ->
++                new SimpleStringProperty(String.valueOf((cellData.getValue()).getDeliverInProcessOrders().size())));
++
+         personContractTypeComboBox.setItems(FXCollections.observableArrayList(ContractType.values()));
++
++        personTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
++            if (newSelection != null) {
++                openDelivererOrderDetails(newSelection);
++            } else {
++                System.out.println("No selection");
++            }
++        });
++
+         filter();
+     }
+ 
++    private void openDelivererOrderDetails(Person person) {
++        if (person instanceof Deliverer deliverer) {
++
++            System.out.println(deliverer.getName());
++
++            try {
++                FXMLLoader loader = FXMLLoaderHelper.fxmlFilePath("delivererOrderDetails.fxml");
++                Parent root = loader.load();
++
++                Stage popupStage = new Stage();
++                popupStage.initModality(Modality.APPLICATION_MODAL);
++                popupStage.setTitle("Deliverer details");
++                popupStage.setScene(new Scene(root, 500, 500));
++
++                DelivererOrderDetailsController controller = loader.getController();
++                controller.initialize(deliverer);
++
++                controller.setOnComplete(this::reset);
++
++                popupStage.show();
++            } catch (IOException e) {
++                e.printStackTrace();
++            }
++        }
++    }
++
++    private void reset() {
++        personTableView.getSelectionModel().clearSelection();
++
++        List<T> people = fetchAllPeople();
++        personTableView.setItems(FXCollections.observableArrayList(people));
++
++    }
++
+     @Override
+     public void filter() {
+-        List<T> people = fetchAllPeople();
++        System.out.println("Filtering");
++        reset();
++        /*List<T> people = fetchAllPeople();
+         people.sort((c1, c2) -> c1.getId().compareTo(c2.getId()));
+ 
+         String personIdTextFieldValue = personIdTextField.getText();
+@@ -170,6 +242,8 @@
+                         !personContractBonusToTextFieldValue.isBlank());
+ 
+         personTableView.setItems(FXCollections.observableArrayList(people));
++
++         */
+     }
+ 
+     @Override
+Index: src/main/java/hr/java/restaurant/controller/OrderAddController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package hr.java.restaurant.controller;\r\n\r\nimport hr.java.restaurant.model.Deliverer;\r\nimport hr.java.restaurant.model.Meal;\r\nimport hr.java.restaurant.model.Order;\r\nimport hr.java.restaurant.model.Restaurant;\r\nimport hr.java.restaurant.repository.OrderRepository;\r\nimport hr.java.restaurant.repository.RestaurantRepository;\r\nimport hr.java.restaurant.util.AlertDialog;\r\nimport hr.java.restaurant.util.ComboBoxUtil;\r\nimport hr.java.restaurant.util.MultipleCheckBoxSelectUtil;\r\nimport hr.java.restaurant.util.SceneLoader;\r\nimport javafx.collections.FXCollections;\r\nimport javafx.fxml.FXML;\r\nimport javafx.scene.control.Button;\r\nimport javafx.scene.control.ComboBox;\r\nimport javafx.scene.control.DatePicker;\r\nimport javafx.scene.control.Label;\r\nimport org.slf4j.Logger;\r\nimport org.slf4j.LoggerFactory;\r\n\r\nimport java.util.ArrayList;\r\nimport java.util.HashSet;\r\nimport java.util.Set;\r\n\r\nimport static java.util.Objects.isNull;\r\n\r\npublic class OrderAddController implements AddController {\r\n\r\n    @FXML private ComboBox<Restaurant> restaurantComboBox;\r\n    @FXML private ComboBox<Deliverer> delivererComboBox;\r\n\r\n    @FXML private Button pickMealsButton;\r\n    @FXML private DatePicker dateDatePicker;\r\n    @FXML private Label mealNameArrayLabel;\r\n\r\n    private static final Logger logger = LoggerFactory.getLogger(OrderAddController.class);\r\n\r\n    private final OrderRepository orderRepository = new OrderRepository();\r\n    private static final RestaurantRepository restaurantRepository = new RestaurantRepository();\r\n\r\n    private Set<Meal> selectedMeals = new HashSet<>();\r\n\r\n    @Override\r\n    public void initialize() {\r\n        ComboBoxUtil.comboBoxStringConverter(restaurantComboBox);\r\n        ComboBoxUtil.comboBoxStringConverter(delivererComboBox);\r\n        restaurantComboBox.setItems(\r\n                FXCollections.observableArrayList(restaurantRepository.findAll()));\r\n    }\r\n\r\n    @Override\r\n    public void add() {\r\n        Restaurant restaurant = restaurantComboBox.getValue();\r\n        Deliverer deliverer = delivererComboBox.getValue();\r\n        String date = dateDatePicker.getValue().toString();\r\n\r\n        String error = validateInput(restaurant, deliverer, date, selectedMeals);\r\n        if(!error.isEmpty()) {\r\n            AlertDialog.showErrorDialog(\"Error while creating an order\", error);\r\n            logger.error(\"Error while creating an order: {}\", error);\r\n            return;\r\n        }\r\n\r\n        Order newOrder = new Order(orderRepository.findNextId(), restaurant, new ArrayList<>(selectedMeals), deliverer, dateDatePicker.getValue().atStartOfDay());\r\n        orderRepository.save(newOrder);\r\n        logger.info(\"Order created: {}\", newOrder);\r\n        AlertDialog.showInformationDialog(\"Order created\", \"Order created successfully.\");\r\n\r\n        SceneLoader.loadScene(\"orderSearch\", \"Order search\");\r\n    }\r\n\r\n    private String validateInput(Restaurant restaurant, Deliverer deliverer, String date, Set<Meal> selectedMeals) {\r\n        StringBuilder error = new StringBuilder();\r\n\r\n        if(isNull(restaurant)) {\r\n            error.append(\"Restaurant is not selected.\\n\");\r\n        }\r\n\r\n        if(isNull(deliverer)) {\r\n            error.append(\"Deliverer is not selected.\\n\");\r\n        }\r\n\r\n        if(date.isEmpty()) {\r\n            error.append(\"Date is not selected.\\n\");\r\n        }\r\n\r\n        if(selectedMeals.isEmpty()) {\r\n            error.append(\"Meals are not selected.\\n\");\r\n        }\r\n\r\n        return error.toString();\r\n\r\n    }\r\n\r\n    public void handleSelectRestaurant() {\r\n        delivererComboBox.setDisable(false);\r\n        pickMealsButton.setDisable(false);\r\n        dateDatePicker.setDisable(false);\r\n\r\n        delivererComboBox.setItems(\r\n                FXCollections.observableArrayList(restaurantComboBox.getValue().getDeliverers()));\r\n    }\r\n\r\n    public void pickMeals() {\r\n        selectedMeals = MultipleCheckBoxSelectUtil.pickMealsFromMultipleCheckBoxWindow(\r\n                restaurantComboBox.getValue().getMeals(),\r\n                selectedMeals,\r\n                mealNameArrayLabel);\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/hr/java/restaurant/controller/OrderAddController.java b/src/main/java/hr/java/restaurant/controller/OrderAddController.java
+--- a/src/main/java/hr/java/restaurant/controller/OrderAddController.java	(revision cb643358ca8f17c6e691da0b08e73eb240b17709)
++++ b/src/main/java/hr/java/restaurant/controller/OrderAddController.java	(date 1738263648590)
+@@ -6,19 +6,28 @@
+ import hr.java.restaurant.model.Restaurant;
+ import hr.java.restaurant.repository.OrderRepository;
+ import hr.java.restaurant.repository.RestaurantRepository;
+-import hr.java.restaurant.util.AlertDialog;
+-import hr.java.restaurant.util.ComboBoxUtil;
+-import hr.java.restaurant.util.MultipleCheckBoxSelectUtil;
+-import hr.java.restaurant.util.SceneLoader;
++import hr.java.restaurant.util.*;
++import javafx.animation.KeyFrame;
++import javafx.animation.Timeline;
+ import javafx.collections.FXCollections;
+ import javafx.fxml.FXML;
++import javafx.fxml.FXMLLoader;
++import javafx.geometry.Pos;
++import javafx.scene.Parent;
++import javafx.scene.Scene;
+ import javafx.scene.control.Button;
+ import javafx.scene.control.ComboBox;
+ import javafx.scene.control.DatePicker;
+ import javafx.scene.control.Label;
++import javafx.scene.layout.VBox;
++import javafx.scene.text.Font;
++import javafx.stage.Modality;
++import javafx.stage.Stage;
++import javafx.util.Duration;
+ import org.slf4j.Logger;
+ import org.slf4j.LoggerFactory;
+ 
++import java.io.IOException;
+ import java.util.ArrayList;
+ import java.util.HashSet;
+ import java.util.Set;
+@@ -49,8 +58,37 @@
+                 FXCollections.observableArrayList(restaurantRepository.findAll()));
+     }
+ 
++    private void showCountdownPopupAndContinue() {
++        try {
++            FXMLLoader loader = FXMLLoaderHelper.fxmlFilePath("orderAddCounterPopup.fxml");
++            Parent root = loader.load();
++
++            Stage popupStage = new Stage();
++            popupStage.initModality(Modality.APPLICATION_MODAL);
++            popupStage.setTitle("Countdown");
++            popupStage.setScene(new Scene(root, 250, 150));
++
++            OrderAddCounterPopupController controller = loader.getController();
++            controller.setPopupStage(popupStage);
++            controller.setOnComplete(this::continueOrderCreation);
++
++            controller.startCountdown();
++
++            popupStage.show();
++        } catch (IOException e) {
++            e.printStackTrace();
++        }
++    }
++
+     @Override
+     public void add() {
++        if(!AlertDialog.showQuestionDialog("Create order", "Are you sure you want to create order?"))
++            return;
++
++        showCountdownPopupAndContinue();
++    }
++
++    private void continueOrderCreation() {
+         Restaurant restaurant = restaurantComboBox.getValue();
+         Deliverer deliverer = delivererComboBox.getValue();
+         String date = dateDatePicker.getValue().toString();
+@@ -65,7 +103,6 @@
+         Order newOrder = new Order(orderRepository.findNextId(), restaurant, new ArrayList<>(selectedMeals), deliverer, dateDatePicker.getValue().atStartOfDay());
+         orderRepository.save(newOrder);
+         logger.info("Order created: {}", newOrder);
+-        AlertDialog.showInformationDialog("Order created", "Order created successfully.");
+ 
+         SceneLoader.loadScene("orderSearch", "Order search");
+     }
+Index: src/main/java/hr/java/restaurant/util/AlertDialog.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package hr.java.restaurant.util;\r\n\r\nimport javafx.scene.control.Alert;\r\nimport javafx.scene.control.ButtonType;\r\n\r\npublic class AlertDialog {\r\n    public static void showErrorDialog(String title, String message) {\r\n        Alert alert = new Alert(Alert.AlertType.ERROR);\r\n        alert.setTitle(title);\r\n        alert.setHeaderText(null);\r\n        alert.setContentText(message);\r\n        alert.showAndWait();\r\n    }\r\n\r\n    public static void showInformationDialog(String title, String message) {\r\n        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);\r\n        alert.setTitle(title);\r\n        alert.setHeaderText(null);\r\n        alert.setContentText(message);\r\n        alert.getButtonTypes().remove(ButtonType.CANCEL);\r\n        alert.showAndWait();\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/hr/java/restaurant/util/AlertDialog.java b/src/main/java/hr/java/restaurant/util/AlertDialog.java
+--- a/src/main/java/hr/java/restaurant/util/AlertDialog.java	(revision cb643358ca8f17c6e691da0b08e73eb240b17709)
++++ b/src/main/java/hr/java/restaurant/util/AlertDialog.java	(date 1738259904604)
+@@ -20,4 +20,14 @@
+         alert.getButtonTypes().remove(ButtonType.CANCEL);
+         alert.showAndWait();
+     }
++
++    public static boolean showQuestionDialog(String title, String message) {
++        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
++        alert.setTitle(title);
++        alert.setHeaderText(null);
++        alert.setContentText(message);
++        alert.showAndWait();
++
++        return alert.getResult() == ButtonType.OK;
++    }
+ }
+Index: src/main/java/hr/java/restaurant/controller/DelivererOrderDetailsController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/hr/java/restaurant/controller/DelivererOrderDetailsController.java b/src/main/java/hr/java/restaurant/controller/DelivererOrderDetailsController.java
+new file mode 100644
+--- /dev/null	(date 1738264668658)
++++ b/src/main/java/hr/java/restaurant/controller/DelivererOrderDetailsController.java	(date 1738264668658)
+@@ -0,0 +1,83 @@
++package hr.java.restaurant.controller;
++
++import hr.java.restaurant.model.Deliverer;
++import hr.java.restaurant.model.Order;
++import hr.java.restaurant.util.AlertDialog;
++import javafx.application.Platform;
++import javafx.fxml.FXML;
++import javafx.scene.control.Button;
++import javafx.scene.control.Label;
++import javafx.scene.control.ScrollPane;
++import javafx.scene.layout.VBox;
++
++import java.util.Set;
++
++public class DelivererOrderDetailsController {
++
++    @FXML
++    private ScrollPane scrollPane;
++
++    private Runnable onComplete;
++
++    public void setOnComplete(Runnable onComplete) {
++        this.onComplete = onComplete;
++    }
++
++    public void initialize(Deliverer deliverer) {
++        Set<Order> orders = deliverer.getWaitingOrders();
++
++        VBox orderBox = new VBox(10);
++
++        for (Order order : orders) {
++            Label orderIdLabel = new Label("Order ID: " + order.getId());
++            Button deliverButton = new Button("Deliver");
++            Label timerLabel = new Label("10");
++            timerLabel.idProperty().set("timerLabel" + order.getId());
++
++            new Thread(() -> {
++                for (int i = 10; i >= 0; i--) {
++                    int finalI = i;
++                    Platform.runLater(() -> timerLabel.setText(String.valueOf(finalI)));
++                    try {
++                        Thread.sleep(1000);
++                    } catch (InterruptedException e) {
++                        e.printStackTrace();
++                    }
++                }
++
++                Platform.runLater(() -> {
++                    deliverButton.setDisable(true);
++                });
++            }).start();
++
++            deliverButton.setOnAction(event -> {
++                deliverButton.setDisable(true);
++                deliverButton.setStyle("-fx-background-color: gray;");
++
++                timerLabel.setVisible(false);
++                deliverer.deliverInProcessOrder(order);
++
++                new Thread(() -> {
++                    int delay = 5 + (int) (Math.random() * 6);
++                    for (int i = delay; i >= 0; i--) {
++                        try {
++                            Thread.sleep(1000);
++                        } catch (InterruptedException e) {
++                            e.printStackTrace();
++                        }
++                    }
++
++                    Platform.runLater(() -> {
++                        deliverButton.setDisable(true);
++                        deliverer.deliverOrder(order);
++                        AlertDialog.showInformationDialog("Order delivered", "Order with ID " + order.getId() + " has been delivered.");
++                    });
++                }).start();
++            });
++
++            orderBox.getChildren().addAll(orderIdLabel, deliverButton, timerLabel);
++        }
++
++        scrollPane.setContent(orderBox);
++    }
++}
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"4f528465-ba8d-46d2-beb3-c46214f220ac\" name=\"Changes\" comment=\"feat: add a TimeLine thread to find the person with the highest salary\">\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/dbo/IngredientDatabaseResponse.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/dbo/MealDatabaseResponse.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/dbo/OrderDatabaseResponse.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/dbo/PersonDatabaseResponse.java\" afterDir=\"false\" />\r\n      <change afterPath=\"$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/dbo/RestaurantDatabaseResponse.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/hr/java/restaurant/main/RestaurantApplication.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/hr/java/restaurant/main/RestaurantApplication.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/AddressRepository.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/AddressRepository.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/CategoryRepository.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/CategoryRepository.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/ChefRepository.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/ChefRepository.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/ContractRepository.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/ContractRepository.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/DelivererRepository.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/DelivererRepository.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/IngredientRepository.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/IngredientRepository.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/MealIngredientsRepository.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/MealIngredientsRepository.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/MealRepository.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/MealRepository.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/OrderMealsRepository.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/OrderMealsRepository.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/OrderRepository.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/OrderRepository.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/RestaurantMealsRepository.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/RestaurantMealsRepository.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/RestaurantRepository.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/RestaurantRepository.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/WaiterRepository.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/WaiterRepository.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/hr/java/restaurant/thread/HighestPaidPersonThread.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/hr/java/restaurant/thread/HighestPaidPersonThread.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/DatabaseUtil.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/DatabaseUtil.java\" afterDir=\"false\" />\r\n      <change beforePath=\"$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/ObjectMapper.java\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/ObjectMapper.java\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Interface\" />\r\n        <option value=\"JavaFXApplication\" />\r\n        <option value=\"FxmlFile\" />\r\n        <option value=\"Exception\" />\r\n        <option value=\"Class\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$/..\" />\r\n  </component>\r\n  <component name=\"GitHubPullRequestSearchHistory\">{\r\n  &quot;lastFilter&quot;: {\r\n    &quot;state&quot;: &quot;OPEN&quot;,\r\n    &quot;assignee&quot;: &quot;leostricak22&quot;\r\n  }\r\n}</component>\r\n  <component name=\"GithubPullRequestsUISettings\"><![CDATA[{\r\n  \"selectedUrlAndAccountId\": {\r\n    \"url\": \"https://github.com/leostricak22/tvz-java.git\",\r\n    \"accountId\": \"66ff0b9d-f1d4-4331-a266-24af78e3f8da\"\r\n  }\r\n}]]></component>\r\n  <component name=\"KubernetesApiPersistence\">{}</component>\r\n  <component name=\"KubernetesApiProvider\">{\r\n  &quot;isMigrated&quot;: true\r\n}</component>\r\n  <component name=\"MavenImportPreferences\">\r\n    <option name=\"generalSettings\">\r\n      <MavenGeneralSettings>\r\n        <option name=\"mavenHomeTypeForPersistence\" value=\"WRAPPER\" />\r\n      </MavenGeneralSettings>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;associatedIndex&quot;: 5\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"2qREPFKgyXyB65kZFokVarbFyg2\" />\r\n  <component name=\"ProjectLevelVcsManager\">\r\n    <ConfirmationsSetting value=\"2\" id=\"Add\" />\r\n  </component>\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\r\n  \"keyToString\": {\r\n    \"Application.HelloApplication.executor\": \"Run\",\r\n    \"Application.Main.executor\": \"Run\",\r\n    \"Application.MealAddController.executor\": \"Run\",\r\n    \"Application.RestaurantApplication.executor\": \"Run\",\r\n    \"Application.hr.java.restaurant.controller.MealAddController.executor\": \"Run\",\r\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\r\n    \"SHARE_PROJECT_CONFIGURATION_FILES\": \"true\",\r\n    \"SONARLINT_PRECOMMIT_ANALYSIS\": \"true\",\r\n    \"git-widget-placeholder\": \"main\",\r\n    \"kotlin-language-version-configured\": \"true\",\r\n    \"last_opened_file_path\": \"C:/Users/LeoHP/Documents/GitHub/tvz-programiranje-java/Stricak-10\",\r\n    \"node.js.detected.package.eslint\": \"true\",\r\n    \"node.js.detected.package.tslint\": \"true\",\r\n    \"node.js.selected.package.eslint\": \"(autodetect)\",\r\n    \"node.js.selected.package.tslint\": \"(autodetect)\",\r\n    \"nodejs_package_manager_path\": \"npm\",\r\n    \"vue.rearranger.settings.migration\": \"true\"\r\n  },\r\n  \"keyToStringList\": {\r\n    \"DatabaseDriversLRU\": [\r\n      \"h2\"\r\n    ]\r\n  }\r\n}]]></component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"CopyFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\Users\\LeoHP\\Documents\\GitHub\\tvz-programiranje-java\\Stricak-9\\src\\main\\resources\" />\r\n      <recent name=\"C:\\Users\\LeoHP\\Documents\\GitHub\\tvz-programiranje-java\\Stricak-8\\src\\main\\resources\\hr\\java\\restaurant\" />\r\n      <recent name=\"C:\\Users\\LeoHP\\Documents\\GitHub\\tvz-programiranje-java\\Stricak-7\\src\\main\\java\\hr\\java\\restaurant\\repository\" />\r\n      <recent name=\"C:\\Users\\LeoHP\\Documents\\GitHub\\tvz-programiranje-java\\Stricak-7\\src\\main\\java\\hr\\java\\restaurant\\model\" />\r\n      <recent name=\"C:\\Users\\LeoHP\\Documents\\GitHub\\tvz-programiranje-java\\Stricak-7\\src\\main\\resources\\hr\\java\\restaurant\" />\r\n    </key>\r\n    <key name=\"MoveFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\Users\\LeoHP\\Documents\\GitHub\\tvz-programiranje-java\\Stricak-7\\src\\main\\java\\hr\\java\\restaurant\\model\" />\r\n      <recent name=\"C:\\Users\\LeoHP\\Documents\\GitHub\\tvz-programiranje-java\\Stricak-7\\src\\main\\java\\hr\\java\\restaurant\" />\r\n    </key>\r\n    <key name=\"MoveMembersDialog.RECENTS_KEY\">\r\n      <recent name=\"hr.java.restaurant.util.EntityFinder\" />\r\n    </key>\r\n    <key name=\"CopyClassDialog.RECENTS_KEY\">\r\n      <recent name=\"hr.java.restaurant.controller\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"RunManager\" selected=\"Application.RestaurantApplication\">\r\n    <configuration name=\"HelloApplication\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"hr.java.restaurant.HelloApplication\" />\r\n      <module name=\"Stricak-7\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"hr.java.restaurant.main.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"Main\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"sample.Main\" />\r\n      <module name=\"Stricak-10\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"sample.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"MealAddController\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"sample.MealAddController\" />\r\n      <module name=\"Stricak-10\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"sample.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"RestaurantApplication\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <option name=\"ALTERNATIVE_JRE_PATH\" value=\"23\" />\r\n      <option name=\"ALTERNATIVE_JRE_PATH_ENABLED\" value=\"true\" />\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"hr.java.restaurant.main.RestaurantApplication\" />\r\n      <module name=\"Stricak-10\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"hr.java.restaurant.main.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <configuration name=\"hr.java.restaurant.controller.MealAddController\" type=\"Application\" factoryName=\"Application\" temporary=\"true\" nameIsGenerated=\"true\">\r\n      <option name=\"MAIN_CLASS_NAME\" value=\"hr.java.restaurant.controller.MealAddController\" />\r\n      <module name=\"Stricak-10\" />\r\n      <extension name=\"coverage\">\r\n        <pattern>\r\n          <option name=\"PATTERN\" value=\"hr.java.restaurant.controller.*\" />\r\n          <option name=\"ENABLED\" value=\"true\" />\r\n        </pattern>\r\n      </extension>\r\n      <method v=\"2\">\r\n        <option name=\"Make\" enabled=\"true\" />\r\n      </method>\r\n    </configuration>\r\n    <recent_temporary>\r\n      <list>\r\n        <item itemvalue=\"Application.RestaurantApplication\" />\r\n        <item itemvalue=\"Application.hr.java.restaurant.controller.MealAddController\" />\r\n        <item itemvalue=\"Application.MealAddController\" />\r\n        <item itemvalue=\"Application.Main\" />\r\n        <item itemvalue=\"Application.HelloApplication\" />\r\n      </list>\r\n    </recent_temporary>\r\n  </component>\r\n  <component name=\"SharedIndexes\">\r\n    <attachedChunks>\r\n      <set>\r\n        <option value=\"bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.23726.103\" />\r\n        <option value=\"bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.23726.103\" />\r\n      </set>\r\n    </attachedChunks>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"4f528465-ba8d-46d2-beb3-c46214f220ac\" name=\"Changes\" comment=\"\" />\r\n      <created>1734616963811</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1734616963811</updated>\r\n      <workItem from=\"1734616964822\" duration=\"39302000\" />\r\n      <workItem from=\"1734704853199\" duration=\"1804000\" />\r\n      <workItem from=\"1734708765234\" duration=\"4005000\" />\r\n      <workItem from=\"1734739457932\" duration=\"87000\" />\r\n      <workItem from=\"1736810935376\" duration=\"243000\" />\r\n      <workItem from=\"1736890422027\" duration=\"15867000\" />\r\n      <workItem from=\"1736944237265\" duration=\"2373000\" />\r\n      <workItem from=\"1736946690393\" duration=\"14573000\" />\r\n      <workItem from=\"1737063196097\" duration=\"2108000\" />\r\n      <workItem from=\"1737116711744\" duration=\"4961000\" />\r\n      <workItem from=\"1737137323106\" duration=\"9889000\" />\r\n      <workItem from=\"1737151941985\" duration=\"2107000\" />\r\n      <workItem from=\"1737194941251\" duration=\"4567000\" />\r\n      <workItem from=\"1737224030650\" duration=\"1509000\" />\r\n      <workItem from=\"1737404095574\" duration=\"21083000\" />\r\n      <workItem from=\"1737727151975\" duration=\"22855000\" />\r\n    </task>\r\n    <task id=\"LOCAL−00001\" summary=\"feat: Add JavaFX project and add category searching and filtering\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1734624501771</created>\r\n      <option name=\"number\" value=\"LOCAL−00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL−00001\" />\r\n      <updated>1734624501771</updated>\r\n    </task>\r\n    <task id=\"LOCAL−00002\" summary=\"feat: Remove unnecessary files\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1734624592381</created>\r\n      <option name=\"number\" value=\"LOCAL−00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL−00002\" />\r\n      <updated>1734624592381</updated>\r\n    </task>\r\n    <task id=\"LOCAL−00003\" summary=\"feat: Add ingredient searching and filtering\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1734629770611</created>\r\n      <option name=\"number\" value=\"LOCAL−00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL−00003\" />\r\n      <updated>1734629770611</updated>\r\n    </task>\r\n    <task id=\"LOCAL−00004\" summary=\"refactor: Add SearchController interface\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1734630760372</created>\r\n      <option name=\"number\" value=\"LOCAL−00004\" />\r\n      <option name=\"presentableId\" value=\"LOCAL−00004\" />\r\n      <updated>1734630760372</updated>\r\n    </task>\r\n    <task id=\"LOCAL−00005\" summary=\"feat: Add Meal search and filtering\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1734641230373</created>\r\n      <option name=\"number\" value=\"LOCAL−00005\" />\r\n      <option name=\"presentableId\" value=\"LOCAL−00005\" />\r\n      <updated>1734641230373</updated>\r\n    </task>\r\n    <task id=\"LOCAL−00006\" summary=\"feat: Add Chef search and filtering\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1734648688368</created>\r\n      <option name=\"number\" value=\"LOCAL−00006\" />\r\n      <option name=\"presentableId\" value=\"LOCAL−00006\" />\r\n      <updated>1734648688368</updated>\r\n    </task>\r\n    <task id=\"LOCAL−00007\" summary=\"feat: Add Abstract PersonSearchController and Deliverer and Waiter search and filtering\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1734650436974</created>\r\n      <option name=\"number\" value=\"LOCAL−00007\" />\r\n      <option name=\"presentableId\" value=\"LOCAL−00007\" />\r\n      <updated>1734650436974</updated>\r\n    </task>\r\n    <task id=\"LOCAL−00008\" summary=\"feat: Add restaurant search and filtering\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1734655797543</created>\r\n      <option name=\"number\" value=\"LOCAL−00008\" />\r\n      <option name=\"presentableId\" value=\"LOCAL−00008\" />\r\n      <updated>1734655797544</updated>\r\n    </task>\r\n    <task id=\"LOCAL−00009\" summary=\"feat: Add order search and filtering\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1734658597034</created>\r\n      <option name=\"number\" value=\"LOCAL−00009\" />\r\n      <option name=\"presentableId\" value=\"LOCAL−00009\" />\r\n      <updated>1734658597034</updated>\r\n    </task>\r\n    <task id=\"LOCAL−00010\" summary=\"feat: Filter orders for selected restaurant\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1734660286772</created>\r\n      <option name=\"number\" value=\"LOCAL−00010\" />\r\n      <option name=\"presentableId\" value=\"LOCAL−00010\" />\r\n      <updated>1734660286772</updated>\r\n    </task>\r\n    <task id=\"LOCAL−00011\" summary=\"refactor: Code cleanup\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1734706520650</created>\r\n      <option name=\"number\" value=\"LOCAL−00011\" />\r\n      <option name=\"presentableId\" value=\"LOCAL−00011\" />\r\n      <updated>1734706520650</updated>\r\n    </task>\r\n    <task id=\"LOCAL−00012\" summary=\"feat: Add Category Add scene\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1736897210049</created>\r\n      <option name=\"number\" value=\"LOCAL−00012\" />\r\n      <option name=\"presentableId\" value=\"LOCAL−00012\" />\r\n      <updated>1736897210049</updated>\r\n    </task>\r\n    <task id=\"LOCAL−00013\" summary=\"feat: Add Ingredient Add scene\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1736901960684</created>\r\n      <option name=\"number\" value=\"LOCAL−00013\" />\r\n      <option name=\"presentableId\" value=\"LOCAL−00013\" />\r\n      <updated>1736901960684</updated>\r\n    </task>\r\n    <task id=\"LOCAL−00014\" summary=\"refactor: Category and Ingredient classes\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1736903294855</created>\r\n      <option name=\"number\" value=\"LOCAL−00014\" />\r\n      <option name=\"presentableId\" value=\"LOCAL−00014\" />\r\n      <updated>1736903294855</updated>\r\n    </task>\r\n    <task id=\"LOCAL−00015\" summary=\"feat: add multiple checkbox select window with generics\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1736947848949</created>\r\n      <option name=\"number\" value=\"LOCAL−00015\" />\r\n      <option name=\"presentableId\" value=\"LOCAL−00015\" />\r\n      <updated>1736947848949</updated>\r\n    </task>\r\n    <task id=\"LOCAL−00016\" summary=\"feat: finish meal add controller\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1736983797167</created>\r\n      <option name=\"number\" value=\"LOCAL−00016\" />\r\n      <option name=\"presentableId\" value=\"LOCAL−00016\" />\r\n      <updated>1736983797167</updated>\r\n    </task>\r\n    <task id=\"LOCAL−00017\" summary=\"feat: add person add controller\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1737120408381</created>\r\n      <option name=\"number\" value=\"LOCAL−00017\" />\r\n      <option name=\"presentableId\" value=\"LOCAL−00017\" />\r\n      <updated>1737120408381</updated>\r\n    </task>\r\n    <task id=\"LOCAL−00018\" summary=\"feat: create universal person add fxml file\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1737132160181</created>\r\n      <option name=\"number\" value=\"LOCAL−00018\" />\r\n      <option name=\"presentableId\" value=\"LOCAL−00018\" />\r\n      <updated>1737132160181</updated>\r\n    </task>\r\n    <task id=\"LOCAL−00019\" summary=\"feat: create contract repository and update Person add controller\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1737141237904</created>\r\n      <option name=\"number\" value=\"LOCAL−00019\" />\r\n      <option name=\"presentableId\" value=\"LOCAL−00019\" />\r\n      <updated>1737141237904</updated>\r\n    </task>\r\n    <task id=\"LOCAL−00020\" summary=\"feat: add address repository, search and add controllers\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1737150107824</created>\r\n      <option name=\"number\" value=\"LOCAL−00020\" />\r\n      <option name=\"presentableId\" value=\"LOCAL−00020\" />\r\n      <updated>1737150107824</updated>\r\n    </task>\r\n    <task id=\"LOCAL−00021\" summary=\"feat: add restaurant add view\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1737152552586</created>\r\n      <option name=\"number\" value=\"LOCAL−00021\" />\r\n      <option name=\"presentableId\" value=\"LOCAL−00021\" />\r\n      <updated>1737152552586</updated>\r\n    </task>\r\n    <task id=\"LOCAL−00022\" summary=\"feat: add order creation controller and fxml file\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1737154054185</created>\r\n      <option name=\"number\" value=\"LOCAL−00022\" />\r\n      <option name=\"presentableId\" value=\"LOCAL−00022\" />\r\n      <updated>1737154054185</updated>\r\n    </task>\r\n    <task id=\"LOCAL−00023\" summary=\"feat: add contract wizard creation\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1737224066744</created>\r\n      <option name=\"number\" value=\"LOCAL−00023\" />\r\n      <option name=\"presentableId\" value=\"LOCAL−00023\" />\r\n      <updated>1737224066744</updated>\r\n    </task>\r\n    <task id=\"LOCAL−00024\" summary=\"feat: add category database repository\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1737410905471</created>\r\n      <option name=\"number\" value=\"LOCAL−00024\" />\r\n      <option name=\"presentableId\" value=\"LOCAL−00024\" />\r\n      <updated>1737410905471</updated>\r\n    </task>\r\n    <task id=\"LOCAL−00025\" summary=\"feat: add ingredient database repository\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1737412550762</created>\r\n      <option name=\"number\" value=\"LOCAL−00025\" />\r\n      <option name=\"presentableId\" value=\"LOCAL−00025\" />\r\n      <updated>1737412550762</updated>\r\n    </task>\r\n    <task id=\"LOCAL−00026\" summary=\"feat: add meal database repository\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1737415691983</created>\r\n      <option name=\"number\" value=\"LOCAL−00026\" />\r\n      <option name=\"presentableId\" value=\"LOCAL−00026\" />\r\n      <updated>1737415691983</updated>\r\n    </task>\r\n    <task id=\"LOCAL−00027\" summary=\"feat: add contract database repository\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1737416802899</created>\r\n      <option name=\"number\" value=\"LOCAL−00027\" />\r\n      <option name=\"presentableId\" value=\"LOCAL−00027\" />\r\n      <updated>1737416802899</updated>\r\n    </task>\r\n    <task id=\"LOCAL−00028\" summary=\"feat: add address database repository\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1737418898498</created>\r\n      <option name=\"number\" value=\"LOCAL−00028\" />\r\n      <option name=\"presentableId\" value=\"LOCAL−00028\" />\r\n      <updated>1737418898498</updated>\r\n    </task>\r\n    <task id=\"LOCAL−00029\" summary=\"feat: add chef database repository\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1737420042994</created>\r\n      <option name=\"number\" value=\"LOCAL−00029\" />\r\n      <option name=\"presentableId\" value=\"LOCAL−00029\" />\r\n      <updated>1737420042994</updated>\r\n    </task>\r\n    <task id=\"LOCAL−00030\" summary=\"feat: add waiter database repository\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1737420293694</created>\r\n      <option name=\"number\" value=\"LOCAL−00030\" />\r\n      <option name=\"presentableId\" value=\"LOCAL−00030\" />\r\n      <updated>1737420293694</updated>\r\n    </task>\r\n    <task id=\"LOCAL−00031\" summary=\"feat: add deliverer database repository\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1737420606701</created>\r\n      <option name=\"number\" value=\"LOCAL−00031\" />\r\n      <option name=\"presentableId\" value=\"LOCAL−00031\" />\r\n      <updated>1737420606701</updated>\r\n    </task>\r\n    <task id=\"LOCAL−00032\" summary=\"feat: add restaurant database repository\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1737422744134</created>\r\n      <option name=\"number\" value=\"LOCAL−00032\" />\r\n      <option name=\"presentableId\" value=\"LOCAL−00032\" />\r\n      <updated>1737422744134</updated>\r\n    </task>\r\n    <task id=\"LOCAL−00033\" summary=\"feat: add order database repository\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1737423905240</created>\r\n      <option name=\"number\" value=\"LOCAL−00033\" />\r\n      <option name=\"presentableId\" value=\"LOCAL−00033\" />\r\n      <updated>1737423905240</updated>\r\n    </task>\r\n    <task id=\"LOCAL−00034\" summary=\"feat: add Contract sorting and Progress bar\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1737734077916</created>\r\n      <option name=\"number\" value=\"LOCAL−00034\" />\r\n      <option name=\"presentableId\" value=\"LOCAL−00034\" />\r\n      <updated>1737734077916</updated>\r\n    </task>\r\n    <task id=\"LOCAL−00035\" summary=\"feat: add a TimeLine thread to find the person with the highest salary\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1737740540779</created>\r\n      <option name=\"number\" value=\"LOCAL−00035\" />\r\n      <option name=\"presentableId\" value=\"LOCAL−00035\" />\r\n      <updated>1737740540779</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"36\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State />\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"refactor: Code cleanup\" />\r\n    <MESSAGE value=\"feat: Add Category Add scene\" />\r\n    <MESSAGE value=\"feat: Add Ingredient Add scene\" />\r\n    <MESSAGE value=\"refactor: Category and Ingredient classes\" />\r\n    <MESSAGE value=\"feat: add multiple checkbox select window with generics\" />\r\n    <MESSAGE value=\"feat: finish meal add controller\" />\r\n    <MESSAGE value=\"feat: add person add controller\" />\r\n    <MESSAGE value=\"feat: create universal person add fxml file\" />\r\n    <MESSAGE value=\"feat: create contract repository and update Person add controller\" />\r\n    <MESSAGE value=\"feat: add address repository, search and add controllers\" />\r\n    <MESSAGE value=\"feat: add restaurant add view\" />\r\n    <MESSAGE value=\"feat: add order creation controller and fxml file\" />\r\n    <MESSAGE value=\"feat: add contract wizard creation\" />\r\n    <MESSAGE value=\"feat: add category database repository\" />\r\n    <MESSAGE value=\"feat: add ingredient database repository\" />\r\n    <MESSAGE value=\"feat: add meal database repository\" />\r\n    <MESSAGE value=\"feat: add contract database repository\" />\r\n    <MESSAGE value=\"feat: add address database repository\" />\r\n    <MESSAGE value=\"feat: add chef database repository\" />\r\n    <MESSAGE value=\"feat: add waiter database repository\" />\r\n    <MESSAGE value=\"feat: add deliverer database repository\" />\r\n    <MESSAGE value=\"feat: add restaurant database repository\" />\r\n    <MESSAGE value=\"feat: add order database repository\" />\r\n    <MESSAGE value=\"feat: add Contract sorting and Progress bar\" />\r\n    <MESSAGE value=\"feat: add a TimeLine thread to find the person with the highest salary\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"feat: add a TimeLine thread to find the person with the highest salary\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision cb643358ca8f17c6e691da0b08e73eb240b17709)
++++ b/.idea/workspace.xml	(date 1738264770449)
+@@ -4,30 +4,21 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="4f528465-ba8d-46d2-beb3-c46214f220ac" name="Changes" comment="feat: add a TimeLine thread to find the person with the highest salary">
+-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/dbo/IngredientDatabaseResponse.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/dbo/MealDatabaseResponse.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/dbo/OrderDatabaseResponse.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/dbo/PersonDatabaseResponse.java" afterDir="false" />
+-      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/dbo/RestaurantDatabaseResponse.java" afterDir="false" />
++    <list default="true" id="4f528465-ba8d-46d2-beb3-c46214f220ac" name="Changes" comment="feat: add sync to all repositories">
++      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/DelivererOrderDetailsController.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/OrderAddCounterPopupController.java" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/delivererOrderDetails.fxml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/orderAddCounterPopup.fxml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/db/initialize.sql" beforeDir="false" afterPath="$PROJECT_DIR$/db/initialize.sql" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/OrderAddController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/OrderAddController.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/PersonSearchController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/controller/PersonSearchController.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/main/RestaurantApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/main/RestaurantApplication.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/AddressRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/AddressRepository.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/CategoryRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/CategoryRepository.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/ChefRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/ChefRepository.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/ContractRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/ContractRepository.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/DelivererRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/DelivererRepository.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/IngredientRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/IngredientRepository.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/MealIngredientsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/MealIngredientsRepository.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/MealRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/MealRepository.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/OrderMealsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/OrderMealsRepository.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/OrderRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/OrderRepository.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/RestaurantMealsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/RestaurantMealsRepository.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/RestaurantRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/RestaurantRepository.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/WaiterRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/repository/WaiterRepository.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Deliverer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/model/Deliverer.java" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/thread/HighestPaidPersonThread.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/thread/HighestPaidPersonThread.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/DatabaseUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/DatabaseUtil.java" afterDir="false" />
+-      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/ObjectMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/ObjectMapper.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/AlertDialog.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/AlertDialog.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/SceneLoader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/hr/java/restaurant/util/SceneLoader.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/delivererSearch.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/hr/java/restaurant/delivererSearch.fxml" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -39,8 +30,8 @@
+       <list>
+         <option value="Interface" />
+         <option value="JavaFXApplication" />
+-        <option value="FxmlFile" />
+         <option value="Exception" />
++        <option value="FxmlFile" />
+         <option value="Class" />
+       </list>
+     </option>
+@@ -54,12 +45,12 @@
+     &quot;assignee&quot;: &quot;leostricak22&quot;
+   }
+ }</component>
+-  <component name="GithubPullRequestsUISettings"><![CDATA[{
+-  "selectedUrlAndAccountId": {
+-    "url": "https://github.com/leostricak22/tvz-java.git",
+-    "accountId": "66ff0b9d-f1d4-4331-a266-24af78e3f8da"
+-  }
+-}]]></component>
++  <component name="GithubPullRequestsUISettings">{
++  &quot;selectedUrlAndAccountId&quot;: {
++    &quot;url&quot;: &quot;https://github.com/leostricak22/tvz-java.git&quot;,
++    &quot;accountId&quot;: &quot;66ff0b9d-f1d4-4331-a266-24af78e3f8da&quot;
++  }
++}</component>
+   <component name="KubernetesApiPersistence">{}</component>
+   <component name="KubernetesApiProvider">{
+   &quot;isMigrated&quot;: true
+@@ -82,32 +73,32 @@
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent"><![CDATA[{
+-  "keyToString": {
+-    "Application.HelloApplication.executor": "Run",
+-    "Application.Main.executor": "Run",
+-    "Application.MealAddController.executor": "Run",
+-    "Application.RestaurantApplication.executor": "Run",
+-    "Application.hr.java.restaurant.controller.MealAddController.executor": "Run",
+-    "RunOnceActivity.ShowReadmeOnStart": "true",
+-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+-    "SONARLINT_PRECOMMIT_ANALYSIS": "true",
+-    "git-widget-placeholder": "main",
+-    "kotlin-language-version-configured": "true",
+-    "last_opened_file_path": "C:/Users/LeoHP/Documents/GitHub/tvz-programiranje-java/Stricak-10",
+-    "node.js.detected.package.eslint": "true",
+-    "node.js.detected.package.tslint": "true",
+-    "node.js.selected.package.eslint": "(autodetect)",
+-    "node.js.selected.package.tslint": "(autodetect)",
+-    "nodejs_package_manager_path": "npm",
+-    "vue.rearranger.settings.migration": "true"
++  <component name="PropertiesComponent">{
++  &quot;keyToString&quot;: {
++    &quot;Application.HelloApplication.executor&quot;: &quot;Run&quot;,
++    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
++    &quot;Application.MealAddController.executor&quot;: &quot;Run&quot;,
++    &quot;Application.RestaurantApplication.executor&quot;: &quot;Run&quot;,
++    &quot;Application.hr.java.restaurant.controller.MealAddController.executor&quot;: &quot;Run&quot;,
++    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
++    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
++    &quot;SONARLINT_PRECOMMIT_ANALYSIS&quot;: &quot;true&quot;,
++    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
++    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
++    &quot;last_opened_file_path&quot;: &quot;C:/Users/LeoHP/Documents/GitHub/tvz-programiranje-java/Stricak-10&quot;,
++    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
++    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
++    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
++    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
++    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
++    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+   },
+-  "keyToStringList": {
+-    "DatabaseDriversLRU": [
+-      "h2"
++  &quot;keyToStringList&quot;: {
++    &quot;DatabaseDriversLRU&quot;: [
++      &quot;h2&quot;
+     ]
+   }
+-}]]></component>
++}</component>
+   <component name="RecentsManager">
+     <key name="CopyFile.RECENT_KEYS">
+       <recent name="C:\Users\LeoHP\Documents\GitHub\tvz-programiranje-java\Stricak-9\src\main\resources" />
+@@ -236,7 +227,9 @@
+       <workItem from="1737194941251" duration="4567000" />
+       <workItem from="1737224030650" duration="1509000" />
+       <workItem from="1737404095574" duration="21083000" />
+-      <workItem from="1737727151975" duration="22855000" />
++      <workItem from="1737727151975" duration="22896000" />
++      <workItem from="1737800353850" duration="6876000" />
++      <workItem from="1738256396381" duration="6101000" />
+     </task>
+     <task id="LOCAL−00001" summary="feat: Add JavaFX project and add category searching and filtering">
+       <option name="closed" value="true" />
+@@ -483,7 +476,14 @@
+       <option name="presentableId" value="LOCAL−00035" />
+       <updated>1737740540779</updated>
+     </task>
+-    <option name="localTasksCounter" value="36" />
++    <task id="LOCAL−00036" summary="feat: add sync to all repositories">
++      <option name="closed" value="true" />
++      <created>1737763143426</created>
++      <option name="number" value="LOCAL−00036" />
++      <option name="presentableId" value="LOCAL−00036" />
++      <updated>1737763143426</updated>
++    </task>
++    <option name="localTasksCounter" value="37" />
+     <servers />
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">
+@@ -501,7 +501,6 @@
+     </option>
+   </component>
+   <component name="VcsManagerConfiguration">
+-    <MESSAGE value="refactor: Code cleanup" />
+     <MESSAGE value="feat: Add Category Add scene" />
+     <MESSAGE value="feat: Add Ingredient Add scene" />
+     <MESSAGE value="refactor: Category and Ingredient classes" />
+@@ -526,6 +525,7 @@
+     <MESSAGE value="feat: add order database repository" />
+     <MESSAGE value="feat: add Contract sorting and Progress bar" />
+     <MESSAGE value="feat: add a TimeLine thread to find the person with the highest salary" />
+-    <option name="LAST_COMMIT_MESSAGE" value="feat: add a TimeLine thread to find the person with the highest salary" />
++    <MESSAGE value="feat: add sync to all repositories" />
++    <option name="LAST_COMMIT_MESSAGE" value="feat: add sync to all repositories" />
+   </component>
+ </project>
+\ No newline at end of file
+Index: src/main/java/hr/java/restaurant/main/RestaurantApplication.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package hr.java.restaurant.main;\r\nimport hr.java.restaurant.thread.HighestPaidPersonThread;\r\nimport hr.java.restaurant.util.FXMLLoaderHelper;\r\nimport hr.java.restaurant.util.Constants;\r\nimport javafx.application.Application;\r\nimport javafx.fxml.FXMLLoader;\r\nimport javafx.scene.Scene;\r\nimport javafx.stage.Stage;\r\n\r\nimport java.io.IOException;\r\n\r\npublic class RestaurantApplication extends Application {\r\n\r\n    private static Stage mainStage;\r\n\r\n    @Override\r\n    public void start(Stage stage) throws IOException {\r\n        FXMLLoader fxmlLoader = FXMLLoaderHelper.fxmlFilePath(\"firstScreen.fxml\");\r\n        Scene scene = new Scene(fxmlLoader.load(), Constants.SCENE_WIDTH, Constants.SCENE_HEIGHT);\r\n\r\n        mainStage = stage;\r\n        HighestPaidPersonThread.start();\r\n\r\n        stage.setTitle(\"Pretraga kategorija\");\r\n        stage.setScene(scene);\r\n        stage.show();\r\n    }\r\n\r\n    public static void main(String[] args) {\r\n        launch();\r\n    }\r\n\r\n    public static Stage getMainStage() {\r\n        return mainStage;\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/hr/java/restaurant/main/RestaurantApplication.java b/src/main/java/hr/java/restaurant/main/RestaurantApplication.java
+--- a/src/main/java/hr/java/restaurant/main/RestaurantApplication.java	(revision cb643358ca8f17c6e691da0b08e73eb240b17709)
++++ b/src/main/java/hr/java/restaurant/main/RestaurantApplication.java	(date 1738259582357)
+@@ -1,5 +1,4 @@
+ package hr.java.restaurant.main;
+-import hr.java.restaurant.thread.HighestPaidPersonThread;
+ import hr.java.restaurant.util.FXMLLoaderHelper;
+ import hr.java.restaurant.util.Constants;
+ import javafx.application.Application;
+@@ -19,7 +18,7 @@
+         Scene scene = new Scene(fxmlLoader.load(), Constants.SCENE_WIDTH, Constants.SCENE_HEIGHT);
+ 
+         mainStage = stage;
+-        HighestPaidPersonThread.start();
++        //HighestPaidPersonThread.start();
+ 
+         stage.setTitle("Pretraga kategorija");
+         stage.setScene(scene);
+Index: src/main/resources/hr/java/restaurant/delivererSearch.fxml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n\r\n<?import javafx.geometry.Insets?>\r\n<?import javafx.scene.control.Button?>\r\n<?import javafx.scene.control.ComboBox?>\r\n<?import javafx.scene.control.DatePicker?>\r\n<?import javafx.scene.control.Label?>\r\n<?import javafx.scene.control.TableColumn?>\r\n<?import javafx.scene.control.TableView?>\r\n<?import javafx.scene.control.TextField?>\r\n<?import javafx.scene.layout.AnchorPane?>\r\n<?import javafx.scene.layout.ColumnConstraints?>\r\n<?import javafx.scene.layout.GridPane?>\r\n<?import javafx.scene.layout.RowConstraints?>\r\n<?import javafx.scene.text.Font?>\r\n\r\n<AnchorPane prefHeight=\"700.0\" prefWidth=\"1065.0\" xmlns=\"http://javafx.com/javafx/23.0.1\" xmlns:fx=\"http://javafx.com/fxml/1\" fx:controller=\"hr.java.restaurant.controller.DelivererSearchController\">\r\n    <GridPane prefHeight=\"700.0\" prefWidth=\"1065.0\">\r\n        <columnConstraints>\r\n            <ColumnConstraints hgrow=\"SOMETIMES\" minWidth=\"10.0\" prefWidth=\"100.0\" />\r\n            <ColumnConstraints hgrow=\"SOMETIMES\" minWidth=\"10.0\" prefWidth=\"100.0\" />\r\n            <ColumnConstraints hgrow=\"SOMETIMES\" minWidth=\"10.0\" prefWidth=\"100.0\" />\r\n            <ColumnConstraints hgrow=\"SOMETIMES\" minWidth=\"10.0\" prefWidth=\"100.0\" />\r\n        </columnConstraints>\r\n        <rowConstraints>\r\n            <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n            <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n            <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n            <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n            <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n            <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n            <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n            <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n            <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n        </rowConstraints>\r\n        <children>\r\n            <Label text=\"Deliverer search\" textAlignment=\"CENTER\" GridPane.columnSpan=\"4\" GridPane.halignment=\"CENTER\" GridPane.valignment=\"BOTTOM\">\r\n                <font>\r\n                    <Font size=\"22.0\" />\r\n                </font>\r\n            </Label>\r\n            <GridPane GridPane.columnIndex=\"2\" GridPane.rowIndex=\"1\">\r\n                <columnConstraints>\r\n                    <ColumnConstraints hgrow=\"SOMETIMES\" minWidth=\"10.0\" prefWidth=\"100.0\" />\r\n                </columnConstraints>\r\n                <rowConstraints>\r\n                    <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n                    <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n                </rowConstraints>\r\n                <children>\r\n                    <Label text=\"Contract type\">\r\n                        <GridPane.margin>\r\n                            <Insets left=\"15.0\" />\r\n                        </GridPane.margin>\r\n                    </Label>\r\n                    <ComboBox fx:id=\"personContractTypeComboBox\" prefHeight=\"25.0\" prefWidth=\"282.0\" GridPane.rowIndex=\"1\">\r\n                        <GridPane.margin>\r\n                            <Insets left=\"15.0\" right=\"15.0\" />\r\n                        </GridPane.margin>\r\n                    </ComboBox>\r\n                </children>\r\n            </GridPane>\r\n            <GridPane GridPane.columnIndex=\"1\" GridPane.rowIndex=\"2\">\r\n                <columnConstraints>\r\n                    <ColumnConstraints hgrow=\"SOMETIMES\" minWidth=\"10.0\" prefWidth=\"100.0\" />\r\n                </columnConstraints>\r\n                <rowConstraints>\r\n                    <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n                    <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n                </rowConstraints>\r\n                <children>\r\n                    <Label text=\"First name\">\r\n                        <GridPane.margin>\r\n                            <Insets left=\"15.0\" />\r\n                        </GridPane.margin>\r\n                    </Label>\r\n                    <TextField fx:id=\"personFirstNameTextField\" GridPane.rowIndex=\"1\">\r\n                        <GridPane.margin>\r\n                            <Insets left=\"15.0\" right=\"15.0\" />\r\n                        </GridPane.margin>\r\n                    </TextField>\r\n                </children>\r\n            </GridPane>\r\n            <GridPane GridPane.columnIndex=\"2\" GridPane.rowIndex=\"2\">\r\n                <columnConstraints>\r\n                    <ColumnConstraints hgrow=\"SOMETIMES\" minWidth=\"10.0\" prefWidth=\"100.0\" />\r\n                </columnConstraints>\r\n                <rowConstraints>\r\n                    <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n                    <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n                </rowConstraints>\r\n                <children>\r\n                    <Label text=\"Last name\">\r\n                        <GridPane.margin>\r\n                            <Insets left=\"15.0\" />\r\n                        </GridPane.margin>\r\n                    </Label>\r\n                    <TextField fx:id=\"personLastNameTextField\" GridPane.rowIndex=\"1\">\r\n                        <GridPane.margin>\r\n                            <Insets left=\"15.0\" right=\"15.0\" />\r\n                        </GridPane.margin>\r\n                    </TextField>\r\n                </children>\r\n            </GridPane>\r\n            <GridPane GridPane.columnIndex=\"1\" GridPane.rowIndex=\"3\">\r\n                <columnConstraints>\r\n                    <ColumnConstraints hgrow=\"SOMETIMES\" minWidth=\"10.0\" prefWidth=\"100.0\" />\r\n                </columnConstraints>\r\n                <rowConstraints>\r\n                    <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n                    <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n                </rowConstraints>\r\n                <children>\r\n                    <Label text=\"Contract start date (from-to)\">\r\n                        <GridPane.margin>\r\n                            <Insets left=\"15.0\" />\r\n                        </GridPane.margin>\r\n                    </Label>\r\n                    <GridPane GridPane.rowIndex=\"1\">\r\n                        <columnConstraints>\r\n                            <ColumnConstraints hgrow=\"SOMETIMES\" minWidth=\"10.0\" prefWidth=\"100.0\" />\r\n                            <ColumnConstraints hgrow=\"SOMETIMES\" minWidth=\"10.0\" prefWidth=\"100.0\" />\r\n                        </columnConstraints>\r\n                        <rowConstraints>\r\n                            <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n                        </rowConstraints>\r\n                        <children>\r\n                            <DatePicker fx:id=\"personContractStartDateFromDatePicker\">\r\n                                <GridPane.margin>\r\n                                    <Insets left=\"15.0\" right=\"5.0\" />\r\n                                </GridPane.margin>\r\n                            </DatePicker>\r\n                            <DatePicker fx:id=\"personContractStartDateToDatePicker\" GridPane.columnIndex=\"1\">\r\n                                <GridPane.margin>\r\n                                    <Insets left=\"5.0\" right=\"15.0\" />\r\n                                </GridPane.margin>\r\n                            </DatePicker>\r\n                        </children>\r\n                    </GridPane>\r\n                </children>\r\n            </GridPane>\r\n            <GridPane GridPane.columnIndex=\"2\" GridPane.rowIndex=\"3\">\r\n                <columnConstraints>\r\n                    <ColumnConstraints hgrow=\"SOMETIMES\" minWidth=\"10.0\" prefWidth=\"100.0\" />\r\n                </columnConstraints>\r\n                <rowConstraints>\r\n                    <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n                    <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n                </rowConstraints>\r\n                <children>\r\n                    <Label text=\"Contract end date (from-to)\">\r\n                        <GridPane.margin>\r\n                            <Insets left=\"15.0\" />\r\n                        </GridPane.margin>\r\n                    </Label>\r\n                    <GridPane GridPane.rowIndex=\"1\">\r\n                        <columnConstraints>\r\n                            <ColumnConstraints hgrow=\"SOMETIMES\" minWidth=\"10.0\" prefWidth=\"100.0\" />\r\n                            <ColumnConstraints hgrow=\"SOMETIMES\" minWidth=\"10.0\" prefWidth=\"100.0\" />\r\n                        </columnConstraints>\r\n                        <rowConstraints>\r\n                            <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n                        </rowConstraints>\r\n                        <children>\r\n                            <DatePicker fx:id=\"personContractEndDateFromDatePicker\">\r\n                                <GridPane.margin>\r\n                                    <Insets left=\"15.0\" right=\"5.0\" />\r\n                                </GridPane.margin>\r\n                            </DatePicker>\r\n                            <DatePicker fx:id=\"personContractEndDateToDatePicker\" GridPane.columnIndex=\"1\">\r\n                                <GridPane.margin>\r\n                                    <Insets left=\"5.0\" right=\"15.0\" />\r\n                                </GridPane.margin>\r\n                            </DatePicker>\r\n                        </children>\r\n                    </GridPane>\r\n                </children>\r\n            </GridPane>\r\n            <GridPane GridPane.columnIndex=\"1\" GridPane.rowIndex=\"4\">\r\n                <columnConstraints>\r\n                    <ColumnConstraints hgrow=\"SOMETIMES\" minWidth=\"10.0\" prefWidth=\"100.0\" />\r\n                </columnConstraints>\r\n                <rowConstraints>\r\n                    <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n                    <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n                </rowConstraints>\r\n                <children>\r\n                    <Label text=\"Bonus (from-to)\">\r\n                        <GridPane.margin>\r\n                            <Insets left=\"15.0\" />\r\n                        </GridPane.margin>\r\n                    </Label>\r\n                    <GridPane GridPane.rowIndex=\"1\">\r\n                        <columnConstraints>\r\n                            <ColumnConstraints hgrow=\"SOMETIMES\" minWidth=\"10.0\" prefWidth=\"100.0\" />\r\n                            <ColumnConstraints hgrow=\"SOMETIMES\" minWidth=\"10.0\" prefWidth=\"100.0\" />\r\n                        </columnConstraints>\r\n                        <rowConstraints>\r\n                            <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n                        </rowConstraints>\r\n                        <children>\r\n                            <TextField fx:id=\"personContractBonusFromTextField\">\r\n                                <GridPane.margin>\r\n                                    <Insets left=\"15.0\" right=\"5.0\" />\r\n                                </GridPane.margin>\r\n                            </TextField>\r\n                            <TextField fx:id=\"personContractBonusToTextField\" GridPane.columnIndex=\"1\">\r\n                                <GridPane.margin>\r\n                                    <Insets left=\"5.0\" right=\"15.0\" />\r\n                                </GridPane.margin>\r\n                            </TextField>\r\n                        </children>\r\n                    </GridPane>\r\n                </children>\r\n            </GridPane>\r\n            <GridPane GridPane.columnIndex=\"2\" GridPane.rowIndex=\"4\">\r\n                <columnConstraints>\r\n                    <ColumnConstraints hgrow=\"SOMETIMES\" minWidth=\"10.0\" prefWidth=\"100.0\" />\r\n                </columnConstraints>\r\n                <rowConstraints>\r\n                    <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n                    <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n                </rowConstraints>\r\n                <children>\r\n                    <Label text=\"Salary (from-to)\">\r\n                        <GridPane.margin>\r\n                            <Insets left=\"15.0\" />\r\n                        </GridPane.margin>\r\n                    </Label>\r\n                    <GridPane GridPane.rowIndex=\"1\">\r\n                        <columnConstraints>\r\n                            <ColumnConstraints hgrow=\"SOMETIMES\" minWidth=\"10.0\" prefWidth=\"100.0\" />\r\n                            <ColumnConstraints hgrow=\"SOMETIMES\" minWidth=\"10.0\" prefWidth=\"100.0\" />\r\n                        </columnConstraints>\r\n                        <rowConstraints>\r\n                            <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n                        </rowConstraints>\r\n                        <children>\r\n                            <TextField fx:id=\"personContractSalaryFromTextField\">\r\n                                <GridPane.margin>\r\n                                    <Insets left=\"15.0\" right=\"5.0\" />\r\n                                </GridPane.margin>\r\n                            </TextField>\r\n                            <TextField fx:id=\"personContractSalaryToTextField\" GridPane.columnIndex=\"1\">\r\n                                <GridPane.margin>\r\n                                    <Insets left=\"5.0\" right=\"15.0\" />\r\n                                </GridPane.margin>\r\n                            </TextField>\r\n                        </children>\r\n                    </GridPane>\r\n                </children>\r\n            </GridPane>\r\n            <GridPane GridPane.columnIndex=\"1\" GridPane.rowIndex=\"1\">\r\n                <columnConstraints>\r\n                    <ColumnConstraints hgrow=\"SOMETIMES\" minWidth=\"10.0\" prefWidth=\"100.0\" />\r\n                </columnConstraints>\r\n                <rowConstraints>\r\n                    <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n                    <RowConstraints minHeight=\"10.0\" prefHeight=\"30.0\" vgrow=\"SOMETIMES\" />\r\n                </rowConstraints>\r\n                <children>\r\n                    <Label text=\"ID\">\r\n                        <GridPane.margin>\r\n                            <Insets left=\"15.0\" />\r\n                        </GridPane.margin>\r\n                    </Label>\r\n                    <TextField fx:id=\"personIdTextField\" GridPane.rowIndex=\"1\">\r\n                        <GridPane.margin>\r\n                            <Insets left=\"15.0\" right=\"15.0\" />\r\n                        </GridPane.margin>\r\n                    </TextField>\r\n                </children>\r\n            </GridPane>\r\n            <TableView fx:id=\"personTableView\" prefHeight=\"200.0\" prefWidth=\"200.0\" GridPane.columnSpan=\"4\" GridPane.rowIndex=\"6\" GridPane.rowSpan=\"3\">\r\n                <columns>\r\n                    <TableColumn fx:id=\"personIdColumn\" prefWidth=\"75.0\" text=\"ID\" />\r\n                    <TableColumn fx:id=\"personFirstNameColumn\" prefWidth=\"118.0\" text=\"First name\" />\r\n                    <TableColumn fx:id=\"personLastNameColumn\" prefWidth=\"116.0\" text=\"Last name\" />\r\n                    <TableColumn fx:id=\"personContractTypeColumn\" prefWidth=\"105.0\" text=\"Contract type\" />\r\n                    <TableColumn fx:id=\"personContractStartDateColumn\" prefWidth=\"244.0\" text=\"Contract start date\" />\r\n                    <TableColumn fx:id=\"personContractEndDateColumn\" prefWidth=\"228.0\" text=\"Contract end date\" />\r\n                    <TableColumn fx:id=\"personContractBonusColumn\" prefWidth=\"94.0\" text=\"Bonus\" />\r\n                    <TableColumn fx:id=\"personContractSalaryColumn\" prefWidth=\"84.0\" text=\"Salary\" />\r\n                </columns>\r\n            </TableView>\r\n            <Button mnemonicParsing=\"false\" onAction=\"#filter\" text=\"Search\" GridPane.columnIndex=\"1\" GridPane.columnSpan=\"2\" GridPane.halignment=\"CENTER\" GridPane.rowIndex=\"5\" />\r\n            <Label fx:id=\"removeFilterLabel\" onMouseClicked=\"#removeFilter\" text=\"Remove filter\" underline=\"true\" GridPane.columnIndex=\"3\" GridPane.rowIndex=\"1\" GridPane.valignment=\"BOTTOM\">\r\n                <GridPane.margin>\r\n                    <Insets bottom=\"10.0\" />\r\n                </GridPane.margin>\r\n            </Label>\r\n        </children>\r\n    </GridPane>\r\n    <fx:include source=\"menu.fxml\" />\r\n</AnchorPane>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/hr/java/restaurant/delivererSearch.fxml b/src/main/resources/hr/java/restaurant/delivererSearch.fxml
+--- a/src/main/resources/hr/java/restaurant/delivererSearch.fxml	(revision cb643358ca8f17c6e691da0b08e73eb240b17709)
++++ b/src/main/resources/hr/java/restaurant/delivererSearch.fxml	(date 1738261104404)
+@@ -273,14 +273,17 @@
+             </GridPane>
+             <TableView fx:id="personTableView" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="4" GridPane.rowIndex="6" GridPane.rowSpan="3">
+                 <columns>
+-                    <TableColumn fx:id="personIdColumn" prefWidth="75.0" text="ID" />
+-                    <TableColumn fx:id="personFirstNameColumn" prefWidth="118.0" text="First name" />
+-                    <TableColumn fx:id="personLastNameColumn" prefWidth="116.0" text="Last name" />
+-                    <TableColumn fx:id="personContractTypeColumn" prefWidth="105.0" text="Contract type" />
+-                    <TableColumn fx:id="personContractStartDateColumn" prefWidth="244.0" text="Contract start date" />
+-                    <TableColumn fx:id="personContractEndDateColumn" prefWidth="228.0" text="Contract end date" />
+-                    <TableColumn fx:id="personContractBonusColumn" prefWidth="94.0" text="Bonus" />
+-                    <TableColumn fx:id="personContractSalaryColumn" prefWidth="84.0" text="Salary" />
++                    <TableColumn fx:id="personIdColumn" prefWidth="41.0" text="ID" />
++                    <TableColumn fx:id="personFirstNameColumn" prefWidth="97.0" text="First name" />
++                    <TableColumn fx:id="personLastNameColumn" prefWidth="78.0" text="Last name" />
++                    <TableColumn fx:id="personContractTypeColumn" prefWidth="102.0" text="Contract type" />
++                    <TableColumn fx:id="personContractStartDateColumn" prefWidth="110.0" text="Contract start date" />
++                    <TableColumn fx:id="personContractEndDateColumn" prefWidth="129.0" text="Contract end date" />
++                    <TableColumn fx:id="personContractBonusColumn" prefWidth="61.0" text="Bonus" />
++                    <TableColumn fx:id="personContractSalaryColumn" text="Salary" />
++               <TableColumn fx:id="personOrderWaitingColumn" prefWidth="59.0" text="waiting" />
++               <TableColumn fx:id="personOrderDeliveredColumn" prefWidth="200.0" text="delivered" />
++               <TableColumn fx:id="personOrderDeliverInProcessColumn" prefWidth="107.0" text="deliver_in_process" />
+                 </columns>
+             </TableView>
+             <Button mnemonicParsing="false" onAction="#filter" text="Search" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" />
+Index: db/initialize.sql
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>DROP TABLE IF EXISTS RESTAURANT_MEAL;\r\nDROP TABLE IF EXISTS RESTAURANT_ORDER_MEAL;\r\nDROP TABLE IF EXISTS RESTAURANT_ORDER;\r\nDROP TABLE IF EXISTS RESTAURANT_CHEF;\r\nDROP TABLE IF EXISTS RESTAURANT_WAITER;\r\nDROP TABLE IF EXISTS RESTAURANT_DELIVERER;\r\nDROP TABLE IF EXISTS CHEF;\r\nDROP TABLE IF EXISTS WAITER;\r\nDROP TABLE IF EXISTS DELIVERER;\r\nDROP TABLE IF EXISTS CONTRACT;\r\nDROP TABLE IF EXISTS MEAL_INGREDIENT;\r\nDROP TABLE IF EXISTS INGREDIENT;\r\nDROP TABLE IF EXISTS MEAL;\r\nDROP TABLE IF EXISTS CATEGORY;\r\nDROP TABLE IF EXISTS RESTAURANT;\r\nDROP TABLE IF EXISTS ADDRESS;\r\n\r\nCREATE TABLE CATEGORY(\r\n    ID LONG GENERATED ALWAYS AS IDENTITY,\r\n    NAME VARCHAR(25) NOT NULL,\r\n    DESCRIPTION VARCHAR(250) NOT NULL,\r\n    PRIMARY KEY (ID)\r\n);\r\n\r\nCREATE TABLE INGREDIENT(\r\n    ID LONG GENERATED ALWAYS AS IDENTITY,\r\n    NAME VARCHAR(25) NOT NULL,\r\n    CATEGORY_ID LONG NOT NULL,\r\n    KCAL DECIMAL(6,2) NOT NULL,\r\n    PREPARATION_METHOD VARCHAR(255),\r\n    PRIMARY KEY (ID),\r\nFOREIGN KEY(CATEGORY_ID) REFERENCES CATEGORY(ID)\r\n);\r\n\r\nCREATE TABLE MEAL(\r\n    ID LONG GENERATED ALWAYS AS IDENTITY,\r\n    NAME VARCHAR(25) NOT NULL,\r\n    CATEGORY_ID LONG NOT NULL,\r\n    PRICE DECIMAL(6,2) NOT NULL,\r\n    PRIMARY KEY (ID),\r\n    FOREIGN KEY(CATEGORY_ID) REFERENCES CATEGORY(ID)\r\n);\r\n\r\nCREATE TABLE MEAL_INGREDIENT(\r\n    ID LONG GENERATED ALWAYS AS IDENTITY,\r\n    MEAL_ID LONG NOT NULL,\r\n    INGREDIENT_ID LONG NOT NULL,\r\n    PRIMARY KEY (ID),\r\n    FOREIGN KEY(MEAL_ID ) REFERENCES MEAL(ID),\r\n    FOREIGN KEY(INGREDIENT_ID ) REFERENCES INGREDIENT(ID)\r\n);\r\n\r\nCREATE TABLE CONTRACT(\r\n    ID LONG GENERATED ALWAYS AS IDENTITY,\r\n    SALARY DECIMAL(6,2) NOT NULL,\r\n    BONUS DECIMAL(6,2) NOT NULL,\r\n    START_DATE DATE NOT NULL,\r\n    END_DATE DATE,\r\n    TYPE VARCHAR(10) NOT NULL,\r\n    PRIMARY KEY (ID)\r\n);\r\n\r\nCREATE TABLE CHEF(\r\n    ID LONG GENERATED ALWAYS AS IDENTITY,\r\n    FIRST_NAME VARCHAR(30) NOT NULL,\r\n    LAST_NAME VARCHAR(30) NOT NULL,\r\n    BONUS DECIMAL(6,2) NOT NULL,\r\n    CONTRACT_ID LONG NOT NULL,\r\n    PRIMARY KEY (ID),\r\n    FOREIGN KEY(CONTRACT_ID) REFERENCES CONTRACT(ID)\r\n\r\n);\r\n\r\nCREATE TABLE WAITER(\r\n    ID LONG GENERATED ALWAYS AS IDENTITY,\r\n    FIRST_NAME VARCHAR(30) NOT NULL,\r\n    LAST_NAME VARCHAR(30) NOT NULL,\r\n    BONUS DECIMAL(6,2) NOT NULL,\r\n    CONTRACT_ID LONG NOT NULL,\r\n    PRIMARY KEY (ID),\r\n    FOREIGN KEY(CONTRACT_ID) REFERENCES CONTRACT(ID)\r\n);\r\n\r\nCREATE TABLE DELIVERER(\r\n    ID LONG GENERATED ALWAYS AS IDENTITY,\r\n    FIRST_NAME VARCHAR(30) NOT NULL,\r\n    LAST_NAME VARCHAR(30) NOT NULL,\r\n    BONUS DECIMAL(6,2) NOT NULL,\r\n    CONTRACT_ID LONG NOT NULL,\r\n    PRIMARY KEY (ID),\r\n    FOREIGN KEY(CONTRACT_ID) REFERENCES CONTRACT(ID)\r\n);\r\n\r\nCREATE TABLE ADDRESS(\r\n    ID LONG GENERATED ALWAYS AS IDENTITY,\r\n    STREET VARCHAR(50) NOT NULL,\r\n    HOUSE_NUMBER VARCHAR(10) NOT NULL,\r\n    CITY VARCHAR(30) NOT NULL,\r\n    POSTAL_CODE INT NOT NULL,\r\n    PRIMARY KEY (ID)\r\n);\r\n\r\nCREATE TABLE RESTAURANT(\r\n    ID LONG GENERATED ALWAYS AS IDENTITY,\r\n    NAME VARCHAR(25) NOT NULL,\r\n    ADDRESS_ID LONG NOT NULL,\r\n    PRIMARY KEY (ID),\r\n    FOREIGN KEY(ADDRESS_ID ) REFERENCES ADDRESS(ID)\r\n);\r\n\r\nCREATE TABLE RESTAURANT_MEAL(\r\n    ID LONG GENERATED ALWAYS AS IDENTITY,\r\n    RESTAURANT_ID LONG NOT NULL,\r\n    MEAL_ID LONG NOT NULL,\r\n    PRIMARY KEY (ID),\r\n    FOREIGN KEY(RESTAURANT_ID ) REFERENCES RESTAURANT(ID),\r\n    FOREIGN KEY(MEAL_ID ) REFERENCES MEAL(ID)\r\n);\r\n\r\n\r\nCREATE TABLE RESTAURANT_CHEF(\r\n    ID LONG GENERATED ALWAYS AS IDENTITY,\r\n    RESTAURANT_ID LONG NOT NULL,\r\n    CHEF_ID LONG NOT NULL,\r\n    PRIMARY KEY (ID),\r\n    FOREIGN KEY(CHEF_ID ) REFERENCES CHEF(ID),\r\n    FOREIGN KEY(RESTAURANT_ID ) REFERENCES RESTAURANT(ID)\r\n);\r\n\r\nCREATE TABLE RESTAURANT_WAITER(\r\n    ID LONG GENERATED ALWAYS AS IDENTITY,\r\n    RESTAURANT_ID LONG NOT NULL,\r\n    WAITER_ID LONG NOT NULL,\r\n    PRIMARY KEY (ID),\r\n    FOREIGN KEY(WAITER_ID ) REFERENCES WAITER(ID),\r\n    FOREIGN KEY(RESTAURANT_ID ) REFERENCES RESTAURANT(ID)\r\n);\r\n\r\nCREATE TABLE RESTAURANT_DELIVERER(\r\n    ID LONG GENERATED ALWAYS AS IDENTITY,\r\n    RESTAURANT_ID LONG NOT NULL,\r\n    DELIVERER_ID LONG NOT NULL,\r\n    PRIMARY KEY (ID),\r\n    FOREIGN KEY(DELIVERER_ID) REFERENCES DELIVERER(ID),\r\n    FOREIGN KEY(RESTAURANT_ID) REFERENCES RESTAURANT(ID)\r\n);\r\n\r\nCREATE TABLE RESTAURANT_ORDER(\r\n    ID LONG GENERATED ALWAYS AS IDENTITY,\r\n    RESTAURANT_ID LONG NOT NULL,\r\n    DELIVERER_ID LONG NOT NULL,\r\n    DATE_AND_TIME TIMESTAMP NOT NULL,\r\n    PRIMARY KEY (ID),\r\n    FOREIGN KEY(RESTAURANT_ID) REFERENCES RESTAURANT(ID),\r\n    FOREIGN KEY(DELIVERER_ID) REFERENCES DELIVERER(ID)\r\n);\r\n\r\nCREATE TABLE RESTAURANT_ORDER_MEAL(\r\n    ID LONG GENERATED ALWAYS AS IDENTITY,\r\n    RESTAURANT_ORDER_ID LONG NOT NULL,\r\n    MEAL_ID LONG NOT NULL,\r\n    PRIMARY KEY (ID),\r\n    FOREIGN KEY(RESTAURANT_ORDER_ID) REFERENCES RESTAURANT_ORDER(ID),\r\n    FOREIGN KEY(MEAL_ID) REFERENCES MEAL(ID)\r\n);\r\n\r\nINSERT INTO CATEGORY(NAME, DESCRIPTION) VALUES('MEAT', 'Meat food or ingredient');\r\nINSERT INTO CATEGORY(\r\n     NAME,\r\n     DESCRIPTION\r\n) VALUES('VEGETABLES', 'Vegetables food or ingredient');\r\nINSERT INTO CATEGORY(NAME, DESCRIPTION) VALUES('VEGAN', 'Vegan food or\r\ningredient');\r\nINSERT INTO INGREDIENT(NAME, CATEGORY_ID, KCAL, PREPARATION_METHOD)\r\nVALUES('Meat for ćevapi', 1, 1000, 'Barbecue');\r\nINSERT INTO INGREDIENT(NAME, CATEGORY_ID, KCAL, PREPARATION_METHOD)\r\nVALUES('Season salad', 2, 50, 'Raw');\r\nINSERT INTO INGREDIENT(NAME, CATEGORY_ID, KCAL, PREPARATION_METHOD)\r\nVALUES('Falafel', 1, 100, 'Frying');\r\nINSERT INTO MEAL(NAME, CATEGORY_ID, PRICE)\r\nVALUES('Ćevapi with salad', 1, 10.00);\r\nINSERT INTO MEAL(NAME, CATEGORY_ID, PRICE)\r\nVALUES('Falafel with salad', 3, 12.00);\r\nINSERT INTO MEAL_INGREDIENT(MEAL_ID, INGREDIENT_ID) VALUES(1, 1);\r\nINSERT INTO MEAL_INGREDIENT(MEAL_ID, INGREDIENT_ID) VALUES(1, 1);\r\nINSERT INTO MEAL_INGREDIENT(MEAL_ID, INGREDIENT_ID) VALUES(2, 2);\r\nINSERT INTO MEAL_INGREDIENT(MEAL_ID, INGREDIENT_ID) VALUES(2, 3);\r\n\r\nINSERT INTO CONTRACT(SALARY, BONUS, START_DATE, TYPE) VALUES(3000, 500, '2010-01-01','FULL_TIME');\r\nINSERT INTO CONTRACT(SALARY, BONUS, START_DATE, TYPE) VALUES(3000, 500, '2011-01-01', 'FULL_TIME');\r\nINSERT INTO CONTRACT(SALARY, BONUS, START_DATE, TYPE) VALUES(3000, 500, '2012-01-01', 'FULL_TIME');\r\nINSERT INTO CONTRACT(SALARY, BONUS, START_DATE, TYPE) VALUES(3000, 500, '2013-01-01', 'FULL_TIME');\r\nINSERT INTO CONTRACT(SALARY, BONUS, START_DATE, TYPE) VALUES(3000, 500, '2014-01-01', 'FULL_TIME');\r\n\r\nINSERT INTO CHEF(FIRST_NAME, LAST_NAME, CONTRACT_ID, BONUS) VALUES('Ivo', 'Kuhar', 1, 100);\r\nINSERT INTO CHEF(FIRST_NAME, LAST_NAME, CONTRACT_ID, BONUS) VALUES('Janica', 'Kuharica', 4, 200);\r\nINSERT INTO CHEF(FIRST_NAME, LAST_NAME, CONTRACT_ID, BONUS) VALUES('Ivica', 'Gurman', 5, 300);\r\nINSERT INTO WAITER(FIRST_NAME, LAST_NAME, CONTRACT_ID, BONUS) VALUES('Martina', 'Konobar', 2, 400);\r\nINSERT INTO DELIVERER(FIRST_NAME, LAST_NAME, CONTRACT_ID, BONUS) VALUES('Zdravko', 'Dostavljač', 3, 500);\r\nINSERT INTO ADDRESS(STREET, HOUSE_NUMBER, CITY, POSTAL_CODE) VALUES('Ante Starčevića',\r\n            '32', 'Koprivnica', 48000);\r\nINSERT INTO RESTAURANT(NAME, ADDRESS_ID) VALUES('Mesne delicije i ostalo', 1);\r\nINSERT INTO RESTAURANT_CHEF(RESTAURANT_ID, CHEF_ID)\r\nVALUES(1,1);\r\nINSERT INTO RESTAURANT_WAITER(RESTAURANT_ID, WAITER_ID)\r\nVALUES(1,1);\r\nINSERT INTO RESTAURANT_DELIVERER(RESTAURANT_ID, DELIVERER_ID)\r\nVALUES(1,1);\r\nINSERT INTO RESTAURANT_ORDER(RESTAURANT_ID, DELIVERER_ID, DATE_AND_TIME)\r\nVALUES(1,1, CURRENT_TIMESTAMP);\r\nINSERT INTO RESTAURANT_MEAL(RESTAURANT_ID, MEAL_ID)\r\nVALUES(1,1);\r\nINSERT INTO RESTAURANT_MEAL(RESTAURANT_ID, MEAL_ID)\r\nVALUES(1,2);\r\nINSERT INTO RESTAURANT_ORDER_MEAL(RESTAURANT_ORDER_ID, MEAL_ID)\r\nVALUES(1,1);\r\nINSERT INTO RESTAURANT_ORDER_MEAL(RESTAURANT_ORDER_ID, MEAL_ID)\r\nVALUES(1,2);\r\nINSERT INTO ADDRESS(STREET, HOUSE_NUMBER, CITY, POSTAL_CODE) VALUES('Ilica', '1','Zagreb', 10000);\r\nINSERT INTO RESTAURANT(NAME, ADDRESS_ID) VALUES('Veganize', 2);\r\nINSERT INTO RESTAURANT_CHEF(RESTAURANT_ID, CHEF_ID)\r\nVALUES(2,2);\r\nINSERT INTO RESTAURANT_CHEF(RESTAURANT_ID, CHEF_ID)\r\nVALUES(2,3);
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/db/initialize.sql b/db/initialize.sql
+--- a/db/initialize.sql	(revision cb643358ca8f17c6e691da0b08e73eb240b17709)
++++ b/db/initialize.sql	(date 1738259521401)
+@@ -150,6 +150,9 @@
+     RESTAURANT_ID LONG NOT NULL,
+     DELIVERER_ID LONG NOT NULL,
+     DATE_AND_TIME TIMESTAMP NOT NULL,
++    WAITING BIT DEFAULT 1,
++    DELIVERED BIT DEFAULT 0,
++    DELIVER_IN_PROCESS BIT DEFAULT 0,
+     PRIMARY KEY (ID),
+     FOREIGN KEY(RESTAURANT_ID) REFERENCES RESTAURANT(ID),
+     FOREIGN KEY(DELIVERER_ID) REFERENCES DELIVERER(ID)
+Index: src/main/java/hr/java/restaurant/util/SceneLoader.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package hr.java.restaurant.util;\r\n\r\nimport hr.java.restaurant.controller.ContractAddStep1Controller;\r\nimport hr.java.restaurant.controller.ContractAddStep2Controller;\r\nimport hr.java.restaurant.controller.ContractAddStep3Controller;\r\nimport hr.java.restaurant.enumeration.ContractType;\r\nimport hr.java.restaurant.main.RestaurantApplication;\r\nimport hr.java.restaurant.model.Chef;\r\nimport hr.java.restaurant.model.Deliverer;\r\nimport hr.java.restaurant.model.Person;\r\nimport hr.java.restaurant.model.Waiter;\r\nimport hr.java.restaurant.repository.ChefRepository;\r\nimport hr.java.restaurant.repository.DelivererRepository;\r\nimport hr.java.restaurant.repository.WaiterRepository;\r\nimport hr.java.restaurant.thread.HighestPaidPersonThread;\r\nimport hr.java.restaurant.thread.SortingContractsThread;\r\nimport javafx.animation.KeyFrame;\r\nimport javafx.animation.Timeline;\r\nimport javafx.fxml.FXMLLoader;\r\nimport javafx.scene.Parent;\r\nimport javafx.scene.Scene;\r\nimport javafx.stage.Stage;\r\nimport javafx.util.Duration;\r\n\r\nimport java.io.IOException;\r\nimport java.math.BigDecimal;\r\nimport java.sql.Time;\r\nimport java.time.LocalDate;\r\nimport java.util.List;\r\nimport java.util.Optional;\r\n\r\npublic class SceneLoader {\r\n\r\n    public static void loadScene(String fxmlFileName, String title) {\r\n        try {\r\n            FXMLLoader fxmlLoader = FXMLLoaderHelper.fxmlFilePath(fxmlFileName + \".fxml\");\r\n\r\n            Scene scene = new Scene(fxmlLoader.load(), Constants.SCENE_WIDTH, Constants.SCENE_HEIGHT);\r\n            RestaurantApplication.getMainStage().setScene(scene);\r\n            RestaurantApplication.getMainStage().show();\r\n        } catch (IOException e) {\r\n            e.printStackTrace();\r\n            AlertDialog.showErrorDialog(\"Error\", \"Error loading scene: \" + fxmlFileName);\r\n        }\r\n    }\r\n\r\n    public static void loadSceneContract(String fxmlFileName, String title, String name, String salary, LocalDate startDate, LocalDate endDate, ContractType contractType, List<String> files) {\r\n        try {\r\n            FXMLLoader fxmlLoader = FXMLLoaderHelper.fxmlFilePath(fxmlFileName + \".fxml\");\r\n\r\n            Scene scene = new Scene(fxmlLoader.load(), Constants.SCENE_WIDTH, Constants.SCENE_HEIGHT);\r\n\r\n            if (fxmlFileName.equals(\"contractAddStep2\")) {\r\n                ContractAddStep2Controller controller = fxmlLoader.getController();\r\n                controller.initialize(name, salary, startDate, endDate, contractType, files);\r\n            } else if (fxmlFileName.equals(\"contractAddStep1\")) {\r\n                ContractAddStep1Controller controller = fxmlLoader.getController();\r\n                controller.initialize(name, salary, startDate, endDate, contractType, files);\r\n            } else if (fxmlFileName.equals(\"contractAddStep3\")) {\r\n                ContractAddStep3Controller controller = fxmlLoader.getController();\r\n                controller.initialize(name, salary, startDate, endDate, contractType, files);\r\n            }\r\n\r\n            RestaurantApplication.getMainStage().setTitle(title);\r\n            RestaurantApplication.getMainStage().setScene(scene);\r\n            RestaurantApplication.getMainStage().show();\r\n        } catch (IOException e) {\r\n            e.printStackTrace();\r\n            AlertDialog.showErrorDialog(\"Error\", \"Error loading scene: \" + fxmlFileName);\r\n        }\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/hr/java/restaurant/util/SceneLoader.java b/src/main/java/hr/java/restaurant/util/SceneLoader.java
+--- a/src/main/java/hr/java/restaurant/util/SceneLoader.java	(revision cb643358ca8f17c6e691da0b08e73eb240b17709)
++++ b/src/main/java/hr/java/restaurant/util/SceneLoader.java	(date 1738260426300)
+@@ -19,6 +19,7 @@
+ import javafx.fxml.FXMLLoader;
+ import javafx.scene.Parent;
+ import javafx.scene.Scene;
++import javafx.stage.Modality;
+ import javafx.stage.Stage;
+ import javafx.util.Duration;
+ 
+@@ -69,4 +70,21 @@
+             AlertDialog.showErrorDialog("Error", "Error loading scene: " + fxmlFileName);
+         }
+     }
++
++    public static void loadOrderAddCounterPopup(String fxmlFileName, String title) {
++        try {
++            FXMLLoader fxmlLoader = FXMLLoaderHelper.fxmlFilePath(fxmlFileName + ".fxml");
++
++            Scene scene = new Scene(fxmlLoader.load(), 250, 250);
++            Stage stage = new Stage();
++            stage.setTitle(title);
++            stage.setScene(scene);
++            stage.initModality(Modality.WINDOW_MODAL);
++            stage.initOwner(RestaurantApplication.getMainStage());
++            stage.show();
++        } catch (IOException e) {
++            e.printStackTrace();
++            AlertDialog.showErrorDialog("Error", "Error loading scene: " + fxmlFileName);
++        }
++    }
+ }
+Index: src/main/resources/hr/java/restaurant/delivererOrderDetails.fxml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/hr/java/restaurant/delivererOrderDetails.fxml b/src/main/resources/hr/java/restaurant/delivererOrderDetails.fxml
+new file mode 100644
+--- /dev/null	(date 1738262549702)
++++ b/src/main/resources/hr/java/restaurant/delivererOrderDetails.fxml	(date 1738262549702)
+@@ -0,0 +1,28 @@
++<?xml version="1.0" encoding="UTF-8"?>
++
++<?import javafx.scene.control.ScrollPane?>
++<?import javafx.scene.layout.AnchorPane?>
++<?import javafx.scene.layout.ColumnConstraints?>
++<?import javafx.scene.layout.GridPane?>
++<?import javafx.scene.layout.RowConstraints?>
++
++
++<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.java.restaurant.controller.DelivererOrderDetailsController">
++   <children>
++      <GridPane prefHeight="400.0" prefWidth="600.0">
++        <columnConstraints>
++          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
++        </columnConstraints>
++        <rowConstraints>
++          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
++        </rowConstraints>
++         <children>
++            <ScrollPane fx:id="scrollPane" prefHeight="200.0" prefWidth="200.0">
++              <content>
++                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0" />
++              </content>
++            </ScrollPane>
++         </children>
++      </GridPane>
++   </children>
++</AnchorPane>
+Index: src/main/java/hr/java/restaurant/controller/OrderAddCounterPopupController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/hr/java/restaurant/controller/OrderAddCounterPopupController.java b/src/main/java/hr/java/restaurant/controller/OrderAddCounterPopupController.java
+new file mode 100644
+--- /dev/null	(date 1738260858817)
++++ b/src/main/java/hr/java/restaurant/controller/OrderAddCounterPopupController.java	(date 1738260858817)
+@@ -0,0 +1,40 @@
++package hr.java.restaurant.controller;
++
++import javafx.animation.KeyFrame;
++import javafx.animation.Timeline;
++import javafx.fxml.FXML;
++import javafx.scene.control.Label;
++import javafx.stage.Stage;
++import javafx.util.Duration;
++
++public class OrderAddCounterPopupController {
++
++    @FXML
++    private Label countdownLabel;
++
++    private Stage popupStage;
++    private Runnable onComplete;
++
++    public void setPopupStage(Stage stage) {
++        this.popupStage = stage;
++    }
++
++    public void setOnComplete(Runnable onComplete) {
++        this.onComplete = onComplete;
++    }
++
++    public void startCountdown() {
++        Timeline countdown = new Timeline();
++        for (int i = 5; i >= 0; i--) {
++            int finalI = i;
++            countdown.getKeyFrames().add(new KeyFrame(Duration.seconds(5 - i), e -> countdownLabel.setText(String.valueOf(finalI))));
++        }
++
++        countdown.setOnFinished(e -> {
++            popupStage.close();
++            if (onComplete != null) onComplete.run();
++        });
++
++        countdown.play();
++    }
++}
+Index: src/main/resources/hr/java/restaurant/orderAddCounterPopup.fxml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/resources/hr/java/restaurant/orderAddCounterPopup.fxml b/src/main/resources/hr/java/restaurant/orderAddCounterPopup.fxml
+new file mode 100644
+--- /dev/null	(date 1738260826291)
++++ b/src/main/resources/hr/java/restaurant/orderAddCounterPopup.fxml	(date 1738260826291)
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="UTF-8"?>
++
++<?import javafx.scene.control.Label?>
++<?import javafx.scene.layout.VBox?>
++
++<VBox alignment="CENTER" spacing="20" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.java.restaurant.controller.OrderAddCounterPopupController">
++   <Label fx:id="countdownLabel" text="5" style="-fx-font-size: 24px;"/>
++</VBox>
+\ No newline at end of file

@@ -1,5 +1,4 @@
 package hr.java.restaurant.main;
-import hr.java.restaurant.thread.HighestPaidPersonThread;
 import hr.java.restaurant.util.FXMLLoaderHelper;
 import hr.java.restaurant.util.Constants;
 import javafx.application.Application;
@@ -19,7 +18,7 @@ public class RestaurantApplication extends Application {
         Scene scene = new Scene(fxmlLoader.load(), Constants.SCENE_WIDTH, Constants.SCENE_HEIGHT);
 
         mainStage = stage;
-        HighestPaidPersonThread.start();
+        //HighestPaidPersonThread.start();
 
         stage.setTitle("Pretraga kategorija");
         stage.setScene(scene);

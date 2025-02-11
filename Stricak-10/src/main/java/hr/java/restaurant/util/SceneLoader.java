@@ -19,6 +19,7 @@ import javafx.animation.Timeline;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -64,6 +65,23 @@ public class SceneLoader {
             RestaurantApplication.getMainStage().setTitle(title);
             RestaurantApplication.getMainStage().setScene(scene);
             RestaurantApplication.getMainStage().show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            AlertDialog.showErrorDialog("Error", "Error loading scene: " + fxmlFileName);
+        }
+    }
+
+    public static void loadOrderAddCounterPopup(String fxmlFileName, String title) {
+        try {
+            FXMLLoader fxmlLoader = FXMLLoaderHelper.fxmlFilePath(fxmlFileName + ".fxml");
+
+            Scene scene = new Scene(fxmlLoader.load(), 250, 250);
+            Stage stage = new Stage();
+            stage.setTitle(title);
+            stage.setScene(scene);
+            stage.initModality(Modality.WINDOW_MODAL);
+            stage.initOwner(RestaurantApplication.getMainStage());
+            stage.show();
         } catch (IOException e) {
             e.printStackTrace();
             AlertDialog.showErrorDialog("Error", "Error loading scene: " + fxmlFileName);
