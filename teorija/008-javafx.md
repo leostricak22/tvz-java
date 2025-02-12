@@ -89,7 +89,8 @@
 - MenuItem
 - Button
 - ToolBar
-- ToggleButton -> kad ga pritisnemo, ostaje pritisnut cijelo vrijeme
+- ToggleButton
+  - kad ga pritisnemo, ostaje pritisnut cijelo vrijeme
 - ToolTip
 - Circle
 - Rectangle
