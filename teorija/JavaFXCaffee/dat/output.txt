@@ -1,0 +1,2 @@
+Ovo je tekst koji se zapisuje u datoteku!
+Drugi redak teksta.

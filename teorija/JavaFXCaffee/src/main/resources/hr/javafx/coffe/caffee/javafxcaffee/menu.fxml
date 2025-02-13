@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.GridPane?>
+
+<MenuBar prefWidth="1065.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hr.javafx.coffe.caffee.javafxcaffee.controller.MenuController">
+    <menus>
+        <Menu mnemonicParsing="false" text="Beverages">
+            <items>
+                <MenuItem mnemonicParsing="false" onAction="#showSearchBeveragesScreen" text="Search" />
+                <MenuItem mnemonicParsing="false" onAction="#showAddNewBeverageScreen" text="New" />
+            </items>
+        </Menu>
+    </menus>
+</MenuBar>
