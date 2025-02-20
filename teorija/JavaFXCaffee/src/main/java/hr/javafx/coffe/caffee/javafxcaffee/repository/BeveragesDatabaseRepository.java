@@ -5,13 +5,9 @@ import hr.javafx.coffe.caffee.javafxcaffee.exception.RepositoryAccessException;
 import hr.javafx.coffe.caffee.javafxcaffee.model.Beverage;
 import hr.javafx.coffe.caffee.javafxcaffee.model.Origin;
 
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.PipedInputStream;
 import java.math.BigDecimal;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -185,7 +181,8 @@ public class BeveragesDatabaseRepository<T extends Beverage> extends AbstractRep
         BigDecimal alcoholPercentage = resultSet.getBigDecimal("alcohol_percentage");
         String origin = resultSet.getString("origin");
 
-        return (T) new Beverage(id, name, price, alcoholPercentage, Origin.valueOf(origin));
+        Beverage beverage = new Beverage(id, name, price, alcoholPercentage, Origin.valueOf(origin));
+        return (T) beverage;
     }
 
     public synchronized Optional<T> findCheapestBeverage() {

@@ -1,5 +1,6 @@
 package hr.javafx.coffe.caffee.javafxcaffee.controller;
 
+import hr.javafx.coffe.caffee.javafxcaffee.exception.RepositoryAccessException;
 import hr.javafx.coffe.caffee.javafxcaffee.model.Beverage;
 import hr.javafx.coffe.caffee.javafxcaffee.model.Origin;
 import hr.javafx.coffe.caffee.javafxcaffee.repository.BeveragesDatabaseRepository;
@@ -29,21 +30,21 @@ public class AddNewBeverageScreenController {
 
     public void initialize() {
         originComboBox.getItems().addAll(Origin.values());
+        // originComboBox.setValue(Origin.DOMESTIC); // postavljanje defaultne vrijednosti
     }
 
     public void addNewBeverage() {
 
         StringBuilder errorMessages = new StringBuilder();
 
-
         String name = nameTextField.getText();
         if (name.isEmpty()) {
             errorMessages.append("Unos naziva pića je obvezan.\n");
         }
 
+        BigDecimal price = BigDecimal.ZERO;
 
         String priceString = priceTextField.getText();
-        BigDecimal price = BigDecimal.ZERO;
         if (priceString.isEmpty()) {
             errorMessages.append("Unos cijene pića je obvezan.\n");
         } else {
@@ -79,14 +80,19 @@ public class AddNewBeverageScreenController {
         if (errorMessages.length() > 0) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Pogreške kod unosa novog pića.");
-            alert.setHeaderText("Piće nije spremnljeno zbog pogrešaka kod unosa");
+            alert.setHeaderText("Piće " + name + " nije spremnljeno zbog pogrešaka kod unosa");
             alert.setContentText(errorMessages.toString());
             alert.showAndWait();
         } else {
             Beverage beverage = new Beverage(name, price, alcoholPercentage, originComboBox.getValue());
 
-            BeveragesDatabaseRepository<Beverage> repository = new BeveragesDatabaseRepository<>();
-            repository.save(beverage);
+            BeveragesDatabaseRepository<Beverage> repository = new BeveragesDatabaseRepository();
+            try {
+                repository.save(beverage);
+            }
+            catch (RepositoryAccessException e) {
+
+            }
 
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Uspješno spremanje novog pića.");

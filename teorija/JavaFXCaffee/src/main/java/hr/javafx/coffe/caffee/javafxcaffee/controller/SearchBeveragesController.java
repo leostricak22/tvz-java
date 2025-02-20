@@ -32,7 +32,7 @@ public class SearchBeveragesController {
     private TextField beveragePriceFromTextField;
 
     @FXML
-    private static TextField beveragePriceToTextField;
+    private TextField beveragePriceToTextField;
 
     @FXML
     private TextField beverageAlcoholPercentageTextField;
@@ -77,20 +77,20 @@ public class SearchBeveragesController {
         beverageOriginColumn.setCellValueFactory(cellData ->
                 new SimpleStringProperty(String.valueOf(cellData.getValue().getOrigin())));
 
-        //DisplayCheapestBeverageThread thread = new DisplayCheapestBeverageThread(beveragesRepository, cheapestBeverageLabel);
+        DisplayCheapestBeverageThread thread = new DisplayCheapestBeverageThread(beveragesRepository, cheapestBeverageLabel);
         //Thread runner = new Thread(thread);
         //runner.start();
 
         Timeline cheapestBeverageTimeline = new Timeline(new KeyFrame(Duration.ZERO, e -> {
-            Optional<Beverage> cheapestBeverage = Optional.empty();
+            Optional<Beverage> cheapestBeverage;
 
             if (beveragesRepository instanceof BeveragesDatabaseRepository bdr) {
                 cheapestBeverage = bdr.findCheapestBeverage();
-            }
 
-            if (cheapestBeverage.isPresent()) {
-                cheapestBeverageLabel.setText(
-                        "Najjeftinije piće je: " + cheapestBeverage.get().getName() + " po cijeni " + cheapestBeverage.get().getPrice());
+                if (cheapestBeverage.isPresent()) {
+                    cheapestBeverageLabel.setText(
+                            "Najjeftinije piće je: " + cheapestBeverage.get().getName() + " po cijeni " + cheapestBeverage.get().getPrice());
+                }
             }
         }), new KeyFrame(Duration.seconds(1)));
 
@@ -133,7 +133,9 @@ public class SearchBeveragesController {
         }
 
         // observable list je povezana s eventima, pa se automatski ažurira
-        ObservableList<Beverage> beverageObservableList = FXCollections.observableArrayList(beverageList);
+        ObservableList<Beverage> beverageObservableList =
+                FXCollections.observableList(beverageList);
+
         beverageTableView.setItems(beverageObservableList);
     }
 }

@@ -75,7 +75,7 @@ public class CoffeeShopRepository<T extends CoffeeShop> extends AbstractReposito
     }
 
     @Override
-    void save(List<T> entities) {
+    public void save(List<T> entities) {
         // moguće je koristiti i sa new File.of()
         try (PrintWriter writer = new PrintWriter(COFFEE_SHOPS_FILE_PATH)) {
             for (T entity : entities) {
